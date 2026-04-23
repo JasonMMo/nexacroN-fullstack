@@ -38,7 +38,7 @@ public class UserService {
         cols.add(new NexacroDataset.Column("USER_ID", "STRING", "32"));
         cols.add(new NexacroDataset.Column("USER_NAME", "STRING", "100"));
         cols.add(new NexacroDataset.Column("ROLE", "STRING", "20"));
-        ci.setColumn(cols);
+        ci.setColumns(cols);
         ds.setColumnInfo(ci);
 
         Map<String, Object> row = new HashMap<String, Object>();
