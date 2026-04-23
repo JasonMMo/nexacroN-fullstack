@@ -41,7 +41,7 @@ public class BoardService {
         cols.add(new NexacroDataset.Column("VIEW_COUNT", "INT", "10"));
         cols.add(new NexacroDataset.Column("CREATED_AT", "DATETIME", "19"));
         cols.add(new NexacroDataset.Column("UPDATED_AT", "DATETIME", "19"));
-        ci.setColumn(cols);
+        ci.setColumns(cols);
         ds.setColumnInfo(ci);
 
         ds.setRows(normalised);
