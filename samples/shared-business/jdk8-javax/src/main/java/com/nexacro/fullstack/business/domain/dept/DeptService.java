@@ -33,7 +33,7 @@ public class DeptService {
         cols.add(new NexacroDataset.Column("LEVEL_NO", "INT", "10"));
         cols.add(new NexacroDataset.Column("SORT_ORDER", "INT", "10"));
         if (includePath) cols.add(new NexacroDataset.Column("PATH", "STRING", "500"));
-        ci.setColumn(cols);
+        ci.setColumns(cols);
         ds.setColumnInfo(ci);
         ds.setRows(rows != null ? rows : new ArrayList<Map<String, Object>>());
         return ds;
