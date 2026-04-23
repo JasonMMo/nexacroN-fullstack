@@ -79,7 +79,7 @@ public class FileService {
         cols.add(new NexacroDataset.Column("SIZE_BYTES", "BIGINT", "19"));
         cols.add(new NexacroDataset.Column("UPLOADED_BY", "STRING", "32"));
         cols.add(new NexacroDataset.Column("UPLOADED_AT", "DATETIME", "19"));
-        ci.setColumn(cols);
+        ci.setColumns(cols);
         ds.setColumnInfo(ci);
         ds.setRows(dao.listAll());
         return ds;
