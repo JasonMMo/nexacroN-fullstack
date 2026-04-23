@@ -108,4 +108,23 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!--
+                Explicitly pin maven-compiler-plugin to 3.13.0.
+                The parent BOM does not manage plugin versions, so Maven
+                resolves the default (v3.1) which predates release-17 support.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>17</release>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
