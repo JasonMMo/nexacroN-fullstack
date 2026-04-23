@@ -45,7 +45,7 @@ public class LargeDataService {
         cols.add(new NexacroDataset.Column("VALUE_2", "DECIMAL", "18"));
         cols.add(new NexacroDataset.Column("VALUE_3", "INT", "10"));
         cols.add(new NexacroDataset.Column("CREATED_AT", "DATETIME", "19"));
-        ci.setColumn(cols);
+        ci.setColumns(cols);
         ds.setColumnInfo(ci);
         ds.setRows(rows);
         return new LargePageResult(ds, total);
