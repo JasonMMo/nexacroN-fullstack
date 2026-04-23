@@ -1,0 +1,325 @@
+openapi: 3.0.3
+info:
+  title: nexacroN-fullstack API contract
+  version: 0.1.0
+  description: |
+    15 endpoints shared across all 8 runners. The contract is framework-neutral —
+    servlet (javax / jakarta) and reactive (webflux) runners must all satisfy it.
+
+    Request/response bodies follow the nexacro-data-format spec
+    (XML / SSV / JSON — see data-formats.md). Defaults to JSON here for tooling;
+    actual runtime content-type is chosen by `packageN.xadl` and the `xapi` layer.
+
+    Endpoint #15 (exim_exchange) is an optional reactive-only streaming demo,
+    implemented only by webflux-jdk17-jakarta.
+
+servers:
+  - url: http://localhost:8080/uiadapter
+    description: Local dev (default svcurl in packageN.xadl)
+
+tags:
+  - name: auth
+    description: Login / session
+  - name: sample_board
+    description: CRUD demo on SAMPLE_BOARD table
+  - name: dept
+    description: Lookup / tree on DEPT table
+  - name: large_data
+    description: Paging / stream on LARGE_DATA table
+  - name: wide
+    description: Wide-column load on WIDE_COLUMNS table
+  - name: file
+    description: Upload / download / multi-part
+  - name: excel
+    description: xeni import/export
+  - name: reactive
+    description: WebFlux-only streaming demo
+
+paths:
+
+  # ---------------- auth (2) ----------------
+  /login.do:
+    post:
+      tags: [auth]
+      summary: Stub login — always returns LOGIN_SUCCESS (§1.3 of design spec)
+      responses:
+        '200':
+          description: Login result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+  /logout.do:
+    post:
+      tags: [auth]
+      summary: Invalidate session
+      responses:
+        '200':
+          description: Logout OK
+
+  # ---------------- sample_board (4) ----------------
+  /sample/board/select.do:
+    post:
+      tags: [sample_board]
+      summary: List SAMPLE_BOARD rows
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  /sample/board/insert.do:
+    post:
+      tags: [sample_board]
+      summary: Insert / update / delete SAMPLE_BOARD rows (uses _RowType_ flag)
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  /sample/board/update.do:
+    post:
+      tags: [sample_board]
+      summary: Update SAMPLE_BOARD (alias for insert.do U rows)
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  /sample/board/delete.do:
+    post:
+      tags: [sample_board]
+      summary: Delete SAMPLE_BOARD by id
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  # ---------------- dept (2) ----------------
+  /dept/list.do:
+    post:
+      tags: [dept]
+      summary: DEPT flat list
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  /dept/tree.do:
+    post:
+      tags: [dept]
+      summary: DEPT parent-child tree
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  # ---------------- large_data (2) ----------------
+  /large/page.do:
+    post:
+      tags: [large_data]
+      summary: LARGE_DATA paged select
+      requestBody:
+        $ref: '#/components/requestBodies/PageIn'
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  /large/stream.do:
+    post:
+      tags: [large_data]
+      summary: LARGE_DATA SSV stream (Transfer-Encoding chunked)
+      responses:
+        '200':
+          description: Chunked SSV response
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+  # ---------------- wide (1) ----------------
+  /wide/load.do:
+    post:
+      tags: [wide]
+      summary: WIDE_COLUMNS single-row load (50 columns)
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  # ---------------- file (3) ----------------
+  /file/upload.do:
+    post:
+      tags: [file]
+      summary: Multi-part file upload (records in FILE_META)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  /file/download.do:
+    get:
+      tags: [file]
+      summary: Download by file_id
+      parameters:
+        - name: file_id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Binary content
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+  /file/list.do:
+    post:
+      tags: [file]
+      summary: FILE_META list
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  # ---------------- excel (1) ----------------
+  /excel/export.do:
+    post:
+      tags: [excel]
+      summary: xeni export (Dataset -> xlsx)
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          description: xlsx binary
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+
+  # ---------------- reactive (1, webflux-only) ----------------
+  /reactive/exim_exchange.do:
+    post:
+      tags: [reactive]
+      summary: (webflux-only) Reactive import + export streaming demo
+      description: |
+        Only the `webflux-jdk17-jakarta` runner implements this endpoint.
+        Servlet runners return 501 Not Implemented. Demonstrates Mono/Flux
+        chaining with multipart ingestion + chunked response.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Chunked exchange result
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '501':
+          description: Not Implemented (non-webflux runner)
+
+components:
+  requestBodies:
+    NexacroDatasetIn:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NexacroDatasetEnvelope'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/NexacroDatasetEnvelope'
+        text/plain:
+          schema:
+            type: string
+            description: SSV format (see data-formats.md)
+
+    PageIn:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              page: { type: integer, minimum: 1 }
+              size: { type: integer, minimum: 1, maximum: 1000 }
+
+  responses:
+    NexacroDatasetOut:
+      description: Nexacro envelope response (JSON / XML / SSV)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NexacroDatasetEnvelope'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/NexacroDatasetEnvelope'
+        text/plain:
+          schema:
+            type: string
+
+  schemas:
+    LoginResponse:
+      type: object
+      properties:
+        status: { type: string, example: LOGIN_SUCCESS }
+        userId: { type: string }
+
+    NexacroDatasetEnvelope:
+      type: object
+      description: |
+        Root envelope. See data-formats.md for XML / SSV / JSON encoding details
+        and _RowType_ (N / I / U / D / O) semantics.
+      properties:
+        version: { type: string, example: "1.0" }
+        Parameters:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              value: { type: string }
+              type: { type: string }
+        Datasets:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              ColumnInfo:
+                type: object
+                properties:
+                  ConstColumn:
+                    type: array
+                    items: { type: object }
+                  Column:
+                    type: array
+                    items: { type: object }
+              Rows:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _RowType_:
+                      type: string
+                      enum: [N, I, U, D, O]
