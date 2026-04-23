@@ -5,6 +5,10 @@ import com.nexacro.fullstack.business.xapi.RowType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Clob;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +37,34 @@ public class BoardService {
             new NexacroDataset.Column("UPDATED_AT", "datetime", "20")
         ));
         ds.setColumnInfo(ci);
-        ds.setRows(rows == null ? List.of() : rows);
+        ds.setRows(rows == null ? List.of() : normalizeClobRows(rows));
         return ds;
+    }
+
+    /**
+     * HSQLDB returns CLOB columns as {@code java.sql.Clob} objects which
+     * Jackson cannot serialize. Convert any Clob values to String.
+     * Builds a new map per row to avoid ConcurrentModificationException.
+     */
+    private List<Map<String, Object>> normalizeClobRows(List<Map<String, Object>> rows) {
+        List<Map<String, Object>> result = new ArrayList<>(rows.size());
+        for (Map<String, Object> row : rows) {
+            Map<String, Object> normalized = new HashMap<>(row.size());
+            for (Map.Entry<String, Object> entry : row.entrySet()) {
+                Object val = entry.getValue();
+                if (val instanceof Clob clob) {
+                    try {
+                        long len = clob.length();
+                        val = (len == 0) ? "" : clob.getSubString(1, (int) len);
+                    } catch (SQLException e) {
+                        val = "";
+                    }
+                }
+                normalized.put(entry.getKey(), val);
+            }
+            result.add(normalized);
+        }
+        return result;
     }
 
     /**
