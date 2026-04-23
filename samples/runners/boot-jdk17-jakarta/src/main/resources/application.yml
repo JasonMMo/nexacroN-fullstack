@@ -1,0 +1,37 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /uiadapter
+
+spring:
+  datasource:
+    url: jdbc:hsqldb:mem:nexacro;sql.syntax_mys=true
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    username: sa
+    password: ""
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      continue-on-error: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath*:com/nexacro/fullstack/business/domain/**/*.xml
+
+nexacro:
+  file:
+    storage-dir: ./uploads
+
+logging:
+  level:
+    root: INFO
+    com.nexacro.fullstack: DEBUG
+    org.springframework.jdbc: INFO
+    org.mybatis: INFO
