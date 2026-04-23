@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Parent BOM for the nexacroN-fullstack monorepo.
+
+  This POM is NOT a reactor aggregator — each runner (samples/runners/*)
+  inherits independently via <parent>. Reason: different runners target
+  different (jdk, servletApi, framework) tuples and cannot co-exist in a
+  single reactive Maven build.
+
+  Scope:
+    - dependencyManagement only (no <modules>)
+    - Version pinning via properties, grouped by lane:
+        * javax  lane (jdk8 / spring5 / boot2 / egov4-mvc, egov4-boot)
+        * jakarta lane (jdk17 / spring6 / boot3 / egov5-boot / webflux)
+    - No <plugin> versions here — runners own their build plugins
+      (spring-boot-maven-plugin, maven-war-plugin, etc).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.nexacro.fullstack</groupId>
+    <artifactId>nexacroN-fullstack-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>nexacroN-fullstack (parent BOM)</name>
+    <description>
+        Dependency management BOM for all nexacroN-fullstack runners.
+        Runners inherit this POM directly and pick a lane (javax / jakarta).
+    </description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- javax lane (jdk8) -->
+        <javax.java.version>1.8</javax.java.version>
+        <spring5.version>5.3.39</spring5.version>
+        <boot2.version>2.7.18</boot2.version>
+        <egov4.version>4.1.0</egov4.version>
+        <javax.servlet.version>4.0.1</javax.servlet.version>
+        <mybatis.spring.javax.version>2.1.2</mybatis.spring.javax.version>
+        <mybatis.spring.boot.javax.version>2.3.2</mybatis.spring.boot.javax.version>
+
+        <!-- jakarta lane (jdk17) -->
+        <jakarta.java.version>17</jakarta.java.version>
+        <spring6.version>6.1.14</spring6.version>
+        <boot3.version>3.3.5</boot3.version>
+        <egov5.version>5.0.0</egov5.version>
+        <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+        <mybatis.spring.jakarta.version>3.0.4</mybatis.spring.jakarta.version>
+        <mybatis.spring.boot.jakarta.version>3.0.3</mybatis.spring.boot.jakarta.version>
+
+        <!-- shared -->
+        <hsqldb.version>2.7.3</hsqldb.version>
+        <lombok.version>1.18.34</lombok.version>
+        <jackson.version>2.17.2</jackson.version>
+        <poi.version>5.2.5</poi.version>
+        <commons.lang3.version>3.14.0</commons.lang3.version>
+        <commons.io.version>2.16.1</commons.io.version>
+
+        <!-- nexacro first-party modules (consumed from ./core) -->
+        <nexacro.module.version>0.1.0-SNAPSHOT</nexacro.module.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- =================== javax lane =================== -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${boot2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.spring.boot.javax.version}</version>
+            </dependency>
+
+            <!-- =================== jakarta lane =================== -->
+            <!--
+                NOTE: jakarta-lane runners should import spring-boot-dependencies
+                3.3.5 explicitly in their own pom, since we can only import one
+                BOM version via <scope>import</scope> here. See runner docs.
+            -->
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- =================== shared =================== -->
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${hsqldb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/JasonMMo/nexacroN-fullstack</url>
+        <connection>scm:git:https://github.com/JasonMMo/nexacroN-fullstack.git</connection>
+    </scm>
+</project>
