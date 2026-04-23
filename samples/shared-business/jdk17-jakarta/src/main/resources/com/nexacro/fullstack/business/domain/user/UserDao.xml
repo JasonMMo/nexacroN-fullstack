@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nexacro.fullstack.business.domain.user.UserDao">
+
+    <select id="findById" parameterType="string" resultType="map">
+        SELECT USER_ID, USER_NAME, PASSWORD_HASH, EMAIL, ROLE, ENABLED
+        FROM USERS
+        WHERE USER_ID = #{userId} AND ENABLED = TRUE
+    </select>
+
+    <update id="updateLastLogin" parameterType="string">
+        UPDATE USERS SET USER_NAME = USER_NAME WHERE USER_ID = #{userId}
+    </update>
+
+</mapper>
