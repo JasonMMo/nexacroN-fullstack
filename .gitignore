@@ -1,0 +1,34 @@
+# Maven
+target/
+dependency-reduced-pom.xml
+*.class
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+bin/
+
+# Nexacro IDE
+*.bak
+.swp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# HSQL embedded DB files
+*.log
+*.script
+*.data
+*.properties.db
+*.tmp/
+
+# Local overrides
+*.local
+.env
+.env.local
