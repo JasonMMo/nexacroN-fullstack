@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.nexacro.fullstack</groupId>
+        <artifactId>nexacroN-fullstack-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>runner-boot-jdk8-javax</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>runner-boot-jdk8-javax</name>
+    <description>
+        Spring Boot 2.7.x (javax lane, JDK 8) runner for nexacroN-fullstack.
+        Thin HTTP adapter over shared-business-jdk8-javax.
+    </description>
+
+    <dependencies>
+        <!-- Business tree: xapi core + uiadapter + domain services + DAOs -->
+        <dependency>
+            <groupId>com.nexacro.fullstack</groupId>
+            <artifactId>shared-business-jdk8-javax</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Spring Boot starters (versions managed by parent BOM: boot 2.7.18) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.7.18</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <version>2.7.18</version>
+        </dependency>
+
+        <!--
+          mybatis-spring-boot-starter: PIN 2.3.2 — version 3.x pulls jakarta.
+        -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
+        <!-- In-memory DB for smoke testing -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.18</version>
+                <configuration>
+                    <mainClass>com.nexacro.fullstack.runner.boot8.Application</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-seed-data</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/../../seed-data</directory>
+                                    <includes>
+                                        <include>schema.sql</include>
+                                        <include>data.sql</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
