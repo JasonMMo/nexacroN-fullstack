@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.nexacro.fullstack</groupId>
+        <artifactId>nexacroN-fullstack-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../../..</relativePath>
+    </parent>
+
+    <artifactId>shared-business-jdk8-javax</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>shared-business-jdk8-javax</name>
+    <description>
+        Shared business logic for the javax lane (JDK 8, Spring 5, Boot 2).
+        Contains xapi core (NexacroEnvelope, NexacroDataset, RowType, EnvelopeCodec),
+        uiadapter base controller, and domain services/DAOs.
+    </description>
+
+    <dependencies>
+        <!-- Javax servlet API (provided — container supplies it) -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Spring context (no web starter — runners bring that) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring5.version}</version>
+        </dependency>
+
+        <!-- Spring web: needed for @ExceptionHandler, @ResponseBody in uiadapter -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring5.version}</version>
+        </dependency>
+
+        <!-- Spring jdbc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring5.version}</version>
+        </dependency>
+
+        <!-- Spring tx -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring5.version}</version>
+        </dependency>
+
+        <!-- MyBatis Spring Boot Starter (javax lane) -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
+        <!-- HSQLDB in-memory DB (runtime — only needed at runner boot) -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.7.3</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Jackson for JSON envelope serde -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!-- Lombok (annotation processor — provided, not on runtime classpath) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- commons-io for file utilities -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.15.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
