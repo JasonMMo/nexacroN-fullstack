@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.nexacro.fullstack</groupId>
+        <artifactId>nexacroN-fullstack-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>runner-boot-jdk17-jakarta</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>runner-boot-jdk17-jakarta</name>
+    <description>
+        Spring Boot 3.3.x (jakarta lane, JDK 17) runner for nexacroN-fullstack.
+        Thin HTTP adapter over shared-business-jdk17-jakarta.
+    </description>
+
+    <!--
+      Jakarta-lane runners must import spring-boot-dependencies 3.3.5 here
+      because the parent BOM only imports the javax lane (boot 2.7.18).
+      See parent pom.xml comment: "jakarta-lane runners should import
+      spring-boot-dependencies 3.3.5 explicitly in their own pom".
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>3.3.5</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Business tree: xapi core + uiadapter + domain services + DAOs -->
+        <dependency>
+            <groupId>com.nexacro.fullstack</groupId>
+            <artifactId>shared-business-jdk17-jakarta</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Spring Boot starters (versions managed by spring-boot-dependencies 3.3.5) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <!--
+          mybatis-spring-boot-starter: parent manages version 2.3.2 (javax lane).
+          Pin jakarta-lane version 3.0.3 explicitly here.
+        -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>3.0.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>17</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.nexacro.fullstack.runner.boot17.Application</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
