@@ -58,6 +58,26 @@
             <artifactId>hsqldb</artifactId>
             <version>2.7.3</version>
         </dependency>
+
+        <!--
+          First-party Nexacro uiadapter (javax lane) — REFERENCE SOURCE ONLY.
+
+          The source tree lives at ../../../core/uiadapter-javax/ and is NOT
+          built as part of this runner. The runner compiles against its inline
+          business classes (com.nexacro.fullstack.business.uiadapter.*) which
+          are the source of record for the v1.x line.
+
+          To opt in to the first-party uiadapter source:
+            1. Register core/uiadapter-javax/ submodules in the root pom <modules>.
+            2. Add compile-scope <dependency> entries here for
+               uiadapter-spring-core / uiadapter-spring-dataaccess /
+               uiadapter-spring-excel (groupId com.nexacro, version 1.0.0).
+            3. Delete the inline copies under shared-business-jdk8-javax.
+
+          Xapi / xeni (javax) binaries are NOT bundled in this workspace —
+          see core/README.md "What does NOT ship here" table. Pull from
+          tobesoft Nexus (mangosteen.tobesoft.co.kr) if required.
+        -->
     </dependencies>
 
     <build>
