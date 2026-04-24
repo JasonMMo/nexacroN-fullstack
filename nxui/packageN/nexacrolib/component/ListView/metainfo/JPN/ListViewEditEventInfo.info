@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MetaInfo version="2.0">
+  <Object id="nexacro.null">
+    <ObjectInfo finalclass="" inheritance="" classname="" shorttypename="" csstypename="" csscontrolname="" group="" subgroup="" csspseudo="" container="false" composite="false" tabstop="false" cssstyle="false" contents="false" formats="false" contentseditor="" defaultwidth="" defaultheight="" registration="" edittype="" useinitvalue="false" popup="false" edittypecomponent="" dblclickevent="" requirement="" description="" />
+    <PropertyInfo />
+    <CSSInfo>
+      <PropertyInfo />
+    </CSSInfo>
+    <StatusInfo />
+    <ControlInfo />
+    <MethodInfo />
+    <EventHandlerInfo />
+  </Object>
+</MetaInfo>

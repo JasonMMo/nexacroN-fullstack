@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="exampleDataType" classname="Work" inheritanceid="" titletext="기본샘플(조회,입력,저장,삭제)" left="0" width="1050" top="0" height="818" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Grid id="Grid00" taborder="0" left="-2" right="2" binddataset="dsList" autofittype="col" no="true" bottom="-5" top="70">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="ID"/>
+                <Cell col="1" text="STRING_VALUE"/>
+                <Cell col="2" text="INT_VALUE"/>
+                <Cell col="3" text="BOOLEAN_VALUE"/>
+                <Cell col="4" text="LONG_VALUE"/>
+                <Cell col="5" text="FLOAT_VALUE"/>
+                <Cell col="6" text="DOUBLE_VALUE"/>
+                <Cell col="7" text="BIG_DECIMAL_VALUE"/>
+                <Cell col="8" text="DATE_VALUE"/>
+                <Cell col="9" text="TIME_VALUE"/>
+                <Cell col="10" text="DATETIME_VALUE"/>
+                <Cell col="11" text="BYTES_VALUE"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:id"/>
+                <Cell col="1" text="bind:stringValue" displaytype="text" edittype="normal"/>
+                <Cell col="2" text="bind:intValue" edittype="normal"/>
+                <Cell col="3" text="bind:booleanValue" edittype="normal"/>
+                <Cell col="4" text="bind:longValue" edittype="normal"/>
+                <Cell col="5" text="bind:floatValue" edittype="normal"/>
+                <Cell col="6" text="bind:doubleValue" edittype="normal"/>
+                <Cell col="7" text="bind:bigDecimalValue" edittype="normal" displaytype="currency"/>
+                <Cell col="8" text="bind:dateValue" edittype="date" displaytype="date" calendarautoselect="true" calendardateformat="yyyy-MM-dd"/>
+                <Cell col="9" edittype="normal" text="bind:timeValue"/>
+                <Cell col="10" text="bind:dateTimeValue" edittype="date" displaytype="date" calendareditformat="yyyy-MM-dd HH:mm:ss" calendardateformat="yyyy-MM-dd HH:mm:ss" calendarautoselect="true"/>
+                <Cell col="11" edittype="none" displaytype="imagecontrol" text="bind:bytesValue" imagestretch="fit"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Div id="divSearch" taborder="1" text="" left="0" top="0" width="" height="52" right="0" bottom="">
+          <Layouts>
+            <Layout>
+              <Button id="btnSearch" taborder="1" text="조회" top="5" width="65" right="203" onclick="fnSearch" bottom="22" borderRadius="5px"/>
+              <Edit id="edtTitle" taborder="0" left="130" top="5" width="180" height="25"/>
+              <Static id="Static01" taborder="2" text="STRING_VALUE" left="5" top="5" width="125" height="25" cssclass="sta_WF_SubTitle" padding="0px 0px 0px 20px" background="url('theme://images/img_WF_Treeitem.png') no-repeat left center"/>
+              <Button id="btnAdd" taborder="3" text="추가" top="5" onclick="fnAdd" right="136" bottom="22" width="65" borderRadius="5px"/>
+              <Button id="btnDel" taborder="4" text="삭제" top="5" onclick="fnDel" right="69" bottom="22" width="65" borderRadius="5px"/>
+              <Button id="btnSave" taborder="5" text="저장" onclick="fnSave" right="2" width="65" height="25" top="5" borderRadius="5px"/>
+              <Button id="btnCheck" taborder="6" text="Check 컬럼 타입" top="5" width="100" right="btnSearch:12" bottom="22" borderRadius="5px" onclick="divSearch_btnCheck_onclick"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <ImageViewer id="img00" taborder="2" left="315" top="5" width="85" height="27" image="url('images::nexacro_5k.png')" stretch="fit"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="dsList">
+        <ColumnInfo>
+          <Column id="id" type="INT" size="256"/>
+          <Column id="stringValue" type="STRING" size="256"/>
+          <Column id="intValue" type="INT" size="256"/>
+          <Column id="booleanValue" type="INT" size="256"/>
+          <Column id="longValue" type="BIGDECIMAL" size="256"/>
+          <Column id="floatValue" type="FLOAT" size="256"/>
+          <Column id="doubleValue" type="FLOAT" size="256"/>
+          <Column id="bigDecimalValue" type="BIGDECIMAL" size="256"/>
+          <Column id="dateValue" type="DATE" size="256"/>
+          <Column id="timeValue" type="DATETIME" size="256"/>
+          <Column id="dateTimeValue" type="DATETIME" size="256"/>
+          <Column id="bytesValue" type="BLOB" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="id">1</Col>
+            <Col id="stringValue">sample1</Col>
+            <Col id="intValue">1</Col>
+            <Col id="booleanValue">1</Col>
+            <Col id="longValue">1001</Col>
+            <Col id="floatValue">1.1</Col>
+            <Col id="doubleValue">1.11</Col>
+            <Col id="bigDecimalValue">1001.11</Col>
+            <Col id="dateValue">20250806092533</Col>
+            <Col id="dateTimeValue">20250806092533</Col>
+            <Col id="bytesValue">X'89504E470D0A1A0A'</Col>
+            <Col id="timeValue">20250806092533987</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="dsSearch">
+        <ColumnInfo>
+          <Column id="title" type="STRING" size="100"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="title"/>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="dsDataType">
+        <ColumnInfo>
+          <Column id="id" type="INT" size="256"/>
+          <Column id="stringValue" type="STRING" size="256"/>
+          <Column id="intValue" type="INT" size="256"/>
+          <Column id="booleanValue" type="INT" size="256"/>
+          <Column id="longValue" type="BIGDECIMAL" size="256"/>
+          <Column id="floatValue" type="FLOAT" size="256"/>
+          <Column id="doubleValue" type="FLOAT" size="256"/>
+          <Column id="bigDecimalValue" type="BIGDECIMAL" size="256"/>
+          <Column id="dateValue" type="DATE" size="256"/>
+          <Column id="timeValue" type="TIME" size="256"/>
+          <Column id="dateTimeValue" type="DATETIME" size="256"/>
+          <Column id="bytesValue" type="BLOB" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="id">1</Col>
+            <Col id="stringValue">sample1</Col>
+            <Col id="intValue">1</Col>
+            <Col id="booleanValue">1</Col>
+            <Col id="longValue">1001</Col>
+            <Col id="floatValue">1.1</Col>
+            <Col id="doubleValue">1.11</Col>
+            <Col id="bigDecimalValue">1001.11</Col>
+            <Col id="dateValue">20250806092533</Col>
+            <Col id="dateTimeValue">20250806092533</Col>
+            <Col id="bytesValue">X'89504E470D0A1A0A'</Col>
+            <Col id="timeValue">092533</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="img00" propid="text" datasetid="dsList" columnid="bytesValue"/>
+    </Bind>
+    <Script type="xscript5.1"><![CDATA[
+/***********************************************************************************************
+* FORM EVENT 영역(onload, onbeforeclose)
+/***********************************************************************************************/
+/**
+ * @description 화면 onload시 처리내역(필수)
+*/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnLoad(this);
+};
+
+/**
+ * @description 화면 닫힐때 변경사항 체크(입력 화면에서 변경되는 Dataset 체크 필요, 선택)
+ * @return {boolean} false(화면 닫음) / true(화면 닫지 않음)
+*/
+this.fnClose = function()
+{
+	if (this.gfnDsIsUpdated(this.dsList)) {
+		return true;
+	}
+	return false;
+};
+
+
+/************************************************************************************************
+ * CALLBACK 콜백 처리부분(Transaction, Popup)
+ ************************************************************************************************/
+/**
+ * @description Transaction CallBack 함수(선택)
+*/
+this.fnCallback = function(svcID,errorCode,errorMsg)
+{
+	// 에러 시 화면 처리 내역
+	if(errorCode != 0)
+	{
+		return;
+	}
+	
+	switch(svcID)
+	{
+		case "search":
+		case "check":
+			//trace(this.dsList.saveXML());
+			break;
+			
+		case "save":
+			// 저장 되었습니다.
+			this.gfnAlert("msg.save.success");	
+			break;
+	}
+};
+
+/************************************************************************************************
+* CRUD 및 TRANSACTION 서비스 호출 처리
+************************************************************************************************/
+/**
+ * @description 조회
+*/
+this.fnSearch = function ()
+{
+	// 조회조건 설정
+ 	this.dsSearch.setColumn(0, "title"  , this.divSearch.form.edtTitle.value);
+	
+ 	var strSvcId    = "search";
+	var strSvcUrl   = "select_testDataTypeList.do"; // "retrieve_datalist.do";
+	var inData      = "dsSearch=dsSearch";
+	var outData     = "dsList=output1";
+	var strArg      = "";
+	var callBackFnc = "fnCallback";
+	var isAsync   	= true;
+	
+	this.gfnTransaction(strSvcId , 		// transaction을 구분하기 위한 svc id값
+						strSvcUrl , 	// trabsaction을 요청할 주소
+						inData , 		// 입력값으로 보낼 dataset id , a=b형태로 실제이름과 입력이름을 매칭
+						outData , 		// 처리결과값으로 받을 dataset id, a=b형태로 실제이름과 입력이름을 매칭
+						strArg, 		// 입력값으로 보낼 arguments, strFormData="20120607"
+						callBackFnc, 	// transaction의 결과를 받을 Function 이름
+						isAsync); 		// 비동기통신 여부 [생략가능]
+};
+/**
+ * @description 컬럼타입 체크용 tr
+*/
+this.divSearch_btnCheck_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	// 조회조건 설정
+ 	this.dsList.copyData(this.dsDataType);
+	var encodedBytes = nexacro.base64Encode( this.dsList.getColumn(0, "bytesValue") ) ;
+	this.dsList.setColumn(0, "bytesValue", encodedBytes);
+	
+ 	var strSvcId    = "check";
+	var strSvcUrl   = "check_testDataTypeList.do"; // "retrieve_datalist.do";
+	var inData      = "dsList=dsList:A";
+	var outData     = "dsList=output1";
+	var strArg      = "";
+	var callBackFnc = "fnCallback";
+	var isAsync   	= true;
+	
+	this.gfnTransaction(strSvcId , 		// transaction을 구분하기 위한 svc id값
+						strSvcUrl , 	// trabsaction을 요청할 주소
+						inData , 		// 입력값으로 보낼 dataset id , a=b형태로 실제이름과 입력이름을 매칭
+						outData , 		// 처리결과값으로 받을 dataset id, a=b형태로 실제이름과 입력이름을 매칭
+						strArg, 		// 입력값으로 보낼 arguments, strFormData="20120607"
+						callBackFnc, 	// transaction의 결과를 받을 Function 이름
+						isAsync); 		// 비동기통신 여부 [생략가능]
+	
+};
+
+/**
+ * @description 입력
+*/
+this.fnAdd = function()
+{
+	this.dsList.addRow();
+};
+
+/**
+ * @description 삭제
+*/
+this.fnDel = function()
+{
+	this.dsList.deleteRow(this.dsList.rowposition);
+};
+
+/**
+ * @description 저장
+*/
+this.fnSave = function()
+{
+	// 변경사항 체크
+	if (this.gfnDsIsUpdated(this.dsList) == false) {
+		// 변경된 내역이 없습니다.
+		this.gfnAlert("msg.save.nochange");
+		return;
+	}
+
+	var strSvcUrl   = "update_deptlist_map.do";  // "update_datalist_map.do";
+	var inData      = "input1=dsList:A";
+	var outData     = "";
+	
+	this.gfnTransaction("save", strSvcUrl, inData, outData);
+};
+
+/************************************************************************************************
+* 사용자 FUNCTION 영역
+************************************************************************************************/
+
+/************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+************************************************************************************************/
+
+this.divSearch_img00_onclick = function(obj:nexacro.ImageViewer,e:nexacro.ClickEventInfo)
+{
+	
+};
+]]></Script>
+  </Form>
+</FDL>

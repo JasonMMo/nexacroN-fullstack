@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="FileUpTransfer" width="1024" height="818" titletext="FileUpTransfer 파일 업로드">
+    <Layouts>
+      <Layout height="818" mobileorientation="landscape" width="1024">
+        <Static id="Static00" taborder="0" left="0" top="0" width="1020" height="8" background="darkcyan"/>
+        <Static id="Static01" taborder="1" left="0" top="36" width="1020" height="8" background="darkcyan"/>
+        <Static id="Static02" taborder="2" left="0" top="8" width="8" height="552" background="darkcyan"/>
+        <Static id="Static03" taborder="3" left="712" top="36" width="8" height="517" background="darkcyan"/>
+        <Static id="Static05" taborder="4" left="6" top="552" width="1019" height="8" background="darkcyan"/>
+        <Static id="stc_title" text="FileUpTransfer(POST) 를 이용한 파일 업로드" position="absolute" left="11" top="11" width="301" height="22" taborder="5" font="normal bold 10pt/normal &quot;Arial&quot;"/>
+        <TextArea id="txt_result" taborder="6" left="10" top="405" width="700" height="145" enable="true" value=" "/>
+        <Static id="Static06" taborder="7" left="0" top="376" width="720" height="8" background="darkcyan"/>
+        <Button id="btn_execute01" taborder="8" left="724" top="47" width="75" height="28" text="파일선택" onclick="btn_execute01_onclick" borderRadius="5px"/>
+        <Static id="Static07" taborder="9" text="addFile(strID,objVFile)" left="724" top="81" width="288" height="29" background="darkgreen" color="white" padding="0px 0px 0px 10px"/>
+        <Button id="btn_execute00" taborder="10" left="724" top="218" width="75" height="28" text="업로드" onclick="btn_execute00_onclick" borderRadius="5px"/>
+        <ListView id="ListView00" taborder="11" left="11" top="47" height="170" width="698" binddataset="ds_fileinfo" useselcolor="false" oncellclick="ListView00_oncellclick" ondrop="ListView00_ondrop" border="1px solid">
+          <Formats>
+            <Format id="default">
+              <Band id="body" width="100%" height="50">
+                <Cell id="Cell_FileName" left="5" top="5" width="610" height="20" text="bind:filename"/>
+                <Cell id="Cell_FileSize" left="633" top="5" width="110" text="bind:filesize" height="20"/>
+                <Cell id="Cell_Progress" left="5" top="30" width="739" bottom="7" displaytype="progressbarcontrol" text="bind:LOADED" progressbarsmooth="true"/>
+              </Band>
+            </Format>
+          </Formats>
+        </ListView>
+        <Button id="btn_execute02" taborder="12" left="932" top="288" width="80" height="27" text="- remove File" onclick="btn_execute02_onclick" borderRadius="5px"/>
+        <Static id="Static09" taborder="13" text="removeFile(strID)" left="724" top="257" width="288" height="29" color="white" background="darkgreen" padding="0px 0px 0px 10px"/>
+        <Static id="Static04" taborder="14" left="0" top="221" width="720" height="8" background="darkcyan"/>
+        <Edit id="Edit00" taborder="15" left="724" top="113" width="206" height="27" value="nexacroUploadFiles" text="nexacroUploadFiles"/>
+        <Static id="Static10" taborder="16" text="&lt;input type=&quot;file&quot; name=&quot;nexacroUploadFiles&quot;&gt;적용 &#13;&#10;FileUploadCommand.java 파일의 setNexacroUploadFiles &#13;&#10;Method 와 연결됨" left="724" top="145" width="286" height="43" color="crimson" background="aliceblue" verticalAlign="middle" font="normal 300 9pt/normal &quot;Arial&quot;"/>
+        <Edit id="Edit01" taborder="17" left="724" top="288" width="206" height="27" value="nexacroUploadFiles" text="nexacroUploadFiles"/>
+        <Button id="btn_execute03" taborder="18" left="932" top="113" width="80" height="27" text="+ add File" onclick="btn_execute03_onclick" borderRadius="5px"/>
+        <Static id="Static08" taborder="19" left="1016" top="0" width="8" height="552" background="darkcyan"/>
+        <Grid id="grd_filelist" taborder="20" left="11" top="231" width="700" height="143" binddataset="ds_uploadfile" oncelldblclick="grd_filelist_oncelldblclick" oncellclick="grd_filelist_oncellclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="100"/>
+                <Column size="450"/>
+                <Column size="100"/>
+                <Column size="30"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="파일아이디"/>
+                <Cell col="1" text="파일명"/>
+                <Cell col="2" text="파일크기"/>
+                <Cell col="3" text="삭제"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:fileid"/>
+                <Cell col="1" text="bind:filename"/>
+                <Cell col="2" text="bind:filesize"/>
+                <Cell col="3" expandshow="show" expandsize="30" expandimage="url('theme://images/btn_TF_Close_O.png')"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="stc_title00" text="파일처리 화면 로그" position="absolute" left="11" top="385" width="301" height="22" taborder="21" font="normal bold 10pt/normal &quot;Arial&quot;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <FileDialog id="FileDialog00" onclose="FileDialog00_onclose"/>
+      <Dataset id="ds_fileinfo">
+        <ColumnInfo>
+          <Column id="fileid" type="STRING" size="256"/>
+          <Column id="filename" type="STRING" size="256"/>
+          <Column id="filesize" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <FileUpTransfer id="FileUpTransfer00" onerror="FileUpTransfer00_onerror" onsuccess="FileUpTransfer00_onsuccess" onprogress="FileUpTransfer00_onprogress"/>
+      <FileDownTransfer id="FileDownTransfer00"/>
+      <Dataset id="ds_uploadfile"/>
+      <Dataset id="ds_deleteFile">
+        <ColumnInfo>
+          <Column id="filename" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/***********************************************************************
+* 설명      : pattern03-FileUpTransfer Upload
+* 작성일    : 2019.06.11
+* 작성자    : 이동혁
+* 수정이력  :
+***********************************************************************
+
+** 테스트 방법
+1. "FileDialog00.open" 버튼을 클릭하여 임의의 파일을 선택한다.
+2. "addFile(strID,objVFile)" 우측에 있는 Edit에 "nexacroUploadFiles"을 입력한다. --> 서비스의 FileUploadCommand.java 파일과 연결됨
+3. "+ add File" 버튼을 클릭한다.
+-> TextArea에 "addFile Success" 가 출력되는지 확인한다.
+4. "upload" 버튼을 클릭한다.
+-> TextArea에 하기와 같이 나타나는지 확인한다.
+FileUpTransfer00_existFile : true
+FileUpTransfer00_onprogress
+FileUpTransfer00_onprogress
+========FileUpTransfer00_onsuccess========
+e.eventid : onsuccess
+e.fromobject : [object FileUpTransfer]
+e.fromreferenceobject : [object FileUpTransfer]
+e.url : http://172.10.13.91:8080/x-api/FileTransfer/jsp/fileUpload_XML.jsp
+e.code : 0
+e.message : Success
+==============================================
+5. "removeFile(strID)" 우측에 있는 Edit에 "nexacroUploadFiles"을 입력한다.--> 서비스의 FileUploadCommand.java 파일과 연결됨
+6. "- remove File" 을 클릭한다.
+7. TextArea에 "removeFile Success"가 나타나는지 확인한다.
+8 "upload" 버튼을 클릭한다.
+9. TextArea에 "FileUpTransfer00_existFile : false" 가 출력되는지 확인한다.
+
+
+
+***********************************************************************/
+
+/***********************************************************************
+* 01 : 이벤트 선언부
+***********************************************************************/
+
+this.FileUpTransfer00_onerror = function(obj:nexacro.FileUpTransfer,e:nexacro.FileUpTransferErrorEventInfo)
+{
+	this.txt_result.set_value(this.txt_result.value + "\n========FileUpTransfer00_onerror========");
+	this.txt_result.set_value(this.txt_result.value + "\ne.errormsg : "+e.errormsg);
+	this.txt_result.set_value(this.txt_result.value + "\ne.errortype : "+e.errortype);
+	this.txt_result.set_value(this.txt_result.value + "\n==============================================");
+};
+
+
+this.FileUpTransfer00_onsuccess = function(obj:nexacro.FileUpTransfer,e:nexacro.FileUpTransferEventinfo)
+{
+	this.txt_result.set_value(this.txt_result.value + "\n========FileUpTransfer00_onsuccess========");
+	this.txt_result.set_value(this.txt_result.value + "\ne.eventid : "+e.eventid);
+	this.txt_result.set_value(this.txt_result.value + "\ne.fromobject : "+e.fromobject);
+	this.txt_result.set_value(this.txt_result.value + "\ne.fromreferenceobject : "+e.fromreferenceobject);
+	this.txt_result.set_value(this.txt_result.value + "\ne.url : "+e.url);
+	this.txt_result.set_value(this.txt_result.value + "\ne.code : "+e.code);
+	this.txt_result.set_value(this.txt_result.value + "\ne.message : "+e.message);
+	this.txt_result.set_value(this.txt_result.value + "\n==============================================");
+	
+	//Grid데이터셋에 데이터 복사.
+	this.ds_uploadfile.copyData(e.datasets[0]);
+	
+	//업로드 후 파일업로드 리스트 초기화(선택적 적용)
+	this.FileUpTransfer00.clearFileList();
+	this.FileUpTransfer00.clearPostDataList();
+	this.ds_fileinfo.clearData();
+	this._vFiles = [];
+};
+
+	
+this.FileUpTransfer00_onprogress = function(obj:nexacro.FileUpTransfer,e:nexacro.FileUpTransferProgressEventInfo)
+{
+	this.ds_fileinfo.setColumn(this._vFiles_idx, "LOADED", (e.loaded / e.total)*100);
+	this.txt_result.set_value(this.txt_result.value +"\nFileUpTransfer00_onprogress");
+};
+
+
+/***********************************************************************
+* 02 : 화면 함수 선언부 선언부
+***********************************************************************/
+
+this._vFiles = [];
+
+this.FileDialog_VirtualFile_onsuccess = function(obj, e)
+{
+	var size_table = ["KB", "MB", "GB", "TB", "PB"];
+	
+	function cutFileSize(filesize, rate, count)
+	{
+		var ret = (filesize / (Math.pow(rate, count + 1))).toFixed(2);
+		if (ret < rate)
+		{
+			if (size_table[count])
+			{
+				return ret + " " + size_table[count];
+			}
+			else
+			{
+				return filesize + " Byte";
+			}
+		}
+		else
+		{
+			return cutFileSize(filesize, rate, ++count);
+		}
+	};
+	
+	if (e.reason == 9)
+	{
+		var idx = this.ds_fileinfo.addRow();
+
+		this.ds_fileinfo.setColumn(idx, "fileid", this.Edit00.value);
+		this.ds_fileinfo.setColumn(idx, "filename", obj.filename);
+		this.ds_fileinfo.setColumn(idx, "filesize", cutFileSize(e.filesize, Math.pow(2, 10), 0));
+	}
+};
+
+this.FileDialog00_onclose = function(obj:nexacro.FileDialog,e:nexacro.FileDialogEventInfo)
+{
+	for (var i = 0, len = e.virtualfiles.length, vFile; i < len; i++)
+	{
+		vFile = e.virtualfiles[i];
+		vFile.addEventHandler("onsuccess", this.FileDialog_VirtualFile_onsuccess, this);
+		vFile.open(null, 1);
+		vFile.getFileSize();
+		
+		this._vFiles.push(vFile);
+	}
+};
+
+//LISTVIEW 파일 드롭다운
+this.ListView00_ondrop = function(obj:nexacro.ListView,e:nexacro.ListViewDragEventInfo)
+{
+	if (e.datatype != "file")
+		return;
+	
+	for (var i = 0, len = e.filelist.length, vFile; i < len; i++)
+	{
+		vFile = e.filelist[i];
+		
+		vFile.addEventHandler("onsuccess", this.FileDialog_VirtualFile_onsuccess, this);
+		vFile.open(null, 1);
+		vFile.getFileSize();
+		
+		this._vFiles.push(vFile);
+	}
+};
+
+//파일 업로드
+this.btn_execute00_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if(this._vFiles.length == 0)
+	{
+		alert("처리할 파일이 존재하지 않습니다.");
+		return;
+	}
+	
+	if(this.Edit00.value == "" || this.Edit00.value == undefined)
+	{
+		alert("파일 ID를 입력하시오.");
+		this.Edit00.setFocus();
+		return;
+	}
+	
+	for (var i = 0, len = this._vFiles.length, vFile; i < len; i++)
+	{
+		vFile = this._vFiles[i];
+		this.txt_result.set_value(this.txt_result.value + "\nFileUpTransfer00_existFile : " + this.FileUpTransfer00.existFile(vFile));
+	}
+	
+	this.FileUpTransfer00.upload("svcurl::uploadFiles.do");
+};
+
+//파일 선택
+this.btn_execute01_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.FileDialog00.open("FileUPload Dialog", 3);
+};
+
+
+//파일 추가
+this.btn_execute03_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if(this._vFiles.length == 0)
+	{
+		alert("업로드 할 파일을 선택 하십시오.");
+		return;
+	}
+	
+	for (var i = 0, len = this._vFiles.length, vFile; i < len; i++)
+	{
+		var vfile = this._vFiles[i];
+		
+		if (vfile)
+		{
+			af_result = this.FileUpTransfer00.addFile(this.Edit00.value+"["+i+"]",vfile);
+			if(af_result > -1)
+			{
+				this.txt_result.set_value(this.txt_result.value + "\naddFile Success");
+			}
+			else
+			{
+				this.txt_result.set_value(this.txt_result.value + "\naddFile Fail");
+			}
+		}
+	}
+};
+
+//파일 삭제
+this.btn_execute02_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{	
+	if(this.FileUpTransfer00.filelist.length == 0)
+	{
+		alert("처리 할 파일이 존재하지 않습니다.");
+		return;
+	}
+	
+	if(this.Edit01.value == "" || this.Edit01.value == undefined)
+	{
+		alert("파일 ID를 입력하시오.");
+		this.Edit01.setFocus();
+		return;
+	}
+	
+	for (var i = 0, len = this.FileUpTransfer00.filelist.length, vFile; i < len; i++)
+	{
+		rf_result = this.FileUpTransfer00.removeFile(this.Edit01.value+"["+i+"]");
+		
+		if(rf_result > -1)
+		{
+			this.txt_result.set_value(this.txt_result.value + "\nremoveFile Success");
+		}
+		else
+		{
+			this.txt_result.set_value(this.txt_result.value + "\nremoveFile Fail");
+		}
+	}
+
+};
+
+//파일 다운로드
+this.grd_filelist_oncelldblclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	//파일명 더블클릭 시 파일 다운로드
+	if(obj.getCellPos() == 1)
+	{
+		//FileUploadCommand.java 의 setFileName 과 매핑 됨.
+		this.FileDownTransfer00.setPostData("fileName", this.ds_uploadfile.getColumn(e.row,"filename"));
+		this.FileDownTransfer00.download("svcurl::downloadFile.do");
+	}
+};
+
+//파일 삭제(단건_
+this.grd_filelist_oncellclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	//삭제 컬럼 클릭
+	if(obj.getCellPos() == 3)
+	{
+		if( !confirm(this.ds_uploadfile.getColumn(e.row,"filename")+" 파일을 삭제하시겠습니까?")) return;
+		
+		//단건 처리.
+		this.ds_deleteFile.clearData();
+		var row = this.ds_deleteFile.addRow();
+		//FileUploadCommand.java 의 setFileName 과 매핑 됨.
+		this.ds_deleteFile.setColumn(row, "filename", this.ds_uploadfile.getColumn(e.row,"filename"));
+		
+		var strSvcId    = "deletefile";
+		var strSvcUrl   = "deleteFiles.do";
+		var inData      = "input=ds_deleteFile";
+		var outData     = "";
+		var strArg      = "";
+		var callBackFnc = "fnCallback";
+		var isAsync   	= true;
+		
+		this.gfnTransaction(strSvcId ,strSvcUrl ,inData ,outData ,strArg,callBackFnc,isAsync);
+	}
+};
+
+/************************************************************************************************
+ * CALLBACK 콜백 처리부분(Transaction, Popup)
+ ************************************************************************************************/
+/**
+ * @description Transaction CallBack 함수(선택)
+*/
+this.fnCallback = function(svcID,errorCode,errorMsg)
+{
+	// 에러 시 화면 처리 내역
+	if(errorCode != 0)
+	{
+		return;
+	}
+	
+	switch(svcID)
+	{
+		case "deletefile":
+			this.ds_uploadfile.deleteRow(this.ds_uploadfile.rowposition);
+			alert("파일 삭제 완료");
+			break;
+	}
+};]]></Script>
+  </Form>
+</FDL>

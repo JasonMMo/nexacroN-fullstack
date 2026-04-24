@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="Sample003_excel" classname="Work" inheritanceid="" titletext="엑셀 import/export" left="0" width="1050" top="0" height="818" onload="Form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="divSearch" taborder="1" text="" left="0" top="0" height="35" right="0" formscrolltype="none">
+          <Layouts>
+            <Layout>
+              <Button id="btnSearch" taborder="2" text="조회" top="5" width="83" right="179" onclick="divSearch_btnSearch_onclick" bottom="5" borderRadius="5px"/>
+              <Button id="btnExcelEx" taborder="1" text="다운로드 엑셀" top="5" width="83" onclick="btnExcelEx_onclick" right="92" bottom="5" borderRadius="5px"/>
+              <Button id="btnExcelImport" taborder="2" text="업로드 엑셀" top="5" width="83" onclick="btnExcelImport_onclick" right="5" bottom="5" borderRadius="5px"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Grid id="grd_list" taborder="0" left="0" right="0" binddataset="dsList" autofittype="col" no="true" bottom="3" top="32">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="80"/>
+                <Column size="250"/>
+                <Column size="570"/>
+                <Column size="80"/>
+                <Column size="48"/>
+              </Columns>
+              <Rows>
+                <Row size="25" band="head"/>
+                <Row size="30"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="글 ID"/>
+                <Cell col="1" text="제목"/>
+                <Cell col="2" text="내용"/>
+                <Cell col="3" text="등록일자"/>
+                <Cell col="4" text="조회수"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:POSTID"/>
+                <Cell col="1" text="bind:title" edittype="normal"/>
+                <Cell col="2" text="bind:contents" edittype="normal"/>
+                <Cell col="3" text="bind:regDate"/>
+                <Cell col="4" text="bind:hitCount"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="dsList"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.1"><![CDATA[/**
+*  컨설팅 표준화 작업
+*  @MenuPath 
+*  @FileName 		utilExcel.xfdl 
+*  @Creator 			soojeong
+*  @CreateDate 	2017.01.24
+*  @LastModifier  
+*  @LastModifyDate  
+*  @Version 		1.0
+*  @Outline 		
+*  @Desction   
+************** 소스 수정 이력 *************************************************
+*    date          		Modifier            Description
+*******************************************************************************
+*  2017.01.23     	soojeong 	           최초 생성 
+*******************************************************************************
+*/
+
+/************************************************************************************************
+ * FORM 변수 선언 영역
+ ************************************************************************************************/
+
+/***********************************************************************************************
+* FORM EVENT 영역(onload)
+/***********************************************************************************************/
+this.Form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+};
+/************************************************************************************************
+* TRANSACTION 서비스 호출 처리
+************************************************************************************************/
+/**
+* fnSearch : 조회
+* @return : N/A
+* @example : 
+*/
+this.fnSearch = function ()
+ {
+ 	var strSvcId    = "search";
+	var strSvcUrl   = "select_datalist.do";
+	var inData      = "";
+	var outData     = "dsList=output1";
+	var strArg      = "";
+	var callBackFnc = "fnCallback";
+	
+	//생략가능
+	var isAsync   = true;
+	var nDataType = 0;
+	
+	this.gfnTransaction( strSvcId , strSvcUrl , inData , outData , strArg, callBackFnc, nDataType);
+ };
+/************************************************************************************************
+ * CALLBACK 콜백 처리부분
+ ************************************************************************************************/
+this.fnCallback = function(svcID,errorCode,errorMsg)
+{
+	switch(svcID)
+	{
+		case "search":
+ 			//trace(this.dsList.saveXML());
+			break;
+	}
+};
+this.fnImportCallback = function(importId)
+{
+	trace(this.dsList.saveXML());
+	this.grd_list.createFormat();
+};
+ /************************************************************************************************
+ * 사용자 FUNCTION 영역
+ ************************************************************************************************/
+ 
+/************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+ ************************************************************************************************/
+ /**
+* divSearch_btnSearch_onclick : 조회버튼이벤트
+* @param  : obj		   - [object]Button
+* @param  : e		   - [string]ClickEventInfo
+* @return : N/A
+* @example : 
+*/
+this.divSearch_btnSearch_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.fnSearch();
+};
+ /**
+* btnExcelEx_onclick : 엑셀 익스포트 버튼이벤트
+* @param  : obj		   - [object]Button
+* @param  : e		   - [string]ClickEventInfo
+* @return : N/A
+* @example : 
+*/
+this.btnExcelEx_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	/**
+	* gfnExcelExport : excel export
+	* @param  : obj		   - [object]Grid Object
+	* @param  : sSheetName - [string]sheet name[생략가능] sheet명 30자까지가능, *?등 특수문자 불가
+	* @param  : sFileName  - [string]file name[생략가능]
+	* @return : N/A
+	* @example : this.gfnExcelExport(this.grid_export, "SheetName",""); 
+	*/
+	if(this.dsList.getRowCount() == 0 )
+	{
+		alert("데이터가 존재하지 않습니다.");
+		return;
+	}
+	
+	this.gfnExcelExport(this.grd_list, "*?*?*?*?*?*?*?","");
+};
+ /**
+* btnExcelImport_onclick : 엑셀임포트 버튼이벤트
+* @param  : obj		   - [object]Button
+* @param  : e		   - [string]ClickEventInfo
+* @return : N/A
+* @example : 
+*/
+this.btnExcelImport_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	/**
+	* gfnExcelImport : excel import
+	* @param  : sDataset	- [string] dataset 
+	* @param  : sSheet 		- [string] sheet name	  [생략가능 default:Sheet1]
+	* @param  : sHead  		- [string] Head 영역지정 [필수:: from:to]
+	* @param  : sBody  		- [string] body 영역지정 [생략가능default A2]
+	* @param  : sCallback	- [string] callback 함수[callback호출시 필수]
+	* @param  : sImportId 	- [string] import id 	 [callback호출시 필수]
+	* @param  : objForm  	- [object] form object	 [callback호출시 필수]
+	* @return : N/A
+	* @example :this.gfnExcelImportAll("dsList","SheetName","A1:G1","A2","fnImportCallback","import",this);
+	*/
+	this.gfnExcelImportAll("dsList","sheet1","A1:E1","A2","fnImportCallback","import",this);
+};
+
+
+
+
+
+]]></Script>
+  </Form>
+</FDL>

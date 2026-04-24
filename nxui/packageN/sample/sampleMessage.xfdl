@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="sample013_message" width="1050" height="818" titletext="메세지" onload="Form_onload">
+    <Layouts>
+      <Layout height="818" mobileorientation="landscape" width="1050">
+        <Grid id="grdMessage" taborder="0" left="7" top="47" width="1011" height="763" binddataset="dsMsg" autofittype="col" oncelldblclick="grdMessage_oncelldblclick">
+          <Formats>
+            <Format id="default"/>
+          </Formats>
+        </Grid>
+        <Static id="Static00" taborder="1" text="그리드 로우 더블클릭시 해당 로우 값에 맞는 메세지 생성" left="5" top="5" width="655" height="38"/>
+        <Button id="btn00" taborder="2" text="Alert" left="831" top="10" width="90" height="30" onclick="btn00_onclick"/>
+        <Button id="btn01" taborder="3" text="Confirm" left="927" top="10" width="90" height="30" onclick="btn01_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+*  컨설팅 표준화 작업
+*  @MenuPath        샘플 > 스크립트
+*  @FileName 		sample013_message.xfdl 
+*  @Creator 			soojeong
+*  @CreateDate 	2017.03.09
+*  @Desction         스크립트 표준 및 주석 표준 정의
+************** 소스 수정 이력 ***************************************************
+*  date          		Modifier                Description
+*******************************************************************************
+*  2017.03.09     	soojeong 	           최초 생성 
+*  2017.10.17     	kyk       	           주석 정비
+*******************************************************************************
+*/
+
+/************************************************************************************************
+ * FORM 변수 선언 영역
+ ************************************************************************************************/
+
+/***********************************************************************************************
+* FORM EVENT 영역(onload)
+/***********************************************************************************************/
+this.Form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnLoad(this);
+	
+	var oApp = nexacro.getApplication();
+	this.dsMsg.copyData(oApp.gdsMessage, true);
+	this.grdMessage.set_binddataset(this.dsMsg);
+	this.grdMessage.createFormat();
+};
+
+/************************************************************************************************
+* TRANSACTION 서비스 호출 처리
+************************************************************************************************/
+
+/************************************************************************************************
+ * CALLBACK 콜백 처리부분
+ ************************************************************************************************/
+
+ /**
+ * @description 메세지 콜백
+*/
+this.fnMsgCallback = function (strId, strVal)
+{
+	//trace("strId >> " + strId + "   strVal >> " + strVal);
+	if(strId == "confirm.before.save"){
+		trace("strVal : " + strVal);
+	}
+};
+
+ /************************************************************************************************
+ * 사용자 FUNCTION 영역
+ ************************************************************************************************/
+
+/************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+ ************************************************************************************************/
+
+/**
+ * @description Alert 메시지 호출
+*/
+this.btn00_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	// {0} 의 입력값의 길이는 {1} 이하이어야 합니다.
+	this.gfnAlert("msg.err.validator.maxlength", ["이름은", "3자"]);	
+};
+
+/**
+ * @description Confirm 메시지 호출
+*/
+this.btn01_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var sMsgId = "confirm.before.save";								//메세지ID
+	var arrArg = "";																//메세지취환될값 배열[생략가능]
+	var sPopId = sMsgId;														//메세지팝업ID[생략가능]	*해당화면에서 메시지 중복사용시 구분되는값을 넣어줘야함
+	var sMsgCallback = "fnMsgCallback";								//메세지콜백[생략가능] 		* confirm성 메시지를 사용 시 반드시 필요
+	
+	// 변경된 내역을 저장 하시겠습니까?
+	this.gfnAlert(sMsgId, arrArg, sPopId, sMsgCallback);	
+};
+
+/**
+ * @description Grid 더블 클릭시 메시지 호출 예제
+*/
+this.grdMessage_oncelldblclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	var nRow = e.row;
+
+	var sMsgId = this.dsMsg.getColumn(nRow, "msgId");			//메세지ID
+	var arrArg = ["값1", "값2", "값3"];										//메세지취환될값 배열[생략가능]	
+	var sPopId = sMsgId;															//메세지팝업ID[생략가능]	*해당화면에서 메시지 중복사용시 구분되는값을 넣어줘야함
+	var sMsgCallback = "fnMsgCallback";								   //메세지콜백[생략가능] 		* confirm성 메시지를 사용 시 반드시 필요
+	
+	this.gfnAlert( sMsgId, arrArg, sPopId, sMsgCallback);	
+};
+]]></Script>
+    <Objects>
+      <Dataset id="dsMsg"/>
+    </Objects>
+  </Form>
+</FDL>

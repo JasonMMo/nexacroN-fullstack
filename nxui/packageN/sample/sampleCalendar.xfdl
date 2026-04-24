@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="sample015_calendar" width="1050" height="818" titletext="월달력/기간달력">
+    <Layouts>
+      <Layout height="818" mobileorientation="landscape" width="1050">
+        <Static id="stc" taborder="0" text="※달력(기간,월력) 사용방법(Default)&#13;&#13;&#13;&#10;&#13;&#13;&#13;&#10;1. div를 추가한다.&#13;&#13;&#13;&#10;&#13;&#13;&#13;&#10;2. div에 &quot;Properties&quot;에서 &quot;url에 &#13;&#13;&#13;&#10;기간 &gt;&gt; &quot;cmm::cmmCalFromTo.xfdl&quot; (220x26)&#13;&#13;&#13;&#10;월력 &gt;&gt; &quot;cmm::cmmCalMM.xfdl&quot;(98x26)&#13;&#13;&#13;&#10;를 입력한다.&#13;&#10;&#13;&#10;3. Dataset과 binding이 필요하면 해당 div의 Calendar에 bind를 한다." left="5" top="5" height="176" right="31" setLanguage="false" border="1px solid"/>
+        <Div id="divCalFromTo" taborder="1" text="Div00" left="8" top="199" width="220" height="26" url="cmm::cmmCalFromTo.xfdl"/>
+        <Button id="btnInit" taborder="2" text="초기화" left="283" top="199" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Static id="Static00" taborder="17" text="초기화시 시작, 종료일자가 모두 없어짐" left="383" top="199" width="241" height="25" right="" bottom=""/>
+        <Button id="btnGetFromDate" taborder="20" text="getFromDate" left="8" top="240" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Edit id="editFromDate" taborder="26" left="104" top="240" width="131" height="25" right="" bottom="" readonly="true"/>
+        <Button id="btnGetToDate" taborder="22" text="getToDate" left="8" top="270" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Edit id="editToDate" taborder="24" left="104" top="270" width="131" height="25" right="" bottom="" readonly="true"/>
+        <Button id="btnSetFromDate" taborder="23" text="setFromDate" left="8" top="300" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Edit id="edtSetFrom" taborder="28" left="104" top="300" width="131" height="25" right="" bottom="" maxlength="8"/>
+        <Button id="btnSetToDate" taborder="18" text="setToDate" left="8" top="330" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Edit id="edtSetTo" taborder="29" left="104" top="330" width="131" height="25" right="" bottom="" maxlength="8"/>
+        <Button id="btnEnableTrue" taborder="12" text="enable true" left="283" top="228" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Button id="btnEnableFalse" taborder="13" text="enable false" left="379" top="228" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Button id="btnReadonlyTrue" taborder="14" text="readonly true" left="283" top="258" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Button id="btnReadonlyFalse" taborder="15" text="readonly false" left="379" top="258" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Button id="btnRequiredFalse" taborder="11" text="required false" left="379" top="288" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Button id="btnRequiredTrue" taborder="10" text="required true" left="283" top="288" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Div id="divCalMM" taborder="30" text="Div00" left="10" top="387" width="98" height="26" right="" bottom="" url="cmm::cmmCalMM.xfdl"/>
+        <Button id="btnGetDate00" taborder="19" text="getFromDate" left="8" top="424" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Edit id="editFromDate00" taborder="27" left="104" top="424" width="131" height="25" right="" bottom="" readonly="true"/>
+        <Button id="btnSetDate00" taborder="21" text="setFromDate" left="8" top="484" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Edit id="edtSetFrom00" taborder="25" left="104" top="484" width="131" height="25" right="" bottom="" maxlength="6"/>
+        <Button id="btnEnableTrue00" taborder="9" text="enable true" left="248" top="424" width="88" height="25" onclick="btnInit_onclick"/>
+        <Button id="btnEnableFalse00" taborder="8" text="enable false" left="344" top="424" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Button id="btnReadonlyTrue00" taborder="7" text="readonly true" left="248" top="454" width="88" height="25" onclick="btnInit_onclick"/>
+        <Button id="btnReadonlyFalse00" taborder="6" text="readonly false" left="344" top="454" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Button id="btnRequiredFalse00" taborder="5" text="required false" left="344" top="484" width="88" height="25" right="" bottom="" onclick="btnInit_onclick"/>
+        <Button id="btnRequiredTrue00" taborder="4" text="required true" left="248" top="484" width="88" height="25" onclick="btnInit_onclick"/>
+        <Button id="btnInit00" taborder="3" text="초기화" left="248" top="389" width="88" height="25" onclick="btnInit_onclick"/>
+        <Static id="Static01" taborder="16" text="초기화시 일자가 없어짐" left="348" top="389" width="241" height="25"/>
+        <Div id="divCalFromTo00" taborder="31" text="Div00" left="800" top="754" width="220" height="26" url="cmm::cmmCalFromTo.xfdl"/>
+        <Div id="divCalMM01" taborder="32" text="Div00" left="924" top="782" width="98" height="26" url="cmm::cmmCalMM.xfdl"/>
+        <Div id="divCalFromTo01" taborder="33" text="Div00" left="810" top="14" width="220" height="26" url="cmm::cmmCalFromTo.xfdl"/>
+        <Div id="divCalMM00" taborder="34" text="Div00" left="934" top="42" width="98" height="26" url="cmm::cmmCalMM.xfdl"/>
+        <Div id="divCalFromTo02" taborder="35" text="Div00" left="8" top="752" width="220" height="26" url="cmm::cmmCalFromTo.xfdl"/>
+        <Div id="divCalMM02" taborder="36" text="Div00" left="7" top="780" width="98" height="26" url="cmm::cmmCalMM.xfdl"/>
+        <Button id="btnTest" taborder="37" text="Util Library Test" left="640" top="199" width="118" height="32" onclick="btnTest_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+*  컨설팅 표준화 작업
+*  @MenuPath 
+*  @FileName 		sample015_calendar.xfdl 
+*  @Creator 			soojeong
+*  @CreateDate 	2017.03.13
+*  @LastModifier  
+*  @LastModifyDate  
+*  @Version 		1.0
+*  @Outline 		
+*  @Desction   
+************** 소스 수정 이력 *************************************************
+*    date          		Modifier            Description
+*******************************************************************************
+*  2017.03.13     	soojeong 	           최초 생성 
+*******************************************************************************
+*/
+
+/************************************************************************************************
+ * FORM 변수 선언 영역
+ ************************************************************************************************/
+
+/***********************************************************************************************
+* FORM EVENT 영역(onload)
+/***********************************************************************************************/
+this.Form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnLoad(this);
+};
+/************************************************************************************************
+* TRANSACTION 서비스 호출 처리
+************************************************************************************************/
+
+/************************************************************************************************
+ * CALLBACK 콜백 처리부분
+ ************************************************************************************************/
+
+ /************************************************************************************************
+ * 사용자 FUNCTION 영역
+ ************************************************************************************************/
+ 
+ /************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+ ************************************************************************************************/
+ /**
+* btnInit_onclick :  달력 버튼이벤트
+* @param  : obj		   - [object]Button
+* @param  : e		   - [string]ClickEventInfo
+* @return : N/A
+* @example : 
+*/
+this.btnInit_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var objForm = this.divCalFromTo.form;
+	var objFormMM = this.divCalMM.form;
+	var sTarget = obj.name;
+	var sDate ;
+	
+	switch(sTarget) {
+	case "btnInit":
+		objForm.fnInit();
+		break;
+	case "btnGetFromDate":
+		sDate = objForm.fnGetFromDate();
+		this.editFromDate.set_value(sDate);
+		break;
+	case "btnGetToDate":
+		sDate = objForm.fnGetToDate();
+		this.editToDate.set_value(sDate);
+		break;
+	case "btnSetFromDate":
+		sDate = this.edtSetFrom.value;
+		objForm.fnSetFromDate(sDate);
+		break;
+	case "btnSetToDate":
+		sDate = this.edtSetTo.value;
+		objForm.fnSetToDate(sDate);
+		break;
+	case "btnEnableTrue":
+		objForm.fnSetEnable(true);
+		break;
+	case "btnEnableFalse":
+		objForm.fnSetEnable(false);
+		break;
+	case "btnReadonlyTrue":
+		objForm.fnSetReadonly(true);
+		break;
+	case "btnReadonlyFalse":
+		objForm.fnSetReadonly(false);
+		break;
+	case "btnRequiredTrue":
+		objForm.fnSetEssential(true);
+		break;
+	case "btnRequiredFalse":
+		objForm.fnSetEssential(false);
+		break;
+	case "btnInit00":
+		objFormMM.fnInit();
+		break;
+	case "btnGetDate00":
+		sDate = objFormMM.fnGetValue();
+		if( sDate != false ) this.editFromDate00.set_value(sDate);
+		else this.divCalMM.form.setFocus();
+		break;
+	case "btnSetDate00":
+		sDate = this.edtSetFrom00.value;
+		objFormMM.fnSetValue(sDate);
+		break;
+	case "btnEnableTrue00":
+		objFormMM.fnSetEnable(true);
+		break;
+	case "btnEnableFalse00":
+		objFormMM.fnSetEnable(false);
+		break;
+	case "btnReadonlyTrue00":
+		objFormMM.fnSetReadonly(true);
+		break;
+	case "btnReadonlyFalse00":
+		objFormMM.fnSetReadonly(false);
+		break;
+	case "btnRequiredTrue00":
+		objFormMM.fnSetEssential(true);
+		break;
+	case "btnRequiredFalse00":
+		objFormMM.fnSetEssential(false);
+		break;
+	default:
+	}
+};
+
+this.btnTest_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+ 	var sComma = this.gfnAppendComma(123456789.52, 1);
+ 	trace("gfnAppendComma : " + sComma);
+
+	trace("gfnRemoveComma : " + this.gfnRemoveComma(sComma));
+	
+	trace("gfnTrim : " + this.gfnTrim(" 123 456 789 "));
+	
+	trace("gfnAllTrim : " + this.gfnAllTrim(" 123 456 789 "));
+	
+	trace("gfnGetDigit : " + this.gfnGetDigit("가나다 123 456 789 마바사"));
+
+	trace("gfnRemoveSpecialChar : " + this.gfnRemoveSpecialChar("$% 가나다 123 456 789 마바사&*"));
+
+	trace("gfnIsExistInArray : " + this.gfnIsExistInArray(["a", "b", "c"], "b"));
+
+	trace("gfnLeft : " + this.gfnLeft("abc", 1));
+
+	trace("gfnRight : " + this.gfnRight("abc", 1));
+
+	trace("gfnPosReverse : " + this.gfnPosReverse("aaBBbbccBB", "BB"));
+	
+	trace("gfnTypeOf : " + this.gfnTypeOf(this.btn00));
+	
+	trace("gfnIsNexaComponent : " + this.gfnIsNexaComponent("this.btn00"));
+	
+	trace("gfnIsNexaComponent : " + this.gfnIsNexaComponent(this.btn00));
+	
+	trace("gfnGetDate 일시 : " + this.gfnGetDate());
+	
+	trace("gfnGetDate 일시+time: " + this.gfnGetDate("time"));
+	
+	trace("gfnGetDate 일시+time+milliseconds: " + this.gfnGetDate("milli"));
+	
+	trace("gfnGetLastDate : " + this.gfnGetLastDate("20171011"));
+	
+	trace("gfnGetLastDate : " + this.gfnGetLastDate("201710"));
+	
+	trace("gfnGetFirstDate : " + this.gfnGetFirstDate("20171022"));
+	
+	trace("gfnGetDay : " + this.gfnGetDay("20171011"));
+	
+	trace("gfnGetDiffDate : " + this.gfnGetDiffDate("20171011", "20171231"));
+	
+	trace("gfnGetDiffMonth : " + this.gfnGetDiffMonth("20171011", "20171231"));
+	
+	trace("gfnAddDate : " + this.gfnAddDate("20171011", 3));
+	
+	trace("gfnAddMonth : " + this.gfnAddMonth("20171031", 1));
+	
+	trace("gfnAddMonth : " + this.gfnAddMonth("20171031", -1));
+
+	trace("gfnGetWeek : " + this.gfnGetWeek("20171011"));
+	
+	var sDate = this.gfnSolarToLunar("20171020");
+	trace("gfnSolarToLunar : " + sDate);
+	
+	trace("gfnLunarToSolar : " + this.gfnLunarToSolar(sDate.substring(1,9), sDate.substring(0,1)));	
+};
+]]></Script>
+    <Objects>
+      <Dataset id="dsList">
+        <ColumnInfo>
+          <Column id="dtFrom" type="STRING" size="256"/>
+          <Column id="dtTo" type="STRING" size="256"/>
+          <Column id="dtMonth" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="dtFrom">20171017</Col>
+            <Col id="dtTo">20171231</Col>
+            <Col id="dtMonth">201712</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="divCalFromTo.form.calFrom" propid="value" datasetid="dsList" columnid="dtFrom"/>
+      <BindItem id="item1" compid="divCalFromTo.form.calTo" propid="value" datasetid="dsList" columnid="dtTo"/>
+      <BindItem id="item2" compid="divCalFromTo00.form.calFrom" propid="value" datasetid="dsList" columnid="dtFrom"/>
+      <BindItem id="item3" compid="divCalFromTo00.form.calTo" propid="value" datasetid="dsList" columnid="dtTo"/>
+      <BindItem id="item4" compid="divCalMM.form.calYM" propid="value" datasetid="dsList" columnid="dtMonth"/>
+      <BindItem id="item5" compid="divCalMM01.form.calYM" propid="value" datasetid="dsList" columnid="dtMonth"/>
+      <BindItem id="item6" compid="divCalFromTo01.form.calFrom" propid="value" datasetid="dsList" columnid="dtFrom"/>
+      <BindItem id="item7" compid="divCalFromTo01.form.calTo" propid="value" datasetid="dsList" columnid="dtTo"/>
+      <BindItem id="item8" compid="divCalMM00.form.calYM" propid="value" datasetid="dsList" columnid="dtMonth"/>
+      <BindItem id="item9" compid="divCalFromTo02.form.calFrom" propid="value" datasetid="dsList" columnid="dtFrom"/>
+      <BindItem id="item10" compid="divCalFromTo02.form.calTo" propid="value" datasetid="dsList" columnid="dtTo"/>
+      <BindItem id="item11" compid="divCalMM02.form.calYM" propid="value" datasetid="dsList" columnid="dtMonth"/>
+    </Bind>
+  </Form>
+</FDL>

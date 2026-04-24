@@ -1,0 +1,12 @@
+{
+	"name": "traceLog",
+	"version": "17.0.0.0",
+	"description": "traceLog",
+	"license": "",
+	"scripts": [
+			"traceLog/traceLog.js"
+	],
+	"objInfo": [
+	]
+}
+//@ sourceURL=traceLog.json

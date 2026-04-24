@@ -1,0 +1,500 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="Sample001_transaction" classname="Work" inheritanceid="" titletext="기본샘플(조회,입력,저장,삭제)" left="0" width="1050" top="0" height="818" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Grid id="Grid00" taborder="0" left="0" right="0" binddataset="dsList" autofittype="col" no="true" bottom="3" top="32">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row band="head" size="24"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="POST_ID"/>
+                <Cell col="1" text="COLUMN0"/>
+                <Cell col="2" text="COLUMN1"/>
+                <Cell col="3" text="COLUMN2"/>
+                <Cell col="4" text="COLUMN3"/>
+                <Cell col="5" text="COLUMN4"/>
+                <Cell col="6" text="COLUMN5"/>
+                <Cell col="7" text="COLUMN6"/>
+                <Cell col="8" text="COLUMN7"/>
+                <Cell col="9" text="COLUMN8"/>
+                <Cell col="10" text="COLUMN9"/>
+                <Cell col="11" text="COLUMN10"/>
+                <Cell col="12" text="COLUMN11"/>
+                <Cell col="13" text="COLUMN12"/>
+                <Cell col="14" text="COLUMN13"/>
+                <Cell col="15" text="COLUMN14"/>
+                <Cell col="16" text="COLUMN15"/>
+                <Cell col="17" text="COLUMN16"/>
+                <Cell col="18" text="COLUMN17"/>
+                <Cell col="19" text="COLUMN18"/>
+                <Cell col="20" text="COLUMN19"/>
+                <Cell col="21" text="COLUMN20"/>
+                <Cell col="22" text="COLUMN21"/>
+                <Cell col="23" text="COLUMN22"/>
+                <Cell col="24" text="COLUMN23"/>
+                <Cell col="25" text="COLUMN24"/>
+                <Cell col="26" text="COLUMN25"/>
+                <Cell col="27" text="COLUMN26"/>
+                <Cell col="28" text="COLUMN27"/>
+                <Cell col="29" text="COLUMN28"/>
+                <Cell col="30" text="COLUMN29"/>
+                <Cell col="31" text="COLUMN30"/>
+                <Cell col="32" text="COLUMN31"/>
+                <Cell col="33" text="COLUMN32"/>
+                <Cell col="34" text="COLUMN33"/>
+                <Cell col="35" text="COLUMN34"/>
+                <Cell col="36" text="COLUMN35"/>
+                <Cell col="37" text="COLUMN36"/>
+                <Cell col="38" text="COLUMN37"/>
+                <Cell col="39" text="COLUMN38"/>
+                <Cell col="40" text="COLUMN39"/>
+                <Cell col="41" text="COLUMN40"/>
+                <Cell col="42" text="COLUMN41"/>
+                <Cell col="43" text="COLUMN42"/>
+                <Cell col="44" text="COLUMN43"/>
+                <Cell col="45" text="COLUMN44"/>
+                <Cell col="46" text="COLUMN45"/>
+                <Cell col="47" text="COLUMN46"/>
+                <Cell col="48" text="COLUMN47"/>
+                <Cell col="49" text="COLUMN48"/>
+                <Cell col="50" text="COLUMN49"/>
+                <Cell col="51" text="COLUMN50"/>
+                <Cell col="52" text="COLUMN51"/>
+                <Cell col="53" text="COLUMN52"/>
+                <Cell col="54" text="COLUMN53"/>
+                <Cell col="55" text="COLUMN54"/>
+                <Cell col="56" text="COLUMN55"/>
+                <Cell col="57" text="COLUMN56"/>
+                <Cell col="58" text="COLUMN57"/>
+                <Cell col="59" text="COLUMN58"/>
+                <Cell col="60" text="COLUMN59"/>
+                <Cell col="61" text="COLUMN60"/>
+                <Cell col="62" text="COLUMN61"/>
+                <Cell col="63" text="COLUMN62"/>
+                <Cell col="64" text="COLUMN63"/>
+                <Cell col="65" text="COLUMN64"/>
+                <Cell col="66" text="COLUMN65"/>
+                <Cell col="67" text="COLUMN66"/>
+                <Cell col="68" text="COLUMN67"/>
+                <Cell col="69" text="COLUMN68"/>
+                <Cell col="70" text="COLUMN69"/>
+                <Cell col="71" text="COLUMN70"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:POST_ID"/>
+                <Cell col="1" text="bind:COLUMN0"/>
+                <Cell col="2" text="bind:COLUMN1"/>
+                <Cell col="3" text="bind:COLUMN2"/>
+                <Cell col="4" text="bind:COLUMN3"/>
+                <Cell col="5" text="bind:COLUMN4"/>
+                <Cell col="6" text="bind:COLUMN5"/>
+                <Cell col="7" text="bind:COLUMN6"/>
+                <Cell col="8" text="bind:COLUMN7"/>
+                <Cell col="9" text="bind:COLUMN8"/>
+                <Cell col="10" text="bind:COLUMN9"/>
+                <Cell col="11" text="bind:COLUMN10"/>
+                <Cell col="12" text="bind:COLUMN11"/>
+                <Cell col="13" text="bind:COLUMN12"/>
+                <Cell col="14" text="bind:COLUMN13"/>
+                <Cell col="15" text="bind:COLUMN14"/>
+                <Cell col="16" text="bind:COLUMN15"/>
+                <Cell col="17" text="bind:COLUMN16"/>
+                <Cell col="18" text="bind:COLUMN17"/>
+                <Cell col="19" text="bind:COLUMN18"/>
+                <Cell col="20" text="bind:COLUMN19"/>
+                <Cell col="21" text="bind:COLUMN20"/>
+                <Cell col="22" text="bind:COLUMN21"/>
+                <Cell col="23" text="bind:COLUMN22"/>
+                <Cell col="24" text="bind:COLUMN23"/>
+                <Cell col="25" text="bind:COLUMN24"/>
+                <Cell col="26" text="bind:COLUMN25"/>
+                <Cell col="27" text="bind:COLUMN26"/>
+                <Cell col="28" text="bind:COLUMN27"/>
+                <Cell col="29" text="bind:COLUMN28"/>
+                <Cell col="30" text="bind:COLUMN29"/>
+                <Cell col="31" text="bind:COLUMN30"/>
+                <Cell col="32" text="bind:COLUMN31"/>
+                <Cell col="33" text="bind:COLUMN32"/>
+                <Cell col="34" text="bind:COLUMN33"/>
+                <Cell col="35" text="bind:COLUMN34"/>
+                <Cell col="36" text="bind:COLUMN35"/>
+                <Cell col="37" text="bind:COLUMN36"/>
+                <Cell col="38" text="bind:COLUMN37"/>
+                <Cell col="39" text="bind:COLUMN38"/>
+                <Cell col="40" text="bind:COLUMN39"/>
+                <Cell col="41" text="bind:COLUMN40"/>
+                <Cell col="42" text="bind:COLUMN41"/>
+                <Cell col="43" text="bind:COLUMN42"/>
+                <Cell col="44" text="bind:COLUMN43"/>
+                <Cell col="45" text="bind:COLUMN44"/>
+                <Cell col="46" text="bind:COLUMN45"/>
+                <Cell col="47" text="bind:COLUMN46"/>
+                <Cell col="48" text="bind:COLUMN47"/>
+                <Cell col="49" text="bind:COLUMN48"/>
+                <Cell col="50" text="bind:COLUMN49"/>
+                <Cell col="51" text="bind:COLUMN50"/>
+                <Cell col="52" text="bind:COLUMN51"/>
+                <Cell col="53" text="bind:COLUMN52"/>
+                <Cell col="54" text="bind:COLUMN53"/>
+                <Cell col="55" text="bind:COLUMN54"/>
+                <Cell col="56" text="bind:COLUMN55"/>
+                <Cell col="57" text="bind:COLUMN56"/>
+                <Cell col="58" text="bind:COLUMN57"/>
+                <Cell col="59" text="bind:COLUMN58"/>
+                <Cell col="60" text="bind:COLUMN59"/>
+                <Cell col="61" text="bind:COLUMN60"/>
+                <Cell col="62" text="bind:COLUMN61"/>
+                <Cell col="63" text="bind:COLUMN62"/>
+                <Cell col="64" text="bind:COLUMN63"/>
+                <Cell col="65" text="bind:COLUMN64"/>
+                <Cell col="66" text="bind:COLUMN65"/>
+                <Cell col="67" text="bind:COLUMN66"/>
+                <Cell col="68" text="bind:COLUMN67"/>
+                <Cell col="69" text="bind:COLUMN68"/>
+                <Cell col="70" text="bind:COLUMN69"/>
+                <Cell col="71" text="bind:COLUMN70"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Div id="divSearch" taborder="1" text="" left="0" top="0" width="" height="52" right="0" bottom="">
+          <Layouts>
+            <Layout>
+              <Button id="btnSearch" taborder="1" text="조회" top="5" width="65" right="13" onclick="fnSearch" bottom="22" borderRadius="5px"/>
+              <Edit id="edtTitle" taborder="0" left="71" top="5" width="157" height="25"/>
+              <Static id="Static01" taborder="2" text="제목" left="5" top="5" width="59" height="25" cssclass="sta_WF_SubTitle" padding="0px 0px 0px 20px" background="url('theme://images/img_WF_Treeitem.png') no-repeat left center"/>
+              <Radio id="rdo_dataType" taborder="3" left="710" top="3" height="27" codecolumn="codecolumn" datacolumn="datacolumn" innerdataset="innerdataset" initvalueid="0" columncount="4" index="0" text="XML" value="0" right="btnSearch:22">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">0</Col>
+                      <Col id="datacolumn">XML</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">BINARY</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">SSV</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">3</Col>
+                      <Col id="datacolumn">JSON</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Radio>
+              <CheckBox id="chk_zip" taborder="4" text="zip" left="590" top="6" height="20" right="rdo_dataType:65"/>
+              <Edit id="edtCount" taborder="5" left="360" top="5" width="60" height="25" value="10" text="10"/>
+              <Static id="sta00" taborder="6" text="건" left="426" top="7" width="34" height="21"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="dsList">
+        <ColumnInfo>
+          <Column id="POST_ID" type="int" size="4"/>
+          <Column id="COLUMN0" type="string" size="256"/>
+          <Column id="COLUMN1" type="string" size="256"/>
+          <Column id="COLUMN2" type="string" size="256"/>
+          <Column id="COLUMN3" type="string" size="256"/>
+          <Column id="COLUMN4" type="string" size="256"/>
+          <Column id="COLUMN5" type="string" size="256"/>
+          <Column id="COLUMN6" type="string" size="256"/>
+          <Column id="COLUMN7" type="string" size="256"/>
+          <Column id="COLUMN8" type="string" size="256"/>
+          <Column id="COLUMN9" type="string" size="256"/>
+          <Column id="COLUMN10" type="string" size="256"/>
+          <Column id="COLUMN11" type="string" size="256"/>
+          <Column id="COLUMN12" type="string" size="256"/>
+          <Column id="COLUMN13" type="string" size="256"/>
+          <Column id="COLUMN14" type="string" size="256"/>
+          <Column id="COLUMN15" type="string" size="256"/>
+          <Column id="COLUMN16" type="string" size="256"/>
+          <Column id="COLUMN17" type="string" size="256"/>
+          <Column id="COLUMN18" type="string" size="256"/>
+          <Column id="COLUMN19" type="string" size="256"/>
+          <Column id="COLUMN20" type="string" size="256"/>
+          <Column id="COLUMN21" type="string" size="256"/>
+          <Column id="COLUMN22" type="string" size="256"/>
+          <Column id="COLUMN23" type="string" size="256"/>
+          <Column id="COLUMN24" type="string" size="256"/>
+          <Column id="COLUMN25" type="string" size="256"/>
+          <Column id="COLUMN26" type="string" size="256"/>
+          <Column id="COLUMN27" type="string" size="256"/>
+          <Column id="COLUMN28" type="string" size="256"/>
+          <Column id="COLUMN29" type="string" size="256"/>
+          <Column id="COLUMN30" type="string" size="256"/>
+          <Column id="COLUMN31" type="string" size="256"/>
+          <Column id="COLUMN32" type="string" size="256"/>
+          <Column id="COLUMN33" type="string" size="256"/>
+          <Column id="COLUMN34" type="string" size="256"/>
+          <Column id="COLUMN35" type="string" size="256"/>
+          <Column id="COLUMN36" type="string" size="256"/>
+          <Column id="COLUMN37" type="string" size="256"/>
+          <Column id="COLUMN38" type="string" size="256"/>
+          <Column id="COLUMN39" type="string" size="256"/>
+          <Column id="COLUMN40" type="string" size="256"/>
+          <Column id="COLUMN41" type="string" size="256"/>
+          <Column id="COLUMN42" type="string" size="256"/>
+          <Column id="COLUMN43" type="string" size="256"/>
+          <Column id="COLUMN44" type="string" size="256"/>
+          <Column id="COLUMN45" type="string" size="256"/>
+          <Column id="COLUMN46" type="string" size="256"/>
+          <Column id="COLUMN47" type="string" size="256"/>
+          <Column id="COLUMN48" type="string" size="256"/>
+          <Column id="COLUMN49" type="string" size="256"/>
+          <Column id="COLUMN50" type="string" size="256"/>
+          <Column id="COLUMN51" type="string" size="256"/>
+          <Column id="COLUMN52" type="string" size="256"/>
+          <Column id="COLUMN53" type="string" size="256"/>
+          <Column id="COLUMN54" type="string" size="256"/>
+          <Column id="COLUMN55" type="string" size="256"/>
+          <Column id="COLUMN56" type="string" size="256"/>
+          <Column id="COLUMN57" type="string" size="256"/>
+          <Column id="COLUMN58" type="string" size="256"/>
+          <Column id="COLUMN59" type="string" size="256"/>
+          <Column id="COLUMN60" type="string" size="256"/>
+          <Column id="COLUMN61" type="string" size="256"/>
+          <Column id="COLUMN62" type="string" size="256"/>
+          <Column id="COLUMN63" type="string" size="256"/>
+          <Column id="COLUMN64" type="string" size="256"/>
+          <Column id="COLUMN65" type="string" size="256"/>
+          <Column id="COLUMN66" type="string" size="256"/>
+          <Column id="COLUMN67" type="string" size="256"/>
+          <Column id="COLUMN68" type="string" size="256"/>
+          <Column id="COLUMN69" type="string" size="256"/>
+          <Column id="COLUMN70" type="string" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="dsSearch">
+        <ColumnInfo>
+          <Column id="title" type="STRING" size="100"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="title"/>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.1"><![CDATA[/**
+*  컨설팅 표준화 작업
+*  @MenuPath    샘플 > transaction
+*  @FileName 	Sample001_transaction.xfdl 
+*  @Creator 	soojeong
+*  @CreateDate 	2017.03.09
+*  @Desction         스크립트 표준 및 주석 표준 정의
+************** 소스 수정 이력 ***********************************************
+*  date          		Modifier                Description
+*******************************************************************************
+*  2017.03.09     	soojeong 	           최초 생성 
+*  2017.10.17     	kyk       	           주석 정비
+*******************************************************************************
+*/
+
+/************************************************************************************************
+ * FORM 변수 선언 영역
+************************************************************************************************/
+
+
+/***********************************************************************************************
+* FORM EVENT 영역(onload, onbeforeclose)
+/***********************************************************************************************/
+/**
+ * @description 화면 onload시 처리내역(필수)
+*/
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnLoad(this);
+};
+
+/**
+ * @description 화면 닫힐때 변경사항 체크(입력 화면에서 변경되는 Dataset 체크 필요, 선택)
+ * @return {boolean} false(화면 닫음) / true(화면 닫지 않음)
+*/
+this.fnClose = function()
+{
+	if (this.gfnDsIsUpdated(this.dsList)) {
+		return true;
+	}
+	return false;
+};
+
+
+/************************************************************************************************
+ * CALLBACK 콜백 처리부분(Transaction, Popup)
+ ************************************************************************************************/
+/**
+ * @description Transaction CallBack 함수(선택)
+*/
+this.fnCallback = function(svcID,errorCode,errorMsg)
+{
+	// 에러 시 화면 처리 내역
+	if(errorCode != 0)
+	{
+		return;
+	}
+	
+	switch(svcID)
+	{
+		case "search":
+			this.fn_endPerformance();
+			trace("							" + this.dsList.getRowCount() + " 건 조회 완료......");
+			trace("[search]" + this.dsList.getRowCount() );
+			break;
+			
+		case "save":
+			// 저장 되었습니다.
+			this.gfnAlert("msg.save.success");	
+			break;
+	}
+};
+
+/************************************************************************************************
+* CRUD 및 TRANSACTION 서비스 호출 처리
+************************************************************************************************/
+/**
+ * @description 조회
+*/
+this.fnSearch = function ()
+{
+	// 조회조건 설정
+	if(this.dsSearch.getRowCount()==0)
+		this.dsSearch.addRow();
+ 	this.dsSearch.setColumn(0, "title"  , this.divSearch.form.edtTitle.value);
+	
+ 	var strSvcId    = "search";
+	var strSvcUrl   = "search_manyColumn_data.do";
+	var inData      = "dsSearch=dsSearch";
+	var outData     = "dsList=output1";
+	var strArg      = "count="+this.divSearch.form.edtCount.value;
+	var callBackFnc = "fnCallback";
+	var isAsync   	= true;
+	
+	var dataType	= this.divSearch.form.rdo_dataType.value;
+	var zipType		= this.divSearch.form.chk_zip.value;
+	trace("[fnSearch] zipType = "+zipType);
+	this.fn_startPerformance();
+	
+	this.gfnTransaction(strSvcId , 		// transaction을 구분하기 위한 svc id값
+						strSvcUrl , 	// trabsaction을 요청할 주소
+						inData , 		// 입력값으로 보낼 dataset id , a=b형태로 실제이름과 입력이름을 매칭
+						outData , 		// 처리결과값으로 받을 dataset id, a=b형태로 실제이름과 입력이름을 매칭
+						strArg, 		// 입력값으로 보낼 arguments, strFormData="20120607"
+						callBackFnc, 	// transaction의 결과를 받을 Function 이름
+						isAsync, 		// 비동기통신 여부 [생략가능]
+						dataType, 				// nDataType : 0(XML 타입), 1(Binary 타입),  2(SSV 타입), 3(JSON 타입) [생략가능]
+						zipType); 		// bCompress ( default : false ) [생략가능]
+};
+
+/************************************************************************************************
+* 사용자 FUNCTION 영역
+************************************************************************************************/
+var _startTime;
+var _endTime;
+this.fn_startPerformance = function() {
+    _startTime = Date.now(); // 시작시간
+    trace("[Performance  Test] - 압축 ("+this.divSearch.form.chk_zip.value+") , 통신 방식 ("+this.divSearch.form.rdo_dataType.text+") ______________"); 
+    trace("		_startTime Time :  "+ _startTime +" ms"); 
+}
+
+this.fn_endPerformance  = function() {
+    _endTime =  Date.now(); // 종료시간 
+    trace("		_endTime   Time :  "+ _endTime +" ms"); 
+    trace("		Result     Time :  "+ (_endTime - _startTime)/1000 +" s"); // 최종 결과값 (s)
+}
+
+
+/************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+************************************************************************************************/
+]]></Script>
+  </Form>
+</FDL>

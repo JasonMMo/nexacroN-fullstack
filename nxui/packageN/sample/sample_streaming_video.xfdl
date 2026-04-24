@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="sample_streaming_video" width="1280" height="720" titletext="New Form">
+    <Layouts>
+      <Layout height="720" width="1280">
+        <Static id="sta00" taborder="0" text="sta00" left="314" top="6" width="596" height="394" background="aliceblue"/>
+        <VideoPlayer id="vp_video" taborder="1" left="318" top="11" width="586" height="339" oncurrenttimechanged="vp_video_oncurrenttimechanged" onplaystatuschanged="vp_video_onplaystatuschanged"/>
+        <Grid id="grdMedia" taborder="2" left="10" top="6" width="300" height="394" binddataset="ds_list" oncelldblclick="grdMedia_oncelldblclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="67"/>
+                <Column size="221"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="id"/>
+                <Cell col="1" text="fileName"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:id"/>
+                <Cell col="1" text="bind:fileName"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="sta01" taborder="3" text="sta01" left="318" top="356" width="588" height="40" background="white"/>
+        <Button id="btn_play" taborder="4" text="Play" left="322" top="362" width="71" height="29" onclick="btn_play_onclick"/>
+        <Button id="btn_pause" taborder="5" text="Pause" left="400" top="362" width="71" height="29" onclick="btn_pause_onclick"/>
+        <Button id="btn_stop" taborder="6" text="Stop" left="478" top="362" width="71" height="29" onclick="btn_stop_onclick"/>
+        <Button id="btn_forward" taborder="7" text="Forward" left="556" top="362" width="71" height="29" onclick="btn_forward_onclick"/>
+        <Button id="btn_rewind" taborder="8" text="Rewind" left="634" top="362" width="71" height="29" onclick="btn_rewind_onclick"/>
+        <Static id="st_playtime" taborder="9" text="sta02" left="742" top="368" width="120" height="22"/>
+        <Static id="sta00_00" taborder="10" text="ㅇ uiadapter-jakarta-core 1.0.18-SNAPSHOT 이후 버전 지원" left="10" top="407" width="894" height="23" visible="true"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_list">
+        <ColumnInfo>
+          <Column id="id" type="STRING" size="256"/>
+          <Column id="fileName" type="STRING" size="256"/>
+          <Column id="url" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="id">1</Col>
+            <Col id="fileName">244839_medium.mp4</Col>
+          </Row>
+          <Row>
+            <Col id="id">2</Col>
+            <Col id="fileName">260397_medium.mp4</Col>
+          </Row>
+          <Row>
+            <Col id="id">3</Col>
+            <Col id="fileName">4121058-uhd_3840_2160_25fps.mp4</Col>
+          </Row>
+          <Row>
+            <Col id="fileName">file_example_MP4_1920_18MG.mp4</Col>
+            <Col id="id">4</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[
+this.grdMedia_oncelldblclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	var row = e.row;
+	var fileName = this.ds_list.getColumn(row, "fileName");
+	var url = "http://localhost:8080/uiadapter/streamingVideo.do?fileName="+fileName+"&streamType=nio";
+	this.vp_video.set_url(url);
+	this.vp_video.play();
+};
+
+this.btn_play_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.vp_video.play();
+};
+
+this.btn_pause_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.vp_video.pause();
+};
+
+this.btn_stop_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.vp_video.stop();
+};
+
+this.btn_forward_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.vp_video.set_currenttime(this.vp_video.currenttime + 2000);
+};
+
+this.btn_rewind_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.vp_video.set_currenttime(this.vp_video.currenttime - 2000);
+};
+
+this.vp_video_oncurrenttimechanged = function(obj:nexacro.VideoPlayer,e:nexacro.VideoCurrentTimeChangedEventInfo)
+{
+	var strPlayTime = nexacro.round(this.vp_video.currenttime / 1000) + " / " + nexacro.round(this.vp_video.duration / 1000);
+		
+	this.st_playtime.set_text(strPlayTime);
+};
+
+this.vp_video_onplaystatuschanged = function(obj:nexacro.VideoPlayer,e:nexacro.VideoPlayStateChangedEventInfo)
+{
+	switch(e.newstate)
+	{	
+		case "stop":
+				this.st_playtime.set_text(" ");
+		case "pause":
+		case "play":
+		case "buffer":
+		case "ended":
+		default:
+			trace("state: "+ e.newstate);
+	}
+};
+]]></Script>
+  </Form>
+</FDL>

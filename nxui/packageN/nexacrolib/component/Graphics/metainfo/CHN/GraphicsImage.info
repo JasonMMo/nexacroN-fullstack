@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MetaInfo version="2.0">
+  <Object id="nexacro.GraphicsImage">
+    <ObjectInfo finalclass="false" inheritance="nexacro._GraphicsShape" classname="nexacro.GraphicsImage" shorttypename="GraphicsImage" csstypename="" csscontrolname="" group="Object" subgroup="Object" csspseudo="" container="false" composite="false" tabstop="false" cssstyle="false" contents="false" formats="false" contentseditor="" defaultwidth="false" defaultheight="false" registration="deny" edittype="" useinitvalue="false" popup="false" edittypecomponent="" dblclickevent="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="在Graphics组件上显示图像时使用的对象。" />
+    <PropertyInfo>
+      <Property name="fillstyle" group="" subgroup="" refreshinfo="" displayinfo="" edittype="" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="true" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="" description="" csspropertyname="" normalpropertyname="fillstyle" stringrc="false" defaultstringrc="false" />
+      <Property name="height" group="Position" subgroup="position" refreshinfo="" displayinfo="" edittype="Number" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="Pixel" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定GraphicsImage区域的高度的属性。" csspropertyname="" normalpropertyname="height" stringrc="false" defaultstringrc="false" />
+      <Property name="id" group="Information" subgroup="" refreshinfo="" displayinfo="" edittype="ID" readonly="true" initonly="true" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="true" mandatory="true" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定GraphicsImage的固有标识符的属性。" csspropertyname="" normalpropertyname="id" stringrc="false" defaultstringrc="false" />
+      <Property name="image" group="Appearance" subgroup="" refreshinfo="" displayinfo="" edittype="ImageID" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定需要载入到GraphicsImage中的图像文件的位置路径的属性。" csspropertyname="" normalpropertyname="image" stringrc="false" defaultstringrc="false" />
+      <Property name="imageheight" group="Information" subgroup="" refreshinfo="" displayinfo="" edittype="" readonly="true" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="包含载入到GraphicsImage中的图像的实际高度值的只读属性。" csspropertyname="" normalpropertyname="imageheight" stringrc="false" defaultstringrc="false" />
+      <Property name="imagewidth" group="" subgroup="" refreshinfo="" displayinfo="" edittype="" readonly="true" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="包含载入到GraphicsImage中的图像的实际宽度值的只读属性。" csspropertyname="" normalpropertyname="imagewidth" stringrc="false" defaultstringrc="false" />
+      <Property name="miterlimit" group="" subgroup="" refreshinfo="" displayinfo="" edittype="" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="true" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="" description="" csspropertyname="" normalpropertyname="miterlimit" stringrc="false" defaultstringrc="false" />
+      <Property name="opacity" group="Style" subgroup="" refreshinfo="" displayinfo="" edittype="Number" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定GraphicsImage区域的透明度的属性。" csspropertyname="" normalpropertyname="opacity" stringrc="false" defaultstringrc="false" />
+      <Property name="parent" group="Hidden" subgroup="" refreshinfo="" displayinfo="" edittype="Object" readonly="true" initonly="false" hidden="true" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="包含GraphicsImage的父级对象的只读属性。" csspropertyname="" normalpropertyname="parent" stringrc="false" defaultstringrc="false" />
+      <Property name="strokecap" group="" subgroup="" refreshinfo="" displayinfo="" edittype="" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="true" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="" description="" csspropertyname="" normalpropertyname="strokecap" stringrc="false" defaultstringrc="false" />
+      <Property name="strokejoin" group="Appearance" subgroup="" refreshinfo="" displayinfo="" edittype="Enum" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="true" mandatory="false" objectinfo="" enuminfo="StrokeJoin" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="" csspropertyname="" normalpropertyname="strokejoin" stringrc="false" defaultstringrc="false" />
+      <Property name="strokepen" group="Misc." subgroup="" refreshinfo="" displayinfo="" edittype="" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="true" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="" description="" csspropertyname="" normalpropertyname="strokepen" stringrc="false" defaultstringrc="false" />
+      <Property name="visible" group="Action" subgroup="" refreshinfo="" displayinfo="" edittype="Boolean" defaultvalue="true" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定GraphicsImage是否显示在画面中的属性。" csspropertyname="" normalpropertyname="visible" stringrc="false" defaultstringrc="false" />
+      <Property name="width" group="Position" subgroup="position" refreshinfo="" displayinfo="" edittype="Number" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="Pixel" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定GraphicsImage区域的宽度的属性。" csspropertyname="" normalpropertyname="width" stringrc="false" defaultstringrc="false" />
+      <Property name="x" group="" subgroup="" refreshinfo="" displayinfo="" edittype="Number" defaultvalue="0" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定以父级对象为基准的需要显示GraphicsImage的x轴坐标值的属性。" csspropertyname="" normalpropertyname="x" stringrc="false" defaultstringrc="false" />
+      <Property name="y" group="" subgroup="" refreshinfo="" displayinfo="" edittype="Number" defaultvalue="0" readonly="false" initonly="false" hidden="false" control="false" expr="false" bind="false" deprecated="false" unused="false" mandatory="false" objectinfo="" enuminfo="" enuminfo2="" unitinfo="" delimiter="" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定以父级对象为基准的需要显示GraphicsImage的y轴坐标值的属性。" csspropertyname="" normalpropertyname="y" stringrc="false" defaultstringrc="false" />
+    </PropertyInfo>
+    <CSSInfo>
+      <PropertyInfo />
+    </CSSInfo>
+    <StatusInfo />
+    <ControlInfo />
+    <MethodInfo>
+      <Method name="destroy" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于从内存中彻底删除GraphicsImage的方法。">
+        <Syntax text="GraphicsImage.destroy()">
+          <Return type="Boolean" description="在GraphicsImage被正常删除时，将返回true。&#xD;&#xA;&#xD;&#xA;在没有正常删除GraphicsImage时，将返回false。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="getBoundRect" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="该方法返回GraphicsImage显示的区域信息，包括基于Graphics组件的外轮廓区域。">
+        <Syntax text="GraphicsImage.getBoundRect( );">
+          <Return type="Object" description="基于 Graphics 组件的 left, top 位置计算的区域信息将返回 Rect Object 。&#xA;&#xA;设定 GraphicsEllife、GraphicsLine、GraphicsPath、GraphicsPaths、GraphicsRect 对象 strokepen 属性值时,返还的领域信息中包括外侧外围线领域。&#xA;未设置 strokepen 属性值或 GraphicsGroup、 GraphicsImage、 GraphicsText Object 没有外围线信息， 返回的区域信息不包括外围线区域 。&#xA;&#xA;* Rect 对象具有&quot;left&quot;、&quot;top&quot;、&quot;right&quot;、&quot;bottom&quot;、&quot;width&quot;、&quot;height&quot; 属性。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="getNextSibling" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于返回父级与GraphicsImage相同的Graphics对象中的下一个对象的方法。">
+        <Syntax text="GraphicsImage.getNextSibling()">
+          <Return type="Object" description="返回父级相同的下一个Graphics对象。&#xD;&#xA;&#xD;&#xA;在没有下一个Graphics对象时，将返回null。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="getOffsetBoundRect" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="显示 GraphicsImage 的区域信息以 Graphics 父母对象为基准， 包括外部外围区域在内的返还方法。">
+        <Syntax text="GraphicsImage.getOffsetBoundRect( );">
+          <Return type="Object" description="基于父母对象 left, top 位置计算的区域信息将返回 Rect 对象 。&#xA;&#xA;设定GraphicsEllife、GraphicsLine、GraphicsPath、GraphicsPaths、GraphicsRect对象strokepen属性值时,返还的领域信息中包括外侧外围线领域。&#xA;未设置 strokepen 属性值或 GraphicsGroup、 GraphicsImage、 GraphicsText Object 对象时，没有外围线信息， 返回的区域信息不包括外围线区域 。&#xA;&#xA;* Rect 对象具有 &quot;left&quot;、&quot;top&quot;、&quot;right&quot;、&quot;bottom&quot;、&quot;width&quot;、&quot;height&quot;属性。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="getOffsetRect" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于以父级对象为基准返回显示GraphicsImage的区域信息的方法。">
+        <Syntax text="GraphicsImage.getOffsetRect( );">
+          <Return type="Object" description="基于父母对象 left, top 位置为基准，计算的区域信息将返回 Rect 对象 。&#xA;&#xA;即使设定了 GraphicsImage Object 的 strokepen 属性值， 与外围线区域无关， GraphicsImage Object 的实际区域将被返还 。&#xA;&#xA;* Rect 对象具有&quot;left&quot;、&quot;top&quot;、&quot;right&quot;、&quot;bottom&quot;、&quot;width&quot;、&quot;height&quot;属性。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="getOffsetRegion" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="显示 GraphicsImage 的区域信息以父母对象组件为基准，除内侧外围区域外，均可返还。">
+        <Syntax text="GraphicsImage.getOffsetRegion( );">
+          <Return type="Object" description="基于父母对象 left, top 位置为基准，计算的区域信息将返回 Rect 对象 。&#xA;&#xA;即使设定了 GraphicsImage Object 的 strokepen 属性值， 返回的区域信息中， 内侧外围区域将被除外 。&#xA;&#xA;* Rect 对象具有&quot;left&quot;、&quot;top&quot;、&quot;right&quot;、&quot;bottom&quot;、&quot;width&quot;、&quot;height&quot;属性。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="getPreviousSibling" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于返回父级与GraphicsImage相同的Graphics对象中的上一个对象的方法。">
+        <Syntax text="GraphicsImage.getPreviousSibling()">
+          <Return type="Object" description="返回父级相同的上一个Graphics对象。&#xD;&#xA;&#xD;&#xA;在没有上一个Graphics对象时，将返回null。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="getRect" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于以Graphics组件基准返回GraphicsImage的区域信息的方法。">
+        <Syntax text="GraphicsImage.getRect( );">
+          <Return type="Object" description="基于 Graphics 组件的 left, top 位置为基准，计算的区域信息将返回 Rect Object 。&#xA;&#xA;即使设定了 GraphicsImage Object 的 strokepen 属性值， 与外围线区域无关， GraphicsImage Object 的实际区域将被返还 。&#xA;&#xA;* Rect 对象具有&quot;left&quot;、&quot;top&quot;、&quot;right&quot;、&quot;bottom&quot;、&quot;width&quot;、&quot;height&quot;属性。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="getRegion" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="该方法返回显示 GraphicsImage 的区域信息，不包括基于Graphics组件的内轮廓区域。">
+        <Syntax text="GraphicsImage.getRegion( );">
+          <Return type="Object" description="根据 Graphics 组件的左侧和顶部位置计算的区域信息作为 Rect 对象返回。&#xA;&#xA;设置GraphicsImage对象的strokepen属性值时，返回的区域信息不包括内轮廓区域。&#xA;&#xA;* Rect 对象具有属性“left”、“top”、“right”、“bottom”、“width”、“height”。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="isEmptyRect" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于返回是否有图像被载入到GraphicsImage对象的属性。">
+        <Syntax text="GraphicsImage.isEmptyRect()">
+          <Return type="Boolean" description="在没有图像被载入时，将返回true。&#xD;&#xA;&#xD;&#xA;在有图像被载入时，将返回false。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="isHitTest" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于返回通过参数传递的坐标位置是否包含于GraphicsImage区域的方法。">
+        <Syntax text="GraphicsImage.isHitTest( nX, nY )">
+          <Return type="Boolean" description="在通过参数传递的坐标位置包含于GraphicsImage区域时，将返回true。&#xD;&#xA;&#xD;&#xA;在通过参数传递的坐标位置没有包含于GraphicsImage区域时，将返回false。" />
+          <Arguments>
+            <Argument name="nX" type="Number" in="false" out="false" option="false" variable="false" description="利用pixel单位的数字设定需要进行确认的位置的x坐标值。&#xD;&#xA;&#xD;&#xA;设定值将以Graphics组件为基准进行处理。" />
+            <Argument name="nY" type="Number" in="false" out="false" option="false" variable="false" description="利用pixel单位的数字设定需要进行确认的位置的y坐标值。&#xD;&#xA;&#xD;&#xA;设定值将以Graphics组件为基准进行处理。" />
+          </Arguments>
+        </Syntax>
+      </Method>
+      <Method name="rotate" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于向GraphicsImage适用旋转效果的方法。">
+        <Syntax text="GraphicsImage.rotate( nAngle [, nCenterX, nCenterY] );">
+          <Return type="" description="" />
+          <Arguments>
+            <Argument name="nAngle" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定需要从当前状态旋转的角度。&#xD;&#xA;&#xD;&#xA;在设定为正数时，向顺时针方向旋转。&#xD;&#xA;在设定为负数时，向逆时针方向旋转。" />
+            <Argument name="nCenterX" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定作为旋转中心的x坐标。&#xD;&#xA;设定值将以父级对象为基准进行处理。&#xD;&#xA;&#xD;&#xA;在省略值时适用0值。" />
+            <Argument name="nCenterY" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定作为旋转中心的y坐标。&#xD;&#xA;设定值将以父级对象为基准进行处理。&#xD;&#xA;&#xD;&#xA;在省略值时适用0值。" />
+          </Arguments>
+        </Syntax>
+      </Method>
+      <Method name="scale" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于向GraphicsImage适用放大/缩小效果的方法。">
+        <Syntax text="GraphicsImage.scale( nScaleX, nScaleY [, nCenterX, nCenterY] );">
+          <Return type="" description="" />
+          <Arguments>
+            <Argument name="nCenterX" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定作为放大/缩小中心的x坐标。&#xD;&#xA;设定值将以父级对象为基准进行处理。&#xD;&#xA;&#xD;&#xA;在省略值时适用0值。" />
+            <Argument name="nCenterY" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定作为放大/缩小中心的y坐标。&#xD;&#xA;设定值将以父级对象为基准进行处理。&#xD;&#xA;&#xD;&#xA;在省略值时适用0值。" />
+            <Argument name="nScaleX" type="Number" in="false" out="false" option="false" variable="false" description="利用实数设定需要从当前大小放大/缩小的横向比例。&#xD;&#xA;&#xD;&#xA;在设定大于1.0的值时，GraphicsImage将被放大。&#xD;&#xA;在设定小于1.0的值时，GraphicsImage将被缩小。" />
+            <Argument name="nScaleY" type="Number" in="false" out="false" option="false" variable="false" description="利用实数设定需要从当前大小放大/缩小的纵向比例。&#xD;&#xA;&#xD;&#xA;在设定大于1.0的值时，GraphicsImage将被放大。&#xD;&#xA;在设定小于1.0的值时，GraphicsImage将被缩小。" />
+          </Arguments>
+        </Syntax>
+      </Method>
+      <Method name="setClipRect" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定为了仅显示GraphicsImage的一部分区域而进行Clipping的区域坐标的方法。">
+        <Syntax text="GraphicsImage.setClipRect( nX, nY, nWidth, nHeight );">
+          <Return type="" description="" />
+          <Arguments>
+            <Argument name="nHeight" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定需要进行Clipping的区域的高度。&#xD;&#xA;&#xD;&#xA;设定值将以nY参数值为基准进行处理。" />
+            <Argument name="nWidth" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定需要进行Clipping的区域的宽度。&#xD;&#xA;&#xD;&#xA;设定值将以nX参数值为基准进行处理。" />
+            <Argument name="nX" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定需要进行Clipping的区域的x坐标。&#xD;&#xA;&#xD;&#xA;设定值将GraphicsImage的x属性值的位置假定为0进行处理。" />
+            <Argument name="nY" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定需要进行Clipping的区域的y坐标。&#xD;&#xA;&#xD;&#xA;设定值将GraphicsImage的y属性值的位置假定为0进行处理。" />
+          </Arguments>
+        </Syntax>
+      </Method>
+      <Method name="setImageLoadEventHandler" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于设定需要在图像被载入到GraphicsImage中时作为CallBack执行的函数的方法。">
+        <Syntax text="GraphicsImage.setImageLoadEventHandler( objfunc, objTarget )">
+          <Return type="" description="" />
+          <Arguments>
+            <Argument name="objfunc" type="Object" in="false" out="false" option="false" variable="false" description="设定需要在载入图像时执行的函数。" />
+            <Argument name="objTarget" type="Object" in="false" out="false" option="false" variable="false" description="设定对函数做出定义的区域。" />
+          </Arguments>
+        </Syntax>
+      </Method>
+      <Method name="setTransform" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于以GraphicsImage的原始位置为基准连续适用Transform相关效果的方法。">
+        <Syntax text="GraphicsImage.setTransform( strMethod );">
+          <Return type="" description="" />
+          <Arguments>
+            <Argument name="strMethod" type="String" in="false" out="false" option="false" variable="false" description="利用“,”区分设定需要适用于GraphicsImage的Transform相关方法。&#xD;&#xA;可以使用translate()、scale()、rotate()、shear()方法。&#xD;&#xA;在设定为null值时，将以没有指定transform效果的状态进行初始化。" />
+          </Arguments>
+        </Syntax>
+      </Method>
+      <Method name="shear" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于向GraphicsImage适用扭曲效果的方法。">
+        <Syntax text="GraphicsImage.shear( nRadianX, nRadianY [, nCenterX, nCenterY] );">
+          <Return type="" description="" />
+          <Arguments>
+            <Argument name="nCenterX" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定作为扭曲中心的x坐标。&#xD;&#xA;设定值将以父级对象为基准进行处理。&#xD;&#xA;&#xD;&#xA;在省略值时适用0值。" />
+            <Argument name="nCenterY" type="Number" in="false" out="false" option="false" variable="false" description="利用数字设定作为扭曲中心的y坐标。&#xD;&#xA;设定值将以父级对象为基准进行处理。&#xD;&#xA;&#xD;&#xA;在省略值时适用0值。" />
+            <Argument name="nRadianX" type="Number" in="false" out="false" option="false" variable="false" description="利用弧度值设定从当前状态以x轴为基准扭曲的角度。" />
+            <Argument name="nRadianY" type="Number" in="false" out="false" option="false" variable="false" description="利用弧度值设定从当前状态以y轴为基准扭曲的角度。" />
+          </Arguments>
+        </Syntax>
+      </Method>
+      <Method name="toString" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于以字符串形态返回GraphicsImage的类型的方法。">
+        <Syntax text="GraphicsImage.toString();">
+          <Return type="String" description="通常返回&quot;[object GraphicsImage]&quot;形态的字符串。" />
+          <Arguments />
+        </Syntax>
+      </Method>
+      <Method name="transform" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于向GraphicsImage适用Transform相关效果的方法。">
+        <Syntax text="GraphicsImage.transform( nScaleX, nShearX, nShearY, nScaleY, nTransX, nTransY );">
+          <Return type="" description="" />
+          <Arguments>
+            <Argument name="nScaleX" type="Number" in="false" out="false" option="false" variable="false" description="利用实数设定需要从当前大小放大/缩小的横向比例。&#xD;&#xA;&#xD;&#xA;在设定大于1.0的值时，GraphicsImage将被放大。&#xD;&#xA;在设定小于1.0的值时，GraphicsImage将被缩小。" />
+            <Argument name="nScaleY" type="Number" in="false" out="false" option="false" variable="false" description="利用实数设定需要从当前大小放大/缩小的纵向比例。&#xD;&#xA;&#xD;&#xA;在设定大于1.0的值时，GraphicsImage将被放大。&#xD;&#xA;在设定小于1.0的值时，GraphicsImage将被缩小。" />
+            <Argument name="nShearX" type="Number" in="false" out="false" option="false" variable="false" description="利用弧度值设定从当前状态以x轴为基准扭曲的角度。" />
+            <Argument name="nShearY" type="Number" in="false" out="false" option="false" variable="false" description="利用弧度值设定从当前状态以y轴为基准扭曲的角度。" />
+            <Argument name="nTransX" type="Number" in="false" out="false" option="false" variable="false" description="利用pixel单位的数字设定从当前位置向x轴方向移动的距离。" />
+            <Argument name="nTransY" type="Number" in="false" out="false" option="false" variable="false" description="利用pixel单位的数字设定从当前位置向y轴方向移动的距离。" />
+          </Arguments>
+        </Syntax>
+      </Method>
+      <Method name="translate" group="" async="false" usecontextmenu="false" deprecated="false" unused="false" requirement="IE10,IE11,Edge,Chrome,Safari,Firefox,Opera,Windows NRE,macOS NRE,Android NRE,iOS/iPadOS NRE,Android Default Web Browser,iOS/iPadOS Default Web Browser" description="用于适用GraphicsImage的位置移动效果的方法。">
+        <Syntax text="GraphicsImage.translate( nTransX, nTransY );">
+          <Return type="" description="" />
+          <Arguments>
+            <Argument name="nTransX" type="Number" in="false" out="false" option="false" variable="false" description="利用pixel单位的数字设定从当前位置向x轴方向移动的距离。" />
+            <Argument name="nTransY" type="Number" in="false" out="false" option="false" variable="false" description="利用pixel单位的数字设定从当前位置向y轴方向移动的距离。" />
+          </Arguments>
+        </Syntax>
+      </Method>
+    </MethodInfo>
+    <EventHandlerInfo />
+  </Object>
+</MetaInfo>

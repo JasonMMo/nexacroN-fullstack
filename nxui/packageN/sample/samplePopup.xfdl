@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.0">
+  <Form id="sample012_popup" width="1050" height="818" titletext="popup" onload="Form_onload">
+    <Layouts>
+      <Layout height="818" mobileorientation="landscape" width="1050">
+        <Button id="btnPopup" taborder="0" text="모달팝업" left="17" top="22" width="119" height="50" right="" bottom="" onclick="btnPopup_onclick"/>
+        <Button id="btnPopup00" taborder="0" text="모달리스 팝업" left="17" top="86" width="119" height="50" right="" bottom="" onclick="btnPopup00_onclick"/>
+        <Button id="btnPopup01" taborder="0" text="팝업에 form연결" left="17" top="150" width="119" height="50" right="" bottom="" onclick="btnPopup01_onclick"/>
+        <Button id="btnPopup02" taborder="3" text="모달Sync(Runtime)" left="155" top="22" width="155" height="50" onclick="btnPopup02_onclick"/>
+        <Button id="btnPopup03" taborder="4" text="모달Window(Runtime)" left="155" top="86" width="155" height="50" onclick="btnPopup03_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/**
+*  컨설팅 표준화 작업
+*  @MenuPath 
+*  @FileName 		sample012_popup.xfdl 
+*  @Creator 			soojeong
+*  @CreateDate 	2017.03.10
+*  @LastModifier  
+*  @LastModifyDate  
+*  @Version 		1.0
+*  @Outline 		
+*  @Desction   
+************** 소스 수정 이력 *************************************************
+*    date          		Modifier            Description
+*******************************************************************************
+*  2017.03.10     	soojeong 	           최초 생성 
+*******************************************************************************
+*/
+
+/************************************************************************************************
+ * FORM 변수 선언 영역
+ ************************************************************************************************/
+
+/***********************************************************************************************
+* FORM EVENT 영역(onload)
+/***********************************************************************************************/
+this.Form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.gfnFormOnLoad(this);
+};
+/************************************************************************************************
+* TRANSACTION 서비스 호출 처리
+************************************************************************************************/
+
+/************************************************************************************************
+ * CALLBACK 콜백 처리부분
+ ************************************************************************************************/
+
+ /************************************************************************************************
+ * 사용자 FUNCTION 영역
+ ************************************************************************************************/
+/**
+* fnPopupCallback : popup callback
+* @param  : strId		   - [string]popup id
+* @param  : strVal		   - [string]return val
+* @return : N/A
+*/
+ this.fnPopupCallback = function(strId, strVal)
+ {
+	trace(" strId : " + strId + " strVal : " + strVal);
+ };
+ /************************************************************************************************
+ * 각 COMPONENT 별 EVENT 영역
+ ************************************************************************************************/
+/**
+* btnPopup_onclick : modal popup open
+* @param  : obj		   - [object]Button
+* @param  : e		   - [string]ClickEventInfo
+* @return : N/A
+*/
+this.btnPopup_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var oArg = {paramTitle:"가나다라", paramCode:"abcd", paramNum:12345};
+	var oOption = {};	//top, left를 지정하지 않으면 가운데정렬 //"top=20,left=370"
+	var sPopupCallBack = "fnPopupCallback";
+	this.gfnOpenPopup( "popup","cmm::cmmPopup.xfdl",oArg,sPopupCallBack,oOption);	
+};
+/**
+* btnPopup00_onclick : modaless popup open
+* @param  : obj		   - [object]Button
+* @param  : e		   - [string]ClickEventInfo
+* @return : N/A
+*/
+this.btnPopup00_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var oArg = {paramTitle:"가나다라", paramCode:"abcd", paramNum:12345};
+	var oOption = {popuptype:"modeless"};	//top, left를 지정하지 않으면 가운데정렬 //top:20,left:370
+	var sPopupCallBack = "fnPopupCallback";
+	this.gfnOpenPopup( "popup","cmm::cmmPopup.xfdl",oArg,sPopupCallBack,oOption);	
+};
+/**
+* btnPopup01_onclick : modaless popup open - div에 form연결
+* @param  : obj		   - [object]Button
+* @param  : e		   - [string]ClickEventInfo
+* @return : N/A
+*/
+this.btnPopup01_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var sFormName = "테스트";
+	var sFormUrl      = "sample::sample001_transaction.xfdl";
+	
+	var oArg = {paramTitle:sFormName, paramCode:"abcd", paramNum:12345, paramUrl:sFormUrl};
+	var oOption = {};	//top, left를 지정하지 않으면 가운데정렬 //"top:20,left:370"
+	var sPopupCallBack = "fnPopupCallback";
+	this.gfnOpenPopup( "popup","cmm::cmmPopup.xfdl",oArg,sPopupCallBack,oOption);	
+};
+
+this.btnPopup02_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var oArg = {paramTitle:"가나다라", paramCode:"abcd", paramNum:12345};
+	var oOption = {popuptype:"modalsync"};	//top, left를 지정하지 않으면 가운데정렬 //"top=20,left=370"
+	trace("modalsync 호출전");
+	this.gfnOpenPopup( "popup","cmm::cmmPopup.xfdl",oArg,"",oOption);		
+	trace("modalsync 호출후");
+};
+
+this.btnPopup03_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var oArg = {paramTitle:"가나다라", paramCode:"abcd", paramNum:12345};
+	var oOption = {popuptype:"modalwindow"};	//top, left를 지정하지 않으면 가운데정렬 //"top=20,left=370"
+	trace("modalwindow 호출전");
+	var rtn = this.gfnOpenPopup( "popup","cmm::cmmPopup.xfdl",oArg,"",oOption);		
+	trace("modalwindow 호출후 : " + rtn);	
+};
+]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,649 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="FileUpDown" left="0" top="0" width="1280" height="720" titletext="New Form" border="" background="" onload="FileUpDown_onload">
+    <Layouts>
+      <Layout height="720" width="1280" stepcount="0" screenid="">
+        <Static id="sta03" taborder="15" left="20" top="60" height="126" background="cornsilk" right="20" verticalAlign="top" onclick="sta03_onclick" textAlign="left" font="bold 18px/normal &quot;맑은 고딕&quot;" padding="10px" text="nexacroN 기본 파일 Transper up/down 컴포넌트로 제작되었습니다."/>
+        <Button id="btnDel" taborder="0" text="삭제" top="251" width="69" height="30" onclick="btnDel_onclick" positionstep="0" right="93" cssclass="btn_WF_basic01"/>
+        <Grid id="grdFileUpload" taborder="1" left="20" top="287" height="183" binddataset="dsUpload" autofittype="col" nodatatext="파일을 드래그하여 첨부 할 수 있습니다." positionstep="0" right="20" oncelldblclick="grdFileUpload_oncelldblclick" ondrop="grdFileUpload_ondrop" onheadclick="grdFileUpload_onheadclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="42" band="left"/>
+                <Column size="152"/>
+                <Column size="320"/>
+                <Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row size="42" band="head"/>
+                <Row size="40"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="checkboxcontrol" edittype="checkbox" text="0"/>
+                <Cell col="1" text="FILE_NAME"/>
+                <Cell col="2" text="FILE_PATH"/>
+                <Cell col="3" text="SIZE"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="checkboxcontrol" edittype="checkbox" text="bind:CHK"/>
+                <Cell col="1" text="bind:FILE_NAME" displaytype="normal" edittype="none" treelevel="bind:DEPTH"/>
+                <Cell col="2" text="bind:FILE_URL"/>
+                <Cell col="3" treelevel="bind:DEPTH" text="bind:FiLE_SIZE"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btnSave" taborder="2" text="전송" top="251" width="69" height="30" onclick="btnSave_onclick" positionstep="0" right="20" cssclass="btn_WF_basic01"/>
+        <Grid id="grdFileDownload" taborder="3" left="20" binddataset="dsDownload" autofittype="col" positionstep="0" right="20" oncelldblclick="grdFileDownload_oncelldblclick" onheadclick="grdFileDownload_onheadclick" top="540" bottom="30">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="116"/>
+                <Column size="353"/>
+                <Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row size="40" band="head"/>
+                <Row size="40"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="checkboxcontrol" edittype="checkbox" text="0"/>
+                <Cell col="1" text="FILE_NAME"/>
+                <Cell col="2" text="FILE_PATH"/>
+                <Cell col="3" text="SIZE"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="checkboxcontrol" edittype="checkbox" text="bind:CHK"/>
+                <Cell col="1" text="bind:FILE_NAME" displaytype="normal" edittype="none" treelevel="bind:DEPTH"/>
+                <Cell col="2" text="bind:FILE_PATH"/>
+                <Cell col="3" treelevel="bind:DEPTH" text="bind:FILE_SIZE"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btnDonwload" taborder="4" text="선택 다운로드" top="504" width="106" height="30" onclick="btnDonwload_onclick" positionstep="0" right="20" cssclass="btn_WF_basic01"/>
+        <Button id="btnSearch" taborder="5" text="리스트 불러오기" top="504" width="106" height="30" onclick="btnSearch_onclick" positionstep="0" right="132" cssclass="btn_WF_basic03"/>
+        <Button id="btnAdd" taborder="6" text="추가" top="251" width="69" height="30" right="167" onclick="btnAdd_onclick" cssclass="btn_WF_basic01"/>
+        <Static id="sta02" taborder="7" text="File UPLOAD/DOWNLOAD " left="20" top="17" width="241" height="33"/>
+        <Static id="staSupportDnd" taborder="8" text="▶ drag and drop &lt;fc v='red'&gt;지원&lt;/fc&gt;" left="35" top="97" width="383" height="23" font="bold 14px/normal &quot;Gulim&quot;,&quot;Arial&quot;" usedecorate="true"/>
+        <Static id="staSupportPgb" taborder="9" text="▶ progressbar &lt;fc v='blue'&gt;미지원&lt;/fc&gt;" left="35" top="125" width="383" height="23" font="bold 14px/normal &quot;Gulim&quot;,&quot;Arial&quot;" usedecorate="true"/>
+        <Static id="staSupportMulti" taborder="10" text="▶ multiselect &lt;fc v='red'&gt;지원&lt;/fc&gt;" left="35" top="155" width="383" height="23" font="bold 14px/normal &quot;Gulim&quot;,&quot;Arial&quot;" usedecorate="true"/>
+        <Static id="sta04" taborder="11" text="H30" left="20" top="186" width="464" height="30" background="RGBA(36,19,214,0.33)" visible="false"/>
+        <Static id="Static00" taborder="12" text="1) file upload" left="20" top="229" width="178" height="28" font="bold 10pt &quot;맑은 고딕&quot;"/>
+        <Static id="sta05" taborder="13" text="H10" left="25" top="259" width="424" height="10" background="RGBA(23,211,35,0.30)" visible="false"/>
+        <Static id="Static01" taborder="14" text="2) file download" left="21" top="490" width="138" height="28" font="bold 10pt &quot;맑은 고딕&quot;"/>
+        <Static id="sta05_00" taborder="16" text="H10" left="26" top="470" width="424" height="10" background="RGBA(23,211,35,0.30)" visible="false"/>
+        <Static id="staSupportDnd00" taborder="17" text="▶ Multi Upload &lt;fc v='red'&gt;지원&lt;/fc&gt;" left="440" top="97" width="383" height="23" font="bold 14px/normal &quot;Gulim&quot;,&quot;Arial&quot;" usedecorate="true"/>
+        <Static id="staSupportDnd00_00" taborder="18" text="▶ Multi Download &lt;fc v='red'&gt;Zip파일로 다운로드 됨&lt;/fc&gt;" left="440" top="125" width="383" height="23" font="bold 14px/normal &quot;Gulim&quot;,&quot;Arial&quot;" usedecorate="true"/>
+        <CheckBox id="chk_postData" taborder="19" text="postData 포함 여부@" left="159" top="231" width="150" height="20" value="true"/>
+        <Radio id="rdo_postType" taborder="20" left="320" top="225" width="200" height="30" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" columncount="2" index="0" text="ssv" value="0">
+          <Dataset id="innerdataset">
+            <ColumnInfo>
+              <Column id="codecolumn" size="256"/>
+              <Column id="datacolumn" size="256"/>
+            </ColumnInfo>
+            <Rows>
+              <Row>
+                <Col id="codecolumn">0</Col>
+                <Col id="datacolumn">ssv</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">1</Col>
+                <Col id="datacolumn">json</Col>
+              </Row>
+            </Rows>
+          </Dataset>
+        </Radio>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <FileUpTransfer id="fileUpTrans" onerror="fileUpTrans_onerror" onsuccess="fileUpTrans_onsuccess"/>
+      <FileDownTransfer id="fileDownTrans" onsuccess="fileDownTrans_onsuccess" onerror="fileDownTrans_onerror"/>
+      <FileDialog id="fileDialog" onclose="fileDialog_onclose"/>
+      <Dataset id="dsUpload">
+        <ColumnInfo>
+          <Column id="CHK" type="STRING" size="256"/>
+          <Column id="FILE_NAME" type="STRING" size="256"/>
+          <Column id="FILE_URL" type="STRING" size="256"/>
+          <Column id="DEPTH" type="STRING" size="256"/>
+          <Column id="STATUS" type="STRING" size="256"/>
+          <Column id="FiLE_SIZE" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="dsDownload">
+        <ColumnInfo>
+          <Column id="CHK" type="STRING" size="256"/>
+          <Column id="FILE_NAME" type="STRING" size="256"/>
+          <Column id="FILE_URL" type="STRING" size="256"/>
+          <Column id="FILE_PATH" type="STRING" size="256"/>
+          <Column id="STATUS" type="STRING" size="256"/>
+          <Column id="FILE_SIZE" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_inputparam">
+        <ColumnInfo>
+          <Column id="key" type="STRING" size="256"/>
+          <Column id="value" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="key">key01</Col>
+            <Col id="value">aaa</Col>
+          </Row>
+          <Row>
+            <Col id="key">key02</Col>
+            <Col id="value">bbb</Col>
+          </Row>
+          <Row>
+            <Col id="key">key03</Col>
+            <Col id="value">ccc</Col>
+          </Row>
+          <Row>
+            <Col id="key">key04</Col>
+            <Col id="value">ddd</Col>
+          </Row>
+          <Row>
+            <Col id="key">key05</Col>
+            <Col id="value">eee</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[/**
+*  nexacro 17 demo
+*  @MenuPath    대메뉴 > 소메뉴
+*  @FileName    FileUpDown.xfdl
+*  @Creator     presales
+*  @CreateDate  2019/10/16
+*  @Desction    스크립트 표준 및 주석 표준 정의
+************** 소스 수정 이력 ***********************************************
+*  date            Modifier                Description
+*******************************************************************************
+*  2019/10/16          presales                  최초 생성 
+*******************************************************************************
+*/
+
+/************************************************************************************************
+ * FORM 변수 선언 영역
+ ************************************************************************************************/
+/* service url : 사용경로 지정 */
+this.serverUrl = ""; // nexacro.getProjectPath();
+this.folderName = "fileSample";	//업무별 file upload 폴더
+
+/************************************************************************************************
+ * FORM EVENT 영역(onload, onbeforeclose)
+ ************************************************************************************************/
+this.FileUpDown_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	//접속 환경별 서비스 URL 셋팅
+	var objEnv = nexacro.getEnvironment();
+	this.serverUrl =  objEnv.services["svcurl"].url; // "http://localhost:8080/uiadapter-spring-sample/"; // 
+
+};
+ 
+/************************************************************************************************
+ * CALLBACK 콜백 처리부분(Transaction, Popup)
+ ************************************************************************************************/
+
+ 
+ /************************************************************************************************
+ * CRUD 및 TRANSACTION 서비스 호출 처리
+ ************************************************************************************************/
+
+/************************************************************************************************
+ * 사용자 FUNCTION 영역
+ ************************************************************************************************/
+/**
+* fnAddFileList : fileUpTrans객체에 파일을 추가한다.
+* @param {Array}  filelists	- 파일 리스트
+* @return : N/A
+* @example :  
+*/
+this.fnAddFileList = function(filelists)
+{	
+	//array type virtualfile List
+	var vFile, strId;
+	var len = filelists.length;
+	for (var i = 0; i < len; i++)
+	{	
+		strId = this.guid();
+		vFile = filelists[i];
+		this.fileUpTrans.addFile(strId, vFile); 
+		
+		vFile.addEventHandler("onsuccess", this.fileList_onsuccess, this);
+		vFile.addEventHandler("onerror", this.fileList_onerror, this);
+		
+		vFile.open(null, VirtualFile.openRead);
+		vFile.getFileSize();	//return file size
+		vFile.close();
+	}
+}
+this.guid = function(){
+	return Date.now().toString(36) + Math.random().toString(36).substring(2);
+}
+
+/**
+* fnUploadFile : 파일 업로드
+* @return : N/A
+* @example :  
+*/
+this.fnUploadFile = function()
+{
+	this.setUploadInfo(this.ds_inputparam);
+
+	var uploadUrl = this.serverUrl+"advancedUploadFiles.do?subFolder=" + this.folderName;
+	this.fileUpTrans.upload(uploadUrl);
+}
+
+/*
+ * @infoDs : 파일업로드시 전달할 Dataset
+ */
+this.setUploadInfo = function(infoDs)
+{
+	this.fileUpTrans.clearPostDataList();
+	if ( true == this.chk_postData.value )
+	{
+		if(infoDs != null) {
+			for (var i = 0; i < infoDs.rowcount; i++)
+			{
+				this.fileUpTrans.setPostData(
+					infoDs.getColumn(i,"key"),
+					infoDs.getColumn(i,"value")
+				);
+				trace( infoDs.getColumn(i,"key") + " : " + this.fileUpTrans.getPostData(infoDs.getColumn(i,"key")) );
+			}
+		}
+		// SSV prefix + SSV 포맷 dataset을 전송.
+		this.fileUpTrans.setPostData(
+			"inputDatasets",
+			this.rdo_postType.index == 0 ? this.getSSVData("UTF-8", "ds_input") : this.getJsonData("UTF-8", "ds_input") 
+		);
+		
+		trace("this.fileUpTrans.postdatalist:"+this.fileUpTrans.postdatalist.length);
+	} else {
+		trace(this.fileUpTrans.filelist.length);
+	}
+}
+
+/*
+ * SSV포맷 리턴 
+ * SSV포맷의 dataset 값에 구분자로 사용하는 String.fromCharCode(30), String.fromCharCode(31)이 포함되면 안 됨.
+ */
+this.getSSVData = function(characterSet, dsName) {
+	
+	return this.dsUpload.saveSSV("ds_input") ;
+}
+
+/*
+ * JSON포맷 리턴 
+ * JSON포맷의 dataset 값과 변수들 포함.
+ */
+this.getJsonData = function(characterSet, ds, varArr) {
+	
+	if( varArr == null )
+		return "{ \"Datasets\" : \n[\n" + this.dsUpload.saveJSON("ds_input") + "\n]\n}";
+	else
+		return "TODO :: varArr 추가하는 패킷 셈플 미작성";
+}
+/**
+* fnDownloadFile : 파일 다운로드
+* @return : N/A
+* @example :  
+*/
+this.fnDownloadFile = function(i)
+{
+	this.fileDownTrans.clearPostDataList();
+	
+	this.fileDownTrans.set_downloadfilename(this.dsDownload.getColumn(i, "FILE_NAME"));	//runtime 전용 프로퍼티
+	
+	this.fileDownTrans.setPostData(
+		"filepath",
+		this.dsDownload.getColumn(i, "FILE_URL")
+	);
+	this.fileDownTrans.setPostData(
+		"filename",
+		this.dsDownload.getColumn(i, "FILE_NAME")
+	);
+	this.fileDownTrans.setPostData(
+		"subFolder",
+		"fileSample"
+	);
+	var queryStr = "&file="+this.dsDownload.getColumn(i, "FILE_NAME");
+	var downloadUrl = this.serverUrl+"advancedDownloadFile.do?subFolder=" + this.folderName + queryStr;	
+	this.fileDownTrans.download(downloadUrl);
+}
+
+
+/**
+* fnDownloadFileAll : 파일 전체 다운로드
+* @return : N/A
+* @example :  
+*/
+this.fnDownloadFileAll = function()
+{
+	this.fileDownTrans.clearPostDataList();
+	
+	var arrNameList = new Array();
+	
+	for(var i=0; i < this.dsDownload.getRowCount(); i++)
+	{
+		if(this.dsDownload.getColumn(i, "CHK") == 1)
+			arrNameList.push(this.dsDownload.getColumn(i, "FILE_NAME"));
+	}
+	
+	this.fileDownTrans.set_downloadfilename("fileSample.zip");	//runtime 전용 프로퍼티
+
+	this.fileDownTrans.setPostData(
+		"filenamelist",
+		arrNameList
+	);
+	
+	this.fileDownTrans.download(this.serverUrl+"multiDownloadFiles.do?subFolder=" + this.folderName);
+}
+
+/**
+* fnGetFileSize : 파일 크기에 맞는 파일 사이즈를 표시한다.
+* @param {String}  filesize	- 파일사이즈
+* @return : N/A
+* @example :  
+* https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications#Example_Showing_file(s)_size
+*/
+this.fnGetFileSize = function(filesize)
+{
+	var sOutput = filesize + " bytes";
+	for (var aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"], nMultiple = 0, nApprox = filesize / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) 
+	{
+		sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple];
+	}
+	return sOutput;
+};
+
+
+/************************************************************************************************
+* TRANSACTION 및 추가 FUNCTION 영역
+************************************************************************************************/
+/**
+* fnCallbackTransaction : 
+* @param {String}  svcId	- 서비스 ID
+* @param {String}  errCode	- 에러코드
+* @param {String}  errMsg	- 에러메세지
+* @return : N/A
+* @example :  
+*/
+this.fnCallbackTransaction = function(svcId, errCode, errMsg)
+{
+	if(svcId == "list")
+	{
+		this.dsDownload.set_enableevent(false);
+		
+		this.dsDownload.addColumn("CHK", "STRING", 255);
+		
+		for(var i=0; i<this.dsDownload.getRowCount(); i++)
+		{	
+			this.dsDownload.setColumn(i, "CHK", 0);
+			this.dsDownload.setColumn(i,"FiLE_SIZE",this.fnGetFileSize(this.dsDownload.getColumn(i,"FiLE_SIZE")));
+		}
+		
+		this.dsDownload.set_enableevent(true);
+	}
+};
+
+
+/************************************************************************************************
+* 각 COMPONENT 별 EVENT 영역
+************************************************************************************************/
+/**
+ * @description 파일 추가
+*/
+this.btnAdd_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	//file dialog open
+	this.fileDialog.open('nexacro17', FileDialog.MULTILOAD);
+};
+
+
+/**
+ * @description 파일 삭제
+*/
+this.btnDel_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	//selected file delete
+	var chk = this.grdFileUpload.getCellPropertyValue(0, 0, "text");
+	var length = this.dsUpload.rowcount;
+	
+	if(chk == 1)
+	{
+		//전체삭제
+		for(var i=0; i<length; i++)
+		{
+			this.dsUpload.deleteRow((this.dsUpload.rowcount-1));
+			
+			var objFileList = this.fileUpTrans.filelist[(this.dsUpload.rowcount-1)];		//selected file search
+			this.fileUpTrans.removeFile(objFileList);			//filelist remove
+		}
+	}
+	else
+	{
+		//단건삭제
+		var nRow = this.dsUpload.rowposition;
+		this.dsUpload.deleteRow(nRow);
+	
+		var objFileList = this.fileUpTrans.filelist[nRow];	//selected file search
+		this.fileUpTrans.removeFile(objFileList);			//filelist remove
+	}
+};
+
+
+/**
+ * @description 파일 전송
+*/
+this.btnSave_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	//file upload 실행
+	this.setWaitCursor(true);
+	this.fnUploadFile();
+};
+
+/**
+ * @description 리스트 불러오기
+*/
+this.btnSearch_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var sUrl = this.serverUrl+"advancedDownloadList.do?subFolder=" + this.folderName;	
+	this.transaction("list", sUrl, "", "dsDownload=dsList", "", "fnCallbackTransaction", "false", "0")	
+};
+
+
+/**
+ * @description 전체 다운로드
+*/
+this.btnDonwload_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if(this.dsDownload.getCaseCount("CHK == '1'") < 1)
+	{
+		alert("반드시 항목 1개를 선택해야 합니다.");
+	}
+	else
+	{
+		if(this.dsDownload.getCaseCount("CHK == '1'") > 1)
+		{
+			this.fnDownloadFileAll();
+		}
+		else
+		{
+			var nRow = this.dsDownload.filterRow("CHK", 1);
+			this.fnDownloadFile(nRow);
+		}
+	}
+};
+
+/**
+ * @description 파일업로드 그리드 셀 더블클릭 이벤트
+*/
+this.grdFileUpload_oncelldblclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	
+};
+
+/**
+ * @description 파일업로드 그리드 마우스 드랍 이벤트
+*/
+this.grdFileUpload_ondrop = function(obj:nexacro.Grid,e:nexacro.GridDragEventInfo)
+{
+	if(e.datatype == "file")
+	{
+		this.fnAddFileList(e.filelist);
+	}
+};
+
+
+/**
+ * @description 파일업로드 전체선택 이벤트
+*/
+this.grdFileUpload_onheadclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	if(e.col == 0)
+	{
+		var chk = obj.getCellPropertyValue(e.row, e.cell, "text");
+		
+		if(chk == 0)
+		{
+			obj.setCellProperty("head", e.cell, "text", 1);
+			
+			for(var i=0; i<this.dsUpload.rowcount; i++)
+			{
+				this.dsUpload.setColumn(i, "CHK", 1);
+			}
+		}
+		else
+		{
+			obj.setCellProperty("head", e.cell, "text", 0);
+			
+			for(var i=0; i<this.dsUpload.rowcount; i++)
+			{
+				this.dsUpload.setColumn(i, "CHK", 0);
+			}
+		}
+	}	
+};
+
+
+/**
+ * @description 파일다운로드 닫았을 때 이벤트
+*/
+this.fileDialog_onclose = function(obj:nexacro.FileDialog,e:nexacro.FileDialogEventInfo)
+{
+	this.fnAddFileList(e.virtualfiles);
+	//this.grdFileUpload.setFocus();
+};
+
+/**
+ * @description 파일추가 성공
+*/
+this.fileList_onsuccess = function(obj:nexacro.VirtualFile, e:nexacro.VirtualFileEventInfo)
+{
+	//getFileSize() call --> reason : 9
+	if (e.reason == 9)
+	{
+		var nRowIdx = this.dsUpload.addRow();
+		this.dsUpload.setColumn(nRowIdx, "FILE_NAME", obj.filename);
+		this.dsUpload.setColumn(nRowIdx, "FiLE_SIZE", this.fnGetFileSize(e.filesize));
+		this.dsUpload.setColumn(nRowIdx, "FILE_URL", obj.fullpath);
+	}
+}
+
+/**
+ * @description 파일추가 실패
+*/
+this.fileList_onerror = function(obj:nexacro.VirtualFile, e:nexacro.VirtualFileErrorEventInfo)
+{
+	trace("errortype: "+e.errortype);
+	trace("errormsg: "+e.errormsg);
+	trace("statuscode: "+e.statuscode);
+}
+
+/**
+ * @description 업로드 성공
+*/
+this.fileUpTrans_onsuccess = function(obj:nexacro.FileUpTransfer,e:nexacro.FileUpTransferEventinfo)
+{
+	this.setWaitCursor(false);
+	var objCallDs = e.datasets[0];
+
+	for(var i=0; i<objCallDs.getRowCount(); i++)
+	{
+		this.dsUpload.setColumn(i, "FILE_URL",objCallDs.getColumn(i,"savePath"));
+	}
+	
+	alert("전송완료");	
+};
+
+
+/**
+ * @description 업로드 실패
+*/
+this.fileUpTrans_onerror = function(obj:nexacro.FileUpTransfer,e:nexacro.FileUpTransferErrorEventInfo)
+{
+	this.setWaitCursor(false);
+	alert(e.errortype + ">>" + e.errormsg);
+};
+
+
+/**
+ * @description 다운로드 그리드 전체체크
+*/
+this.grdFileDownload_onheadclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	if(e.col == 0)
+	{
+		var chk = obj.getCellPropertyValue(e.row, e.cell, "text");
+		
+		if(chk == 0)
+		{
+			obj.setCellProperty("head", e.cell, "text", 1);
+			
+			for(var i=0; i<this.dsDownload.rowcount; i++)
+			{
+				this.dsDownload.setColumn(i, "CHK", 1);
+			}
+		}
+		else
+		{
+			obj.setCellProperty("head", e.cell, "text", 0);
+			
+			for(var i=0; i<this.dsDownload.rowcount; i++)
+			{
+				this.dsDownload.setColumn(i, "CHK", 0);
+			}
+		}
+	}	
+};
+
+/**
+ * @description 다운로드 그리드 파일 다운로드
+*/
+this.grdFileDownload_oncelldblclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	this.fnDownloadFile(e.row);
+};
+
+/**
+ * @description 다운로드 성공
+*/
+this.fileDownTrans_onsuccess = function(obj:nexacro.FileDownTransfer,e:nexacro.FileDownTransferEventInfo)
+{
+	trace(e.targetfullpath);
+};
+
+/**
+ * @description 다운로드 실패
+*/
+this.fileDownTrans_onerror = function(obj:nexacro.FileDownTransfer,e:nexacro.FileDownTransferErrorEventInfo)
+{
+	trace("error : " + e.errormsg);
+};
+
+]]></Script>
+  </Form>
+</FDL>

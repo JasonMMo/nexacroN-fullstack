@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="fileReader" width="1280" height="720" titletext="New Form">
+    <Layouts>
+      <Layout height="720" width="1280">
+        <Button id="Button00" taborder="0" text="파일선택" left="10" top="10" width="120" height="50" onclick="Button00_onclick"/>
+        <ImageViewer id="ImageViewer00" taborder="1" left="10" top="70" width="500" height="330" border="2px solid"/>
+        <ImageViewer id="ImageViewer00_00" taborder="2" left="10.00" top="413" width="500" height="287" border="2px solid"/>
+        <Static id="sta00" taborder="3" text="&lt;---그냥 이미지에 표현" left="538" top="94" width="437" height="104"/>
+        <Static id="sta00_00" taborder="4" text="&lt;---BLOB 데이터 표현" left="530" top="428" width="437" height="104"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <FileDialog id="FileDialog00" onclose="FileDialog00_onclose"/>
+      <Dataset id="Dataset00">
+        <ColumnInfo>
+          <Column id="Column0" type="BLOB" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+      <VirtualFile id="VirtualFile00" onsuccess="VirtualFile00_onsuccess" onerror="VirtualFile00_onerror"/>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[
+this.Button00_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.FileDialog00.open("Image Upload",  FileDialog.LOAD);
+};
+   
+this.FileDialog00_onclose = function(obj:nexacro.FileDialog,e:nexacro.FileDialogEventInfo)
+{
+	if(nexacro._Browser=="Runtime")
+	{
+		this.ImageViewer00.set_image("URL('file://"+e.virtualfiles[0].fullpath+"')");
+		if(e.reason==1) {
+			var rtn = this.VirtualFile00.open(e.virtualfiles[0].fullpath, VirtualFile.openRead|VirtualFile.openBinary);
+		}
+	} else {	
+		this.fnReadImageFile(e.virtualfiles);
+	}
+
+};   
+
+this.fnReadImageFile = function(filelist)
+{   
+
+	if(filelist)
+	{
+		if ( /\.(jpe?g|png|gif)$/i.test(filelist[0].filename) ) {
+		  var reader = new FileReader();			  
+		  reader.targetForm = this;			
+		  reader.addEventListener("load", function () {
+		  this.targetForm.ImageViewer00.set_image(this.result);
+		  this.targetForm.Dataset00.setColumn(0,"Column0",this.result);
+		  }, false);
+		  reader.readAsDataURL(filelist[0]._handle);
+		}		
+		
+	}
+}
+
+
+this.VirtualFile00_onerror = function(obj:nexacro.VirtualFile,e:nexacro.VirtualFileErrorEventInfo)
+{
+	alert(e.errormsg);
+};
+
+this.VirtualFile00_onsuccess = function(obj:nexacro.VirtualFile,e:nexacro.VirtualFileEventInfo)
+{
+trace("Vir==" + e.reason); 
+	if(e.reason == 1)
+	{  
+		obj.read()   
+	}   
+	else if(e.reason == 3)
+	{
+		//this.ImageViewer00.set_image(e.binarydata);
+		this.Dataset00.setColumn(0,"Column0",e.binarydata);
+	}
+};
+]]></Script>
+    <Bind>
+      <BindItem id="item0" compid="ImageViewer00_00" propid="image" datasetid="Dataset00" columnid="Column0"/>
+    </Bind>
+  </Form>
+</FDL>
