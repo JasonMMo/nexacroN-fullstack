@@ -62,9 +62,49 @@
         <commons.lang3.version>3.14.0</commons.lang3.version>
         <commons.io.version>2.16.1</commons.io.version>
 
-        <!-- nexacro first-party modules (consumed from ./core) -->
-        <nexacro.module.version>0.1.0-SNAPSHOT</nexacro.module.version>
+        <!--
+            nexacro first-party modules — pulled from tobesoft Nexus.
+            See <repositories> block below for the repo URL.
+
+            Version pins match the known-good combination used by the
+            production jakarta-example. Bump these by probing
+            https://mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/com/nexacro/<artifactId>/maven-metadata.xml
+            and picking the highest semver.
+        -->
+        <!-- jakarta lane -->
+        <nexacro.xapi.jakarta.version>1.2.4-SNAPSHOT</nexacro.xapi.jakarta.version>
+        <nexacro.xeni.jakarta.version>1.5.21-SNAPSHOT</nexacro.xeni.jakarta.version>
+        <nexacro.uiadapter.jakarta.core.version>1.0.27.1-SNAPSHOT</nexacro.uiadapter.jakarta.core.version>
+        <nexacro.uiadapter.jakarta.dataaccess.version>1.0.14-SNAPSHOT</nexacro.uiadapter.jakarta.dataaccess.version>
+        <nexacro.uiadapter.jakarta.excel.version>1.5.4.3-SNAPSHOT</nexacro.uiadapter.jakarta.excel.version>
+
+        <!-- javax lane -->
+        <nexacro.xapi.javax.version>1.2.4-SNAPSHOT</nexacro.xapi.javax.version>
+        <nexacro.xeni.javax.version>1.5.21-SNAPSHOT</nexacro.xeni.javax.version>
+        <nexacro.uiadapter.spring.core.version>1.4.19.2-SNAPSHOT</nexacro.uiadapter.spring.core.version>
+        <nexacro.uiadapter.spring.dataaccess.version>1.4.19-SNAPSHOT</nexacro.uiadapter.spring.dataaccess.version>
+        <nexacro.uiadapter.spring.excel.version>1.5.21-SNAPSHOT</nexacro.uiadapter.spring.excel.version>
     </properties>
+
+    <!--
+        Nexacro first-party modules live on tobesoft's Nexus.
+        Anonymous reads are allowed for maven-metadata.xml; jar downloads
+        require credentials — add <server id="tobesoft-snapshots"> to your
+        ~/.m2/settings.xml with tobesoft-issued username/password.
+    -->
+    <repositories>
+        <repository>
+            <id>tobesoft-snapshots</id>
+            <url>https://mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -139,6 +179,60 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
+            </dependency>
+
+            <!-- =================== nexacro first-party (jakarta lane) =================== -->
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>nexacroN-xapi-jakarta</artifactId>
+                <version>${nexacro.xapi.jakarta.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>nexacroN-xeni-jakarta</artifactId>
+                <version>${nexacro.xeni.jakarta.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>uiadapter-jakarta-core</artifactId>
+                <version>${nexacro.uiadapter.jakarta.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>uiadapter-jakarta-dataaccess</artifactId>
+                <version>${nexacro.uiadapter.jakarta.dataaccess.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>uiadapter-jakarta-excel</artifactId>
+                <version>${nexacro.uiadapter.jakarta.excel.version}</version>
+            </dependency>
+
+            <!-- =================== nexacro first-party (javax lane) =================== -->
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>nexacroN-xapi</artifactId>
+                <version>${nexacro.xapi.javax.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>nexacroN-xeni</artifactId>
+                <version>${nexacro.xeni.javax.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>uiadapter-spring-core</artifactId>
+                <version>${nexacro.uiadapter.spring.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>uiadapter-spring-dataaccess</artifactId>
+                <version>${nexacro.uiadapter.spring.dataaccess.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nexacro</groupId>
+                <artifactId>uiadapter-spring-excel</artifactId>
+                <version>${nexacro.uiadapter.spring.excel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
