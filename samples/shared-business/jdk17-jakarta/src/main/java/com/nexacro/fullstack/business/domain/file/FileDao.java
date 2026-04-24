@@ -13,4 +13,12 @@ public interface FileDao {
     Map<String, Object> findById(String fileId);
 
     List<Map<String, Object>> listAll();
+
+    /**
+     * Find multiple file metadata rows by FILE_IDs.
+     *
+     * @param fileIds list of FILE_ID values to look up
+     * @return matching rows (never null — empty list if no matches)
+     */
+    List<Map<String, Object>> findByIds(List<String> fileIds);
 }

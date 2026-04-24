@@ -87,6 +87,34 @@ public class FileService {
         return ds;
     }
 
+    /**
+     * Resolve multiple files by FILE_ID for zip-bundling download.
+     *
+     * Ported from boot-jdk17-jakarta-legacy/src/main/java/example/nexacro/uiadapter/web/FileController.multiDownloadFiles@e49a17791d on 2026-04-24.
+     * Adaptations: legacy used raw filenames from query params + folder path; here we look up by
+     * FILE_ID from FILE_META so paths are controlled (path-traversal safe). Returns list of
+     * (original-name, File) pairs — the controller streams them into a ZipOutputStream.
+     */
+    public List<MultiDownloadEntry> multiDownload(List<String> fileIds) {
+        if (fileIds == null || fileIds.isEmpty()) {
+            return List.of();
+        }
+        List<Map<String, Object>> metas = fileDao.findByIds(fileIds);
+        if (metas == null || metas.isEmpty()) {
+            return List.of();
+        }
+        java.util.ArrayList<MultiDownloadEntry> out = new java.util.ArrayList<>(metas.size());
+        for (Map<String, Object> meta : metas) {
+            String storedPath = String.valueOf(meta.get("STORED_PATH"));
+            String originalName = String.valueOf(meta.get("ORIGINAL_NAME"));
+            out.add(new MultiDownloadEntry(originalName, new File(storedPath)));
+        }
+        return out;
+    }
+
     /** Pairs a resolved {@link File} with its FILE_META row. */
     public record DownloadInfo(File file, Map<String, Object> meta) {}
+
+    /** One entry of a multi-download bundle: the original filename + the resolved disk file. */
+    public record MultiDownloadEntry(String originalName, File file) {}
 }

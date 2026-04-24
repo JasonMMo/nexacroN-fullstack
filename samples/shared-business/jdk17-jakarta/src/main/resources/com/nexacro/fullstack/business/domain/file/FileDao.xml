@@ -30,4 +30,14 @@
         ORDER BY UPLOADED_AT DESC
     </select>
 
+    <select id="findByIds" resultType="map">
+        SELECT FILE_ID, ORIGINAL_NAME, STORED_PATH, CONTENT_TYPE, SIZE_BYTES, UPLOADED_BY, UPLOADED_AT
+        FROM FILE_META
+        WHERE DELETED = FALSE
+          AND FILE_ID IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>
