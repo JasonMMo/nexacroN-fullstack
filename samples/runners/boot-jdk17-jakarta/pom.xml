@@ -70,31 +70,31 @@
         </dependency>
 
         <!--
-          First-party Nexacro modules (jakarta lane) — OPTIONAL.
+          Nexacro first-party modules (jakarta lane).
 
-          These are declared as optional systemPath dependencies so the runner
-          still compiles against its inline business classes
-          (com.nexacro.fullstack.business.xapi.*, ...uiadapter.*) but consumer
-          projects can opt in to the official nexacro binaries by flipping the
-          scope to 'compile' and deleting the inline copies.
-
-          See ../../../core/README.md for provenance and migration notes.
+          Pulled from tobesoft Nexus — see parent pom <repositories> block.
+          Versions are managed by the parent pom dependencyManagement; bump
+          via the 5 <nexacro.*.jakarta.*.version> properties.
         -->
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>nexacroN-xapi-jakarta</artifactId>
-            <version>1.2.4-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../../../core/libs/jakarta/nexacroN-xapi-jakarta-1.2.4-20260312.005603-1.jar</systemPath>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>nexacroN-xeni-jakarta</artifactId>
-            <version>1.5.21-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../../../core/libs/jakarta/nexacroN-xeni-jakarta-1.5.21-20260312.012638-1.jar</systemPath>
-            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>uiadapter-jakarta-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>uiadapter-jakarta-dataaccess</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>uiadapter-jakarta-excel</artifactId>
         </dependency>
     </dependencies>
 
