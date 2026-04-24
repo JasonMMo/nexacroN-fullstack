@@ -60,24 +60,33 @@
         </dependency>
 
         <!--
-          First-party Nexacro uiadapter (javax lane) — REFERENCE SOURCE ONLY.
+          Nexacro first-party modules (javax lane).
 
-          The source tree lives at ../../../core/uiadapter-javax/ and is NOT
-          built as part of this runner. The runner compiles against its inline
-          business classes (com.nexacro.fullstack.business.uiadapter.*) which
-          are the source of record for the v1.x line.
-
-          To opt in to the first-party uiadapter source:
-            1. Register core/uiadapter-javax/ submodules in the root pom <modules>.
-            2. Add compile-scope <dependency> entries here for
-               uiadapter-spring-core / uiadapter-spring-dataaccess /
-               uiadapter-spring-excel (groupId com.nexacro, version 1.0.0).
-            3. Delete the inline copies under shared-business-jdk8-javax.
-
-          Xapi / xeni (javax) binaries are NOT bundled in this workspace —
-          see core/README.md "What does NOT ship here" table. Pull from
-          tobesoft Nexus (mangosteen.tobesoft.co.kr) if required.
+          Pulled from tobesoft Nexus — see parent pom <repositories> block.
+          Versions are managed by the parent pom dependencyManagement; bump
+          via the 5 <nexacro.*.javax.version> / <nexacro.uiadapter.spring.*.version>
+          properties.
         -->
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>nexacroN-xapi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>nexacroN-xeni</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>uiadapter-spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>uiadapter-spring-dataaccess</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>uiadapter-spring-excel</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
