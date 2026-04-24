@@ -1,113 +1,106 @@
-# core — Nexacro transport / Excel / UI-adapter modules
+# core — Nexacro first-party modules
 
-This directory holds the three Nexacro-side Spring integration modules:
+Nexacro's `xapi`, `xeni`, and `uiadapter` modules are **not vendored here**.
+They are pulled at build time from tobesoft's Nexus repository.
 
-- **xapi** — transport (client ↔ server dataset envelope serialization)
-- **xeni** — Excel import / export over the xapi envelope
-- **uiadapter** — Spring MVC / annotation surface that consumer apps depend on
-  (`@ParamDataSet`, `@ParamVariable`, `NexacroFileHandler`, view resolvers, …)
+## Why the directory still exists
 
-Each module has a **javax** variant (Spring 5 / Boot 2 / servlet-api 4) and a
-**jakarta** variant (Spring 6 / Boot 3 / servlet-api 6). The two variants are
-not drop-in compatible — they differ in the `javax.servlet.*` vs
-`jakarta.servlet.*` package import and in a handful of MVC SPI extension points
-that moved between Spring 5 and 6.
+This directory used to ship a partial local snapshot (2 jakarta jars + the
+Spring 5 `uiadapter-spring` source tree). That snapshot is gone as of
+`v0.6.0-core-from-nexus`. Keeping a hand-copied snapshot in-tree had two
+problems:
 
-## What ships here (v1.8.2)
+1. **Staleness** — a pinned SNAPSHOT jar is frozen at one timestamp, while
+   the canonical Nexus artefact rolls forward.
+2. **Asymmetry** — only the jakarta lane had jars; the javax xapi/xeni and
+   jakarta uiadapter sources were never available in this workspace anyway.
+
+The directory is kept so the sparse-checkout path in the
+`nexacro-fullstack-starter` plugin still resolves, and so the
+`core/README.md` is reachable as a jumping-off point.
+
+## Where the real modules live
+
+Tobesoft Nexus, snapshots repo:
 
 ```
-core/
-├── libs/
-│   └── jakarta/
-│       ├── nexacroN-xapi-jakarta-1.2.4-20260312.005603-1.jar       520 KB
-│       └── nexacroN-xeni-jakarta-1.5.21-20260312.012638-1.jar      202 KB
-│
-└── uiadapter-javax/
-    ├── pom.xml                                     (parent: uiadapter-spring 1.0.0)
-    ├── uiadapter-spring-core/          — 65 .java — MVC surface
-    ├── uiadapter-spring-dataaccess/    — 25 .java — DAO helpers (ibatis / jdbc / mybatis)
-    └── uiadapter-spring-excel/         —  2 .java — Excel servlet + extensions
+https://mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/com/nexacro/<artifactId>/
 ```
 
-Total: 2 binary jars (~710 KB) + 102 Java source files under `uiadapter-javax/`.
+### Jakarta lane (JDK 17 / Spring 6 / Boot 3)
 
-### Provenance
+| artifactId                        | default version pin       |
+|-----------------------------------|---------------------------|
+| `nexacroN-xapi-jakarta`           | `1.2.4-SNAPSHOT`          |
+| `nexacroN-xeni-jakarta`           | `1.5.21-SNAPSHOT`         |
+| `uiadapter-jakarta-core`          | `1.0.27.1-SNAPSHOT`       |
+| `uiadapter-jakarta-dataaccess`    | `1.0.14-SNAPSHOT`         |
+| `uiadapter-jakarta-excel`         | `1.5.4.3-SNAPSHOT`        |
 
-- `libs/jakarta/*.jar` — verbatim copy from `asis/xapi/` and `asis/xeni/`
-  build-deploy trees. SNAPSHOT timestamp `20260312` matches the binary
-  currently in production use by the jakarta-example runner in the asis
-  workspace.
-- `uiadapter-javax/` — verbatim copy of
-  `nexacro-webflux/asis/uiadapter/uiadapter-spring/` (Spring 5 / javax lane
-  reference implementation). IDE metadata (`.idea/`, `*.iml`) and generated
-  javadoc (`doc/`) were removed; the Maven source tree is intact.
+### Javax lane (JDK 8 / Spring 5 / Boot 2)
 
-## What does NOT ship here — and why
+| artifactId                        | default version pin       |
+|-----------------------------------|---------------------------|
+| `nexacroN-xapi`                   | `1.2.4-SNAPSHOT`          |
+| `nexacroN-xeni`                   | `1.5.21-SNAPSHOT`         |
+| `uiadapter-spring-core`           | `1.4.19.2-SNAPSHOT`       |
+| `uiadapter-spring-dataaccess`     | `1.4.19-SNAPSHOT`         |
+| `uiadapter-spring-excel`          | `1.5.21-SNAPSHOT`         |
 
-| Missing piece | Why | How to restore |
-|---|---|---|
-| `libs/javax/nexacroN-xapi-javax-*.jar` | Not present in this workspace. The javax lane on `asis/` consumes xapi via pre-built binaries from tobesoft's private Nexus. | Pull from `https://mangosteen.tobesoft.co.kr/repository/nexacro-releases/` with valid credentials. |
-| `libs/javax/nexacroN-xeni-javax-*.jar` | Same as above — tobesoft Nexus only. | Same. |
-| `uiadapter-jakarta/` | The jakarta lane's `uiadapter-spring` source tree is not in this workspace. The jakarta-example runner loads it as a binary dependency from tobesoft Nexus. | Pull the published `uiadapter-spring-*-jakarta.jar` artefacts from tobesoft Nexus, or port `uiadapter-javax/` sources to jakarta (mechanical: `javax.servlet.*` → `jakarta.servlet.*`, a handful of Spring 5 → 6 SPI shifts). |
+## Configuration
 
-This asymmetry is **not accidental**: the two proven runners already compile
-and run without these missing pieces because they ship the nexacro envelope
-surface **inline** inside their `shared-business-*` business trees
-(`com.nexacro.fullstack.business.xapi.*`,
-`com.nexacro.fullstack.business.uiadapter.*`). The `core/` contents here are
-provided for consumers who want to **replace** those inline classes with the
-official first-party modules — that swap is not required for the runner to
-boot.
+Both the `<repository>` entry and the 10 version properties live in the
+root [`pom.xml`](../pom.xml). Runners inherit everything and only list the
+5 `<groupId>com.nexacro</groupId>` artifactIds they need — no versions,
+no systemPath.
 
-## How runners consume `core/`
+### Required: `~/.m2/settings.xml` credentials
 
-### `samples/runners/boot-jdk17-jakarta`
-
-The jakarta runner can pick up the local jars via `systemPath` (see
-`samples/runners/boot-jdk17-jakarta/pom.xml`):
+Anonymous reads of `maven-metadata.xml` are allowed, but jar downloads
+require a tobesoft-issued account. Add this to your `~/.m2/settings.xml`:
 
 ```xml
-<dependency>
-  <groupId>com.nexacro</groupId>
-  <artifactId>nexacroN-xapi-jakarta</artifactId>
-  <version>1.2.4-SNAPSHOT</version>
-  <scope>system</scope>
-  <systemPath>${project.basedir}/../../../core/libs/jakarta/nexacroN-xapi-jakarta-1.2.4-20260312.005603-1.jar</systemPath>
-  <optional>true</optional>
-</dependency>
+<servers>
+  <server>
+    <id>tobesoft-snapshots</id>
+    <username>${env.TOBESOFT_USER}</username>
+    <password>${env.TOBESOFT_PASS}</password>
+  </server>
+</servers>
 ```
 
-`<optional>true</optional>` — the runner's inline business classes remain the
-source of record; these dependencies are declared so consumers can pick them
-up when they want to migrate off the inline surface.
+The `<id>` must match the `<repository><id>` in the root pom.
 
-### `samples/runners/boot-jdk8-javax`
+## Bumping versions
 
-The javax runner can pick up `uiadapter-javax` as a Maven module reference.
-The xapi / xeni gap remains — document it in the runner README and let the
-consumer decide whether to pull from tobesoft Nexus.
+Probe Nexus for the latest published version of any artefact:
 
-## Build path for consumers who want the real thing
-
-```
-# 1. Install tobesoft-published artefacts into local repo
-mvn install:install-file -Dfile=nexacroN-xapi-javax-1.x.x.jar ...
-mvn install:install-file -Dfile=nexacroN-xeni-javax-1.x.x.jar ...
-
-# 2. Swap <scope>system</scope> in runner pom.xml for <scope>compile</scope>
-# 3. Delete the inline classes under shared-business-*/src/main/java/com/nexacro/fullstack/business/xapi|uiadapter
+```bash
+curl -s https://mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/com/nexacro/<artifactId>/maven-metadata.xml \
+  | grep -oE '<version>[^<]+' | sort -V | tail -3
 ```
 
-## Versioning
+The tobesoft-managed `<latest>` element in `maven-metadata.xml` is not
+always trustworthy (older versions re-published can reset it). Always sort
+the full `<versions>` list by semver and pick the highest.
 
-Jar filenames include the tobesoft-Nexus timestamp suffix
-(`-20260312.005603-1`). These are SNAPSHOT builds; update them by copying the
-newer timestamped jar into `libs/jakarta/` and bumping the `systemPath`
-reference in any runner pom that pins a specific jar.
+Update the corresponding `<nexacro.*.version>` property in
+[`../pom.xml`](../pom.xml); the runners pick it up automatically because
+version is managed through the parent's `dependencyManagement`.
+
+## Build verification
+
+Both proven runners have been verified to compile with Nexus-resolved
+nexacro dependencies:
+
+- `samples/runners/boot-jdk17-jakarta` — `mvn compile` → BUILD SUCCESS
+  (resolves 5 jakarta artefacts + transitive `nexacroN-xeni-compatible`)
+- `samples/runners/boot-jdk8-javax` — `mvn compile` → BUILD SUCCESS
+  (resolves 5 javax artefacts + transitive `nexacroN-xapi-main`,
+  `nexacroN-xeni-compatible`)
 
 ## See also
 
-- `../samples/runners/boot-jdk17-jakarta/pom.xml` — jakarta wiring
-- `../samples/runners/boot-jdk8-javax/pom.xml`    — javax wiring
-- `../samples/shared-business/jdk17-jakarta/`     — inline xapi/uiadapter classes
-- `../samples/shared-business/jdk8-javax/`        — inline xapi/uiadapter classes
+- [`../pom.xml`](../pom.xml) — repository + version properties + `dependencyManagement`
+- [`../samples/runners/boot-jdk17-jakarta/pom.xml`](../samples/runners/boot-jdk17-jakarta/pom.xml)
+- [`../samples/runners/boot-jdk8-javax/pom.xml`](../samples/runners/boot-jdk8-javax/pom.xml)
