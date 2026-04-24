@@ -20,16 +20,16 @@ public class LargeDataController extends NexacroController {
         this.largeService = largeService;
     }
 
-    @PostMapping("/page.do")
+    @PostMapping("/page")
     public NexacroEnvelope page(@RequestBody(required = false) NexacroEnvelope req) {
-        int pageNum  = asInt(parameterById(req, "page"),     1);
-        int pageSize = asInt(parameterById(req, "pageSize"), 50);
+        int pageNum  = asInt(parameterById(req, "page"),  1);
+        int pageSize = asInt(parameterById(req, "size"),  50);
         String category = asString(parameterById(req, "category"));
         LargeDataService.LargePageResult result = largeService.page(pageNum, pageSize, category);
         NexacroDataset data = result.getDataset();
         long total = result.getTotalCount();
         NexacroEnvelope out = NexacroResponseBuilder.ok(data);
-        out.getParameters().add(new NexacroEnvelope.Parameter("totalCount", total, "int"));
+        out.getParameters().add(new NexacroEnvelope.Parameter("TOTAL_COUNT", total, "int"));
         return out;
     }
 
