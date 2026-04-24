@@ -68,12 +68,11 @@
         </dependency>
 
         <!-- HSQLDB in-memory DB (runtime — only needed at runner boot)
-             2.5.2 is the last release compiled for Java 8 (class file 52.0);
-             2.7.x requires Java 11 (class file 55.0). -->
+             2.7.3 requires Java 11+ at runtime (class file 55.0); run with JDK 17 JAVA_HOME. -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.5.2</version>
+            <version>2.7.3</version>
             <scope>runtime</scope>
         </dependency>
 
