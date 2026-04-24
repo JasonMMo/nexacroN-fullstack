@@ -21,7 +21,7 @@ The directory is kept so the sparse-checkout path in the
 
 ## Where the real modules live
 
-Tobesoft Nexus, snapshots repo:
+Tobesoft Nexus, snapshots repo (public, anonymous access):
 
 ```
 https://mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/com/nexacro/<artifactId>/
@@ -54,22 +54,12 @@ root [`pom.xml`](../pom.xml). Runners inherit everything and only list the
 5 `<groupId>com.nexacro</groupId>` artifactIds they need — no versions,
 no systemPath.
 
-### Required: `~/.m2/settings.xml` credentials
+### No credentials needed
 
-Anonymous reads of `maven-metadata.xml` are allowed, but jar downloads
-require a tobesoft-issued account. Add this to your `~/.m2/settings.xml`:
-
-```xml
-<servers>
-  <server>
-    <id>tobesoft-snapshots</id>
-    <username>${env.TOBESOFT_USER}</username>
-    <password>${env.TOBESOFT_PASS}</password>
-  </server>
-</servers>
-```
-
-The `<id>` must match the `<repository><id>` in the root pom.
+`mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/` is a
+**public repository**. Both `maven-metadata.xml` reads and `.jar`
+downloads are anonymous. `mvn compile` works with a stock
+`~/.m2/settings.xml` — no `<server>` entry required.
 
 ## Bumping versions
 
