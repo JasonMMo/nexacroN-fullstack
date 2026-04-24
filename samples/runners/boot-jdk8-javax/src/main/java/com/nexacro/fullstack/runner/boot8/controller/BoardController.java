@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/sample/board")
+@RequestMapping("/board")
 public class BoardController extends NexacroController {
 
     private final BoardService boardService;
@@ -20,12 +20,12 @@ public class BoardController extends NexacroController {
         this.boardService = boardService;
     }
 
-    @PostMapping("/select.do")
+    @PostMapping("/select")
     public NexacroEnvelope select(@RequestBody(required = false) NexacroEnvelope req) {
         return NexacroResponseBuilder.ok(boardService.selectAll());
     }
 
-    @PostMapping({"/insert.do", "/update.do", "/delete.do"})
+    @PostMapping({"/insert", "/update", "/delete"})
     public NexacroEnvelope mutate(@RequestBody NexacroEnvelope req) {
         NexacroDataset input = datasetById(req, "input");
         int affected = boardService.processRows(input);
