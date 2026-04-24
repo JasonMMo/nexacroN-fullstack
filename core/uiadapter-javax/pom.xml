@@ -1,0 +1,189 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.nexacro</groupId>
+  <artifactId>uiadapter-spring</artifactId>
+  <version>2.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>uiadapter-spring</name>
+
+
+  <!-- nexacroN 버전 적용 -->
+  <properties>
+    <jdk.version>1.8</jdk.version>
+    <spring.version>5.2.16.RELEASE</spring.version>
+    <logback.version>1.2.3</logback.version>
+    <javax.servletapi.version>3.0.1</javax.servletapi.version>
+    <javax.servlet.jspapi.version>2.3.1</javax.servlet.jspapi.version>
+    <junit.version>4.12</junit.version>
+    <nexacro.xapi.version>2.0.4-SNAPSHOT</nexacro.xapi.version>
+  </properties>
+
+	<repositories>
+		<!--
+  		<repository>
+			<id>tobesoft</id>
+			<url>https://cacao.tobesoft.co.kr/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+  		<repository>
+			<id>nexus</id>
+			<url>https://mangosteen.tobesoft.co.kr/nexus/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		-->
+		<repository>
+			<id>mvn2</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>egovframe</id>
+			<url>https://www.egovframe.go.kr/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+		    <id>mesir-repo</id>
+		    <url>https://mesir.googlecode.com/svn/trunk/mavenrepo</url>
+		</repository>
+	</repositories>
+
+  <!-- springframework library -->
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!--  nexacroplatform java api library -->
+    <dependency>
+      <groupId>com.nexacro</groupId>
+      <artifactId>nexacroN-xapi-main</artifactId>
+      <version>${nexacro.xapi.version}</version>
+    </dependency>
+    <!--  nexacroplatform java api library -->
+    <!-- -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${javax.servletapi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>${javax.servlet.jspapi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+	<!-- slf4j for logging included slf4j-api-1.7.25.jar -->
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.3</version>
+    </dependency>
+
+    <!-- junit library -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+  	<pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.6.2</version>
+          <configuration>
+              <source>${jdk.version}</source>
+              <target>${jdk.version}</target>
+              <fork>true</fork>
+              <meminitial>1024m</meminitial>
+              <maxmem>1024m</maxmem>
+              <encoding>UTF-8</encoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.0.0</version>
+          <executions>
+            <execution>
+              <id>timestamp-property</id>
+              <goals>
+                <goal>timestamp-property</goal>
+              </goals>
+              <configuration>
+                <name>current.time</name>
+                <pattern>yyyyMMddHHmmss</pattern>
+                <timeZone>Asia/Seoul</timeZone>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- At least jdk 1.7 -->
+        <!-- <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>3.4.0.905</version>
+        </plugin> -->
+
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <distributionManagement>
+    <!-- local server -->
+    <repository>
+      <id>${nexus3oss.env}-tobesoft-releases</id>
+      <name>tobesoft-releases</name>
+      <url>${nexus3oss.url}/repository/tobesoft-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>${nexus3oss.env}-tobesoft-snapshots</id>
+      <name>tobesoft-snapshots</name>
+      <url>${nexus3oss.url}/repository/tobesoft-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <modules>
+  	<module>uiadapter-spring-core</module>
+  	<module>uiadapter-spring-dataaccess</module>
+  	<module>uiadapter-spring-excel</module>
+  </modules>
+</project>
