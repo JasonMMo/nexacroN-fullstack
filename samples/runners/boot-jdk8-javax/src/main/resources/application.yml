@@ -1,0 +1,44 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /uiadapter
+
+spring:
+  application:
+    name: runner-boot-jdk8-javax
+  datasource:
+    url: jdbc:hsqldb:mem:nexacrodb;shutdown=true
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    username: SA
+    password: ""
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      separator: "^^"
+      encoding: UTF-8
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 25MB
+  jackson:
+    default-property-inclusion: non_null
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+
+nexacro:
+  file:
+    storage-dir: ./uploads/boot-jdk8-javax
+
+logging:
+  level:
+    root: INFO
+    com.nexacro.fullstack: DEBUG
+    org.mybatis: DEBUG
+    org.springframework.jdbc: DEBUG
