@@ -71,13 +71,20 @@
 
 ## 5. Orchestration Model (역할 위임 모델)
 
-**Opus(메인 세션) = 관리자/조율자.** 직접 코딩하지 않음.
+**Opus(메인 세션) = 관리자/조율자 + 검증자.**
 
 | 역할 | 담당 | 호출 방식 |
 |------|------|-----------|
-| 코딩(구현) | `codex:codex-rescue` | `Agent(subagent_type="codex:codex-rescue", ...)` |
-| 검증(spec/quality review) | Sonnet 서브에이전트 | `Agent(model="sonnet", ...)` |
+| 코딩(구현) | Sonnet 서브에이전트 | `Agent(model="sonnet", subagent_type="general-purpose", ...)` |
+| 검증(spec/quality review) | **Opus 직접** (메인 세션) | 권위 사양(룰 §2)을 가진 Opus가 산출물을 직접 검증. 검증 subagent에 위임하지 않음. |
 | 기타(파일 정리, 문서 작성, 단순 조회) | Haiku 서브에이전트 | `Agent(model="haiku", ...)` |
+
+**Opus 직접 검증의 근거:** Opus는 룰 §2 권위 사양과 phase 간 맥락을 모두 보유한다. 검증을 별도 subagent에 위임하면 권위 사양 컨텍스트가 단절되어 echo chamber 위험이 커진다. Opus가 직접 grep + path 비교 + diff 확인으로 검증한다.
+
+**(이력)**
+- 2026-04-27 초기: 코딩=`codex:codex-rescue`, 검증=Sonnet
+- 2026-04-27 갱신1: codex OAuth 마찰로 코딩→Sonnet 이관
+- 2026-04-27 갱신2: 검증도 Opus 직접 수행으로 변경 (권위 사양 컨텍스트 보존)
 
 ---
 
