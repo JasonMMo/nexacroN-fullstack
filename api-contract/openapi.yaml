@@ -3,15 +3,13 @@ info:
   title: nexacroN-fullstack API contract
   version: 0.1.0
   description: |
-    15 endpoints shared across all 8 runners. The contract is framework-neutral —
+    14 canonical endpoints per .claude/rules/nexacro-fullstack-purpose.md §2.
+    All paths use /uiadapter prefix. The contract is framework-neutral —
     servlet (javax / jakarta) and reactive (webflux) runners must all satisfy it.
 
     Request/response bodies follow the nexacro-data-format spec
     (XML / SSV / JSON — see data-formats.md). Defaults to JSON here for tooling;
     actual runtime content-type is chosen by `packageN.xadl` and the `xapi` layer.
-
-    Endpoint #15 (exim_exchange) is an optional reactive-only streaming demo,
-    implemented only by webflux-jdk17-jakarta.
 
 servers:
   - url: http://localhost:8080/uiadapter
@@ -19,141 +17,94 @@ servers:
 
 tags:
   - name: auth
-    description: Login / session
-  - name: sample_board
-    description: CRUD demo on SAMPLE_BOARD table
-  - name: dept
-    description: Lookup / tree on DEPT table
-  - name: large_data
-    description: Paging / stream on LARGE_DATA table
-  - name: wide
-    description: Wide-column load on WIDE_COLUMNS table
+    description: Login / logout
+  - name: data
+    description: Single / list / update / large data / wide columns
   - name: file
     description: Upload / download / multi-part
-  - name: excel
-    description: xeni import/export
-  - name: reactive
-    description: WebFlux-only streaming demo
+  - name: stream
+    description: Video streaming
+  - name: integration
+    description: External system integration (relay)
 
 paths:
 
-  # ---------------- auth (2) ----------------
-  /login.do:
+  # ============== 14 Canonical Endpoints per §2 ==============
+
+  # ---- 1-2: Auth (2) ----
+  /uiadapter/login.do:
     post:
+      operationId: loginDo
       tags: [auth]
-      summary: Stub login — always returns LOGIN_SUCCESS (§1.3 of design spec)
+      summary: 로그인
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
       responses:
         '200':
-          description: Login result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginResponse'
+          $ref: '#/components/responses/NexacroDatasetOut'
 
-  /logout.do:
+  /uiadapter/logout.do:
     post:
+      operationId: logoutDo
       tags: [auth]
-      summary: Invalidate session
-      responses:
-        '200':
-          description: Logout OK
-
-  # ---------------- sample_board (4) ----------------
-  /sample/board/select.do:
-    post:
-      tags: [sample_board]
-      summary: List SAMPLE_BOARD rows
+      summary: 로그아웃
       requestBody:
         $ref: '#/components/requestBodies/NexacroDatasetIn'
       responses:
         '200':
           $ref: '#/components/responses/NexacroDatasetOut'
 
-  /sample/board/insert.do:
+  # ---- 3-6: Data (4) ----
+  /uiadapter/select_data_single.do:
     post:
-      tags: [sample_board]
-      summary: Insert / update / delete SAMPLE_BOARD rows (uses _RowType_ flag)
+      operationId: selectDataSingleDo
+      tags: [data]
+      summary: 단건 select
       requestBody:
         $ref: '#/components/requestBodies/NexacroDatasetIn'
       responses:
         '200':
           $ref: '#/components/responses/NexacroDatasetOut'
 
-  /sample/board/update.do:
+  /uiadapter/select_datalist.do:
     post:
-      tags: [sample_board]
-      summary: Update SAMPLE_BOARD (alias for insert.do U rows)
+      operationId: selectDatalistDo
+      tags: [data]
+      summary: 리스트 select
       requestBody:
         $ref: '#/components/requestBodies/NexacroDatasetIn'
       responses:
         '200':
           $ref: '#/components/responses/NexacroDatasetOut'
 
-  /sample/board/delete.do:
+  /uiadapter/update_datalist_map.do:
     post:
-      tags: [sample_board]
-      summary: Delete SAMPLE_BOARD by id
+      operationId: updateDatalistMapDo
+      tags: [data]
+      summary: 리스트 insert/update/delete
       requestBody:
         $ref: '#/components/requestBodies/NexacroDatasetIn'
       responses:
         '200':
           $ref: '#/components/responses/NexacroDatasetOut'
 
-  # ---------------- dept (2) ----------------
-  /dept/list.do:
+  /uiadapter/update_deptlist_map.do:
     post:
-      tags: [dept]
-      summary: DEPT flat list
-      responses:
-        '200':
-          $ref: '#/components/responses/NexacroDatasetOut'
-
-  /dept/tree.do:
-    post:
-      tags: [dept]
-      summary: DEPT parent-child tree
-      responses:
-        '200':
-          $ref: '#/components/responses/NexacroDatasetOut'
-
-  # ---------------- large_data (2) ----------------
-  /large/page.do:
-    post:
-      tags: [large_data]
-      summary: LARGE_DATA paged select
+      operationId: updateDeptlistMapDo
+      tags: [data]
+      summary: 부서 트리 갱신
       requestBody:
-        $ref: '#/components/requestBodies/PageIn'
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
       responses:
         '200':
           $ref: '#/components/responses/NexacroDatasetOut'
 
-  /large/stream.do:
+  # ---- 7-9: File (3) ----
+  /uiadapter/advancedUploadFiles.do:
     post:
-      tags: [large_data]
-      summary: LARGE_DATA SSV stream (Transfer-Encoding chunked)
-      responses:
-        '200':
-          description: Chunked SSV response
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-
-  # ---------------- wide (1) ----------------
-  /wide/load.do:
-    post:
-      tags: [wide]
-      summary: WIDE_COLUMNS single-row load (50 columns)
-      responses:
-        '200':
-          $ref: '#/components/responses/NexacroDatasetOut'
-
-  # ---------------- file (3) ----------------
-  /file/upload.do:
-    post:
+      operationId: advancedUploadFilesDo
       tags: [file]
-      summary: Multi-part file upload (records in FILE_META)
+      summary: 다중 업로드
       requestBody:
         required: true
         content:
@@ -170,15 +121,13 @@ paths:
         '200':
           $ref: '#/components/responses/NexacroDatasetOut'
 
-  /file/download.do:
-    get:
+  /uiadapter/advancedDownloadFile.do:
+    post:
+      operationId: advancedDownloadFileDo
       tags: [file]
-      summary: Download by file_id
-      parameters:
-        - name: file_id
-          in: query
-          required: true
-          schema: { type: string }
+      summary: 단일 다운로드
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
       responses:
         '200':
           description: Binary content
@@ -188,39 +137,73 @@ paths:
                 type: string
                 format: binary
 
-  /file/list.do:
+  /uiadapter/advancedDownloadList.do:
     post:
+      operationId: advancedDownloadListDo
       tags: [file]
-      summary: FILE_META list
-      responses:
-        '200':
-          $ref: '#/components/responses/NexacroDatasetOut'
-
-  # ---------------- excel (1) ----------------
-  /excel/export.do:
-    post:
-      tags: [excel]
-      summary: xeni export (Dataset -> xlsx)
+      summary: 다운로드 리스트
       requestBody:
         $ref: '#/components/requestBodies/NexacroDatasetIn'
       responses:
         '200':
-          description: xlsx binary
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  # ---- 10-13: Data (continued: large, video, test, wide) ----
+  /uiadapter/sampleLargeData.do:
+    post:
+      operationId: sampleLargeDataDo
+      tags: [data]
+      summary: 대용량 select
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  /uiadapter/sampleVideoStream.do:
+    post:
+      operationId: sampleVideoStreamDo
+      tags: [stream]
+      summary: 비디오 스트리밍
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          description: Chunked video response
           content:
-            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+            application/octet-stream:
               schema:
                 type: string
                 format: binary
 
-  # ---------------- reactive (1, webflux-only) ----------------
-  /reactive/exim_exchange.do:
+  /uiadapter/sampleTestData.do:
     post:
-      tags: [reactive]
-      summary: (webflux-only) Reactive import + export streaming demo
-      description: |
-        Only the `webflux-jdk17-jakarta` runner implements this endpoint.
-        Servlet runners return 501 Not Implemented. Demonstrates Mono/Flux
-        chaining with multipart ingestion + chunked response.
+      operationId: sampleTestDataDo
+      tags: [data]
+      summary: 테스트 데이터
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  /uiadapter/sampleWideColumns.do:
+    post:
+      operationId: sampleWideColumnsDo
+      tags: [data]
+      summary: 와이드 컬럼
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
+
+  # ---- 14: Integration (1) ----
+  /uiadapter/relay/exim_exchange.do:
+    post:
+      operationId: relayEximExchangeDo
+      tags: [integration]
+      summary: 외부 시스템 릴레이
       requestBody:
         required: true
         content:
@@ -229,14 +212,12 @@ paths:
               type: object
       responses:
         '200':
-          description: Chunked exchange result
+          description: Exchange result
           content:
             application/octet-stream:
               schema:
                 type: string
                 format: binary
-        '501':
-          description: Not Implemented (non-webflux runner)
 
 components:
   requestBodies:
@@ -253,16 +234,6 @@ components:
           schema:
             type: string
             description: SSV format (see data-formats.md)
-
-    PageIn:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              page: { type: integer, minimum: 1 }
-              size: { type: integer, minimum: 1, maximum: 1000 }
 
   responses:
     NexacroDatasetOut:
