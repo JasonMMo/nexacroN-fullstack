@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/file")
 public class FileController extends NexacroController {
 
     private final FileService fileService;
@@ -30,7 +28,8 @@ public class FileController extends NexacroController {
         this.fileService = fileService;
     }
 
-    @PostMapping(value = "/upload.do", consumes = "multipart/form-data")
+    // spec #7: multi-file upload
+    @PostMapping(value = "/uiadapter/advancedUploadFiles.do", consumes = "multipart/form-data")
     public NexacroEnvelope upload(
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "uploadedBy", required = false, defaultValue = "anonymous") String uploadedBy)
@@ -41,12 +40,8 @@ public class FileController extends NexacroController {
         return out;
     }
 
-    @PostMapping("/list.do")
-    public NexacroEnvelope list() {
-        return NexacroResponseBuilder.ok(fileService.list());
-    }
-
-    @GetMapping("/download.do")
+    // spec #8: single file download (GET per web download semantics)
+    @GetMapping("/uiadapter/advancedDownloadFile.do")
     public ResponseEntity<Resource> download(@RequestParam("fileId") String fileId) throws IOException {
         FileService.DownloadInfo info = fileService.download(fileId);
         File f = info.getFile();
@@ -63,4 +58,6 @@ public class FileController extends NexacroController {
                 .contentLength(f.length())
                 .body(body);
     }
+
+    // /file/list.do removed — file-list endpoint is not in spec §2.
 }
