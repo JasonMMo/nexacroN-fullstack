@@ -38,7 +38,8 @@ public class UiadapterBoardController extends NexacroController {
      * NexacroEnvelope + NexacroResponseBuilder; dsSearch.KEY_ID optional filter instead of legacy
      * {@code count} PlatformVariable + row-seeding; uses MyBatis @Mapper DAO.
      */
-    @PostMapping("/search_manyColumn_data.do")
+    // spec #13: wide-columns search (renamed from search_manyColumn_data.do)
+    @PostMapping("/sampleWideColumns.do")
     public NexacroEnvelope searchManyColumn(@RequestBody(required = false) NexacroEnvelope req) {
         String keyId = null;
         NexacroDataset dsSearch = datasetById(req, "dsSearch");
