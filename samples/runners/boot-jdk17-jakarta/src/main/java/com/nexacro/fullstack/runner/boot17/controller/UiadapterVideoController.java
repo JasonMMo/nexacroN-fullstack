@@ -45,7 +45,9 @@ public class UiadapterVideoController {
      * @param fileName   target video file (resolved under {@code media.storage.base-path})
      * @param streamType retained for legacy compatibility ("nio" / "legacy"); not used
      */
-    @GetMapping("/streamingVideo.do")
+    // spec #11: video streaming. TODO Plan8: spec §2 mandates POST but video streaming requires
+    // GET for HTTP Range (partial content). Retained as GET — flag for Opus to decide.
+    @GetMapping("/sampleVideoStream.do")
     public ResponseEntity<Resource> streamingVideo(
             @RequestParam("fileName") String fileName,
             @RequestParam(value = "streamType", required = false, defaultValue = "nio") String streamType) {
