@@ -36,7 +36,8 @@ public class UiadapterTestDataController extends NexacroController {
      * Adaptations: DB-backed selectAll replaces legacy in-memory builder; response wrapped via
      * {@link NexacroResponseBuilder}.
      */
-    @PostMapping("/select_testDataTypeList.do")
+    // spec #12: test-data type list (renamed from select_testDataTypeList.do)
+    @PostMapping("/sampleTestData.do")
     public NexacroEnvelope select(@RequestBody(required = false) NexacroEnvelope req) {
         return NexacroResponseBuilder.ok(testDataService.selectAll());
     }
