@@ -16,7 +16,7 @@ Conflicts always resolve in favor of this specification.
 
 ## 14 Canonical Endpoints
 
-All endpoints are POST. Paths must match exactly (character-for-character) against the table below.
+Paths must match exactly (character-for-character) against the table below. Verbs follow §2 of the rules file.
 
 | # | Method | Path | Purpose | Domain |
 |---|--------|------|---------|--------|
@@ -27,19 +27,25 @@ All endpoints are POST. Paths must match exactly (character-for-character) again
 | 5 | POST | `/uiadapter/update_datalist_map.do` | 리스트 insert/update/delete | Data |
 | 6 | POST | `/uiadapter/update_deptlist_map.do` | 부서 트리 갱신 | Data |
 | 7 | POST | `/uiadapter/advancedUploadFiles.do` | 다중 업로드 | File |
-| 8 | POST | `/uiadapter/advancedDownloadFile.do` | 단일 다운로드 | File |
-| 9 | POST | `/uiadapter/advancedDownloadList.do` | 다운로드 리스트 | File |
+| 8 | **GET** | `/uiadapter/advancedDownloadFile.do` | 단일 다운로드 (web download) | File |
+| 9 | **GET** | `/uiadapter/advancedDownloadList.do` | 다운로드 리스트 (web download) | File |
 | 10 | POST | `/uiadapter/sampleLargeData.do` | 대용량 select | Data |
-| 11 | POST | `/uiadapter/sampleVideoStream.do` | 비디오 스트리밍 | Stream |
+| 11 | **GET** | `/uiadapter/sampleVideoStream.do` | 비디오 스트리밍 (HTTP Range) | Stream |
 | 12 | POST | `/uiadapter/sampleTestData.do` | 테스트 데이터 | Data |
 | 13 | POST | `/uiadapter/sampleWideColumns.do` | 와이드 컬럼 | Data |
 | 14 | POST | `/uiadapter/relay/exim_exchange.do` | 외부 시스템 릴레이 | Integration |
+
+### Runner Extras (스펙 외 허용)
+
+| Path | Method | Purpose |
+|------|--------|---------|
+| `/uiadapter/check_testDataTypeList.do` | POST | 테스트 데이터 타입 검증 (예외케이스 테스트 용) |
 
 ---
 
 ## HTTP Method Note
 
-All 14 endpoints use **POST** per specification. If implementation uses alternative HTTP methods (e.g., GET for file downloads), the specification POST method takes precedence. Reconciliation of alternative HTTP semantics is deferred to Plan8 Phase D/E.
+#1–7, #10, #12–14는 POST. **#8/#9/#11은 GET** — 브라우저 web download / HTTP Range streaming 의미를 보존하기 위함 (2026-04-27 사용자 결정).
 
 ---
 
