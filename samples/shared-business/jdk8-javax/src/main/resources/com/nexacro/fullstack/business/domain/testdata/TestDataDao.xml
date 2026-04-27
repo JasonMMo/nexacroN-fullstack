@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  Ported from boot-jdk17-jakarta-legacy/src/main/resources/mybatis/mappers/testDataType_mapper.xml@e49a17791d on 2026-04-24.
+  Adaptations: namespace changed to fullstack package; removed VO-type resultType in favour of map;
+  javax.servlet imports, JDK 8 syntax (no var/records/text-blocks), Spring Boot 2.7 compatibility.
+-->
+<mapper namespace="com.nexacro.fullstack.business.domain.testdata.TestDataDao">
+
+    <select id="selectAll" resultType="map">
+        SELECT
+            ID,
+            STRING_VALUE,
+            INT_VALUE,
+            BOOLEAN_VALUE,
+            LONG_VALUE,
+            FLOAT_VALUE,
+            DOUBLE_VALUE,
+            BIG_DECIMAL_VALUE,
+            DATE_VALUE,
+            TIME_VALUE,
+            DATETIME_VALUE,
+            BYTES_VALUE
+        FROM TB_TEST_DATA_TYPE
+        ORDER BY ID
+    </select>
+
+</mapper>
