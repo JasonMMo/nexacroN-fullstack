@@ -87,10 +87,14 @@
     </properties>
 
     <!--
-        Nexacro first-party modules live on tobesoft's Nexus.
-        Anonymous reads are allowed for maven-metadata.xml; jar downloads
-        require credentials — add <server id="tobesoft-snapshots"> to your
-        ~/.m2/settings.xml with tobesoft-issued username/password.
+        Nexacro first-party modules live on tobesoft's Nexus
+        (`mangosteen.tobesoft.co.kr`, Nexus 3.37 OSS, public hosted repo).
+        Both `maven-metadata.xml` reads AND `.jar` downloads are anonymous —
+        no `<server id="tobesoft-snapshots">` entry needed in
+        `~/.m2/settings.xml`. Verified 2026-04-27 via direct HTTP probe
+        (HEAD/GET on a real timestamped jar → 200 OK, 355 KB,
+        `application/java-archive`). See `core/README.md` §"No credentials
+        needed" for details.
     -->
     <repositories>
         <repository>
