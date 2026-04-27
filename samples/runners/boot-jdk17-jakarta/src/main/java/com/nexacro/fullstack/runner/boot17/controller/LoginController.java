@@ -8,9 +8,11 @@ import com.nexacro.fullstack.business.xapi.NexacroEnvelope;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/uiadapter")
 public class LoginController extends NexacroController {
 
     private final UserService userService;
@@ -19,7 +21,7 @@ public class LoginController extends NexacroController {
         this.userService = userService;
     }
 
-    @PostMapping("/login.do")
+    @PostMapping("/login.do") // spec #1
     public NexacroEnvelope login(@RequestBody NexacroEnvelope req, HttpSession session) {
         String userId   = asString(parameterById(req, "userId"));
         String password = asString(parameterById(req, "password"));
@@ -30,7 +32,7 @@ public class LoginController extends NexacroController {
         return NexacroResponseBuilder.ok(output);
     }
 
-    @PostMapping("/logout.do")
+    @PostMapping("/logout.do") // spec #2
     public NexacroEnvelope logout(HttpSession session) {
         session.invalidate();
         return NexacroResponseBuilder.ok();
