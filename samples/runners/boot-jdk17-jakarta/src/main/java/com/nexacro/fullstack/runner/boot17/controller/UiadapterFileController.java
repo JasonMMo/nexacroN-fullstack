@@ -41,8 +41,11 @@ public class UiadapterFileController {
      * Adaptations: resolve by FILE_ID (path-traversal safe) instead of raw filename params;
      * streams via jakarta.servlet.http.HttpServletResponse + java.util.zip; returns 404 if nothing to bundle.
      * HTTP verb is GET per contract (query params {@code fileIds}, {@code subFolder}).
+     * TODO Plan8: spec §2 mandates POST but ZIP streaming uses GET query params.
+     * Retained as GET — flag for Opus to decide verb or add POST alias.
      */
-    @GetMapping("/multiDownloadFiles.do")
+    // spec #9: multi-file download as ZIP (renamed from multiDownloadFiles.do)
+    @GetMapping("/advancedDownloadList.do")
     public void multiDownload(
             @RequestParam(value = "subFolder", required = false) String subFolder,
             @RequestParam(value = "fileIds", required = false) List<String> fileIds,
