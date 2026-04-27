@@ -35,17 +35,20 @@ public class UiadapterTestDataController extends NexacroController {
      * Adaptations: DB-backed selectAll replaces legacy in-memory builder; response wrapped via
      * {@link NexacroResponseBuilder}.
      */
-    @PostMapping("/select_testDataTypeList.do")
+    // spec #12: test-data type list (renamed from select_testDataTypeList.do)
+    @PostMapping("/sampleTestData.do")
     public NexacroEnvelope select(@RequestBody(required = false) NexacroEnvelope req) {
         return NexacroResponseBuilder.ok(testDataService.selectAll());
     }
 
     /**
-     * Endpoint #11 — Echo/check a test-data-type list (round-trip column-type validation).
+     * Echo/check a test-data-type list (round-trip column-type validation).
      *
      * <p>Ported from boot-jdk17-jakarta-legacy/.../ExampleDateTypeController.check_testDataTypeList@e49a17791d on 2026-04-24.
      * Adaptations: legacy per-field logging dropped in favor of simple rewrap via
      * {@link TestDataService#echo(NexacroDataset)}; dsList lookup uses shared {@code datasetById}.
+     *
+     * TODO Plan8: /uiadapter/check_testDataTypeList.do is not in spec §2 — flag for Opus
      */
     @PostMapping("/check_testDataTypeList.do")
     public NexacroEnvelope check(@RequestBody NexacroEnvelope req) {
