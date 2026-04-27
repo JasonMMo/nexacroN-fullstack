@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 
 /**
- * Uiadapter video-streaming controller — contract endpoint #9.
+ * Uiadapter video-streaming controller — contract endpoint #11.
  *
  * Ported from <boot-jdk17-jakarta-legacy>/<StreamController.java>@e49a17791d on 2026-04-24.
  * Adaptations: javax.servlet imports, JDK 8 syntax (no var/records/text-blocks), Spring Boot 2.7 compatibility.
@@ -34,7 +34,7 @@ public class UiadapterVideoController {
     }
 
     /**
-     * Endpoint #9 — Stream a video file by name.
+     * Endpoint #11 — Stream a video file by name.
      *
      * Ported from boot-jdk17-jakarta-legacy/.../StreamController.streamingVideo@e49a17791d on 2026-04-24.
      * Adaptations: javax.servlet imports, JDK 8 syntax (no var/records/text-blocks), Spring Boot 2.7 compatibility.
@@ -42,7 +42,8 @@ public class UiadapterVideoController {
      * @param fileName   target video file (resolved under {@code media.storage.base-path})
      * @param streamType retained for legacy compatibility ("nio" / "legacy"); not used
      */
-    @GetMapping("/streamingVideo.do")
+    // spec #11: video streaming (renamed from streamingVideo.do)
+    @GetMapping("/sampleVideoStream.do")
     public ResponseEntity<Resource> streamingVideo(
             @RequestParam("fileName") String fileName,
             @RequestParam(value = "streamType", required = false, defaultValue = "nio") String streamType) {
