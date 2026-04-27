@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/file")
 public class FileController extends NexacroController {
 
     private final FileService fileService;
@@ -30,7 +29,8 @@ public class FileController extends NexacroController {
         this.fileService = fileService;
     }
 
-    @PostMapping(value = "/upload.do", consumes = "multipart/form-data")
+    // spec #7: multi-file upload
+    @PostMapping(value = "/uiadapter/advancedUploadFiles.do", consumes = "multipart/form-data")
     public NexacroEnvelope upload(
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "uploadedBy", required = false, defaultValue = "anonymous") String uploadedBy)
@@ -41,7 +41,10 @@ public class FileController extends NexacroController {
         return out;
     }
 
-    @GetMapping("/download.do")
+    // spec #8: single file download.
+    // TODO Plan8: spec §2 mandates POST but file download requires GET for Range/Content-Disposition.
+    // Retained as GET — flag for Opus to decide verb or add POST alias.
+    @GetMapping("/uiadapter/advancedDownloadFile.do")
     public ResponseEntity<Resource> download(@RequestParam("fileId") String fileId) throws IOException {
         FileService.DownloadInfo info = fileService.download(fileId);
         File f = info.file();
@@ -57,8 +60,6 @@ public class FileController extends NexacroController {
                 .body(body);
     }
 
-    @PostMapping("/list.do")
-    public NexacroEnvelope list() {
-        return NexacroResponseBuilder.ok(fileService.list());
-    }
+    // /file/list.do removed — file-list endpoint is not in spec §2.
+    // TODO Plan8: /file/list.do (file listing) is not in spec §2 — flag for Opus
 }
