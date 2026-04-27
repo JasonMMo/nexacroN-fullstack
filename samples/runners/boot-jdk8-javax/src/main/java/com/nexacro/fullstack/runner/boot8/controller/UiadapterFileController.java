@@ -18,7 +18,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Uiadapter multi-file download controller — contract endpoint #7.
+ * Uiadapter multi-file download controller — contract endpoint #9.
  *
  * Ported from <boot-jdk17-jakarta-legacy>/<FileController.java>@e49a17791d on 2026-04-24.
  * Adaptations: javax.servlet imports, JDK 8 syntax (no var/records/text-blocks), Spring Boot 2.7 compatibility.
@@ -36,14 +36,15 @@ public class UiadapterFileController {
     }
 
     /**
-     * Endpoint #7 — Multi-file download as ZIP stream.
+     * Endpoint #9 — Multi-file download as ZIP stream.
      *
      * Ported from boot-jdk17-jakarta-legacy/.../FileController.multiDownloadFiles@e49a17791d on 2026-04-24.
      * Adaptations: javax.servlet imports, JDK 8 syntax (no var/records/text-blocks), Spring Boot 2.7 compatibility.
      * HTTP verb is GET per contract (query params {@code fileIds}, {@code subFolder}).
      * JDK 8: MultiDownloadEntry.file()/originalName() record accessors replaced with getFile()/getOriginalName().
      */
-    @GetMapping("/multiDownloadFiles.do")
+    // spec #9: multi-file download as ZIP (renamed from multiDownloadFiles.do)
+    @GetMapping("/advancedDownloadList.do")
     public void multiDownload(
             @RequestParam(value = "subFolder", required = false) String subFolder,
             @RequestParam(value = "fileIds", required = false) List<String> fileIds,
