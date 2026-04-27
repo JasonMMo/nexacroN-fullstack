@@ -122,12 +122,15 @@ paths:
           $ref: '#/components/responses/NexacroDatasetOut'
 
   /uiadapter/advancedDownloadFile.do:
-    post:
+    get:
       operationId: advancedDownloadFileDo
       tags: [file]
-      summary: 단일 다운로드
-      requestBody:
-        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      summary: 단일 다운로드 (web download — Content-Disposition + Range)
+      parameters:
+        - in: query
+          name: fileId
+          required: true
+          schema: { type: string }
       responses:
         '200':
           description: Binary content
@@ -138,15 +141,23 @@ paths:
                 format: binary
 
   /uiadapter/advancedDownloadList.do:
-    post:
+    get:
       operationId: advancedDownloadListDo
       tags: [file]
-      summary: 다운로드 리스트
-      requestBody:
-        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      summary: 다운로드 리스트 (web download — ZIP stream)
+      parameters:
+        - in: query
+          name: ids
+          required: true
+          schema: { type: string, description: "Comma-separated file IDs" }
       responses:
         '200':
-          $ref: '#/components/responses/NexacroDatasetOut'
+          description: ZIP archive stream
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
 
   # ---- 10-13: Data (continued: large, video, test, wide) ----
   /uiadapter/sampleLargeData.do:
@@ -161,17 +172,31 @@ paths:
           $ref: '#/components/responses/NexacroDatasetOut'
 
   /uiadapter/sampleVideoStream.do:
-    post:
+    get:
       operationId: sampleVideoStreamDo
       tags: [stream]
-      summary: 비디오 스트리밍
-      requestBody:
-        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      summary: 비디오 스트리밍 (HTTP Range partial content)
+      parameters:
+        - in: query
+          name: name
+          required: false
+          schema: { type: string }
+        - in: header
+          name: Range
+          required: false
+          schema: { type: string, example: "bytes=0-" }
       responses:
         '200':
-          description: Chunked video response
+          description: Full video stream
           content:
-            application/octet-stream:
+            video/mp4:
+              schema:
+                type: string
+                format: binary
+        '206':
+          description: Partial content (Range request)
+          content:
+            video/mp4:
               schema:
                 type: string
                 format: binary
@@ -218,6 +243,20 @@ paths:
               schema:
                 type: string
                 format: binary
+
+  # ============== Runner Extras (rules §8) ==============
+  # 스펙 외 — 테스트 목적으로 양 lane 공통 보유
+  /uiadapter/check_testDataTypeList.do:
+    post:
+      operationId: checkTestDataTypeListDo
+      tags: [data]
+      summary: 테스트 데이터 타입 검증 (예외케이스 테스트용)
+      description: Runner extra per rules §8. Not part of canonical 14-endpoint contract.
+      requestBody:
+        $ref: '#/components/requestBodies/NexacroDatasetIn'
+      responses:
+        '200':
+          $ref: '#/components/responses/NexacroDatasetOut'
 
 components:
   requestBodies:
