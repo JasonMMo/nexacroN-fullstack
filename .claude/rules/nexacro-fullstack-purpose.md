@@ -9,7 +9,7 @@
 `nexacro-fullstack` 모노레포와 `nexacro-fullstack-starter` 플러그인은 **넥사크로 UI ↔ Spring 백엔드 풀스택 개발**을 즉시 시작할 수 있도록 만든 표준 스타터다.
 
 - **Dual-lane**: jakarta(JDK17, Spring Boot 3.3.x) / javax(JDK8, Spring Boot 2.7.x) 양쪽 모두 동일한 비즈니스 코드를 공유
-- **GitLab 레거시 → GitHub 통합**: 흩어져 있던 nexacro 관련 모듈(uiadapter, xapi, xeni, nexacrolib)을 단일 모노레포로 통합
+- **GitLab 레거시 → GitHub 통합**: 흩어져 있던 nexacro 관련 모듈(uiadapter, xapi, xeni, nexacrolib)을 단일 모노레포 + 단일 의존성 그래프로 통합. 단, **`xapi`/`xeni`/`uiadapter`의 소스는 vendor 하지 않음** — tobesoft Nexus(`mangosteen.tobesoft.co.kr`, anonymous read 허용)에서 빌드시 pull. `core/`는 README + pom.xml의 `<repository>`/version property로 단일 진입점만 제공. `nexacrolib`은 UI 자산이므로 `nxui/packageN/nexacrolib/`에 vendor.
 - **단일 표준 endpoint 계약**: 넥사크로 UI에서 transaction으로 호출하는 `*.do` URL과 1:1 일치
 
 ---
