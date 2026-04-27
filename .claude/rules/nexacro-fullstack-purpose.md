@@ -29,13 +29,15 @@
 | 5 | POST | `/uiadapter/update_datalist_map.do` | 리스트 insert/update/delete |
 | 6 | POST | `/uiadapter/update_deptlist_map.do` | 부서 트리 갱신 |
 | 7 | POST | `/uiadapter/advancedUploadFiles.do` | 다중 업로드 |
-| 8 | POST | `/uiadapter/advancedDownloadFile.do` | 단일 다운로드 |
-| 9 | POST | `/uiadapter/advancedDownloadList.do` | 다운로드 리스트 |
+| 8 | **GET** | `/uiadapter/advancedDownloadFile.do` | 단일 다운로드 (web download — Content-Disposition + Range) |
+| 9 | **GET** | `/uiadapter/advancedDownloadList.do` | 다운로드 리스트 (web download — ZIP stream) |
 | 10 | POST | `/uiadapter/sampleLargeData.do` | 대용량 select |
-| 11 | POST | `/uiadapter/sampleVideoStream.do` | 비디오 스트리밍 |
+| 11 | **GET** | `/uiadapter/sampleVideoStream.do` | 비디오 스트리밍 (HTTP Range partial content) |
 | 12 | POST | `/uiadapter/sampleTestData.do` | 테스트 데이터 |
 | 13 | POST | `/uiadapter/sampleWideColumns.do` | 와이드 컬럼 |
 | 14 | POST | `/uiadapter/relay/exim_exchange.do` | 외부 시스템 릴레이 |
+
+**Verb 결정 근거:** #8/#9/#11은 브라우저 web download 방식으로 동작하므로 GET이 맞음 (2026-04-27 사용자 결정).
 
 > **현재 구현 상태(2026-04-27):** 5/14 일치. 9개 path 불일치 + 1개 누락. → Plan8에서 복구.
 
@@ -114,6 +116,18 @@
 
 - 신규 도메인 추가 (e.g., 결제, 차트) — 현재 14-endpoint 범위 외
 - WebFlux 변환 — 별개 프로젝트 `nexacro-webflux`에서 진행
+
+---
+
+## 8. Runner Extras (스펙 외 허용 endpoint)
+
+§2 14-endpoint 외에 **테스트 목적**으로 양 lane이 공통 보유하는 endpoint. 스펙 본문은 아니지만 정상 동작해야 한다.
+
+| Path | Method | 용도 | 사유 |
+|------|--------|------|------|
+| `/uiadapter/check_testDataTypeList.do` | POST | 테스트 데이터 타입 검증 | 예외케이스 테스트 시 필요 (2026-04-27 사용자 결정) |
+
+검증 단계에서 §2 14개에 포함되지 않더라도 EXTRA 검출 시 §8에 기재된 경로면 통과로 처리.
 
 ---
 
