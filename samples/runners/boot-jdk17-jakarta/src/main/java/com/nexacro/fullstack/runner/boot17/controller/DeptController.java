@@ -5,11 +5,9 @@ import com.nexacro.fullstack.business.uiadapter.NexacroController;
 import com.nexacro.fullstack.business.uiadapter.NexacroResponseBuilder;
 import com.nexacro.fullstack.business.xapi.NexacroEnvelope;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/dept")
 public class DeptController extends NexacroController {
 
     private final DeptService deptService;
@@ -18,13 +16,16 @@ public class DeptController extends NexacroController {
         this.deptService = deptService;
     }
 
-    @PostMapping("/list.do")
-    public NexacroEnvelope list() {
+    // spec #6: dept list/tree fetch (strategy a: repurposed from /dept/list.do).
+    // Returns flat dept list; /dept/tree.do logic retained as private helper below.
+    @PostMapping("/uiadapter/update_deptlist_map.do")
+    public NexacroEnvelope updateDeptlistMap() {
         return NexacroResponseBuilder.ok(deptService.listAll());
     }
 
-    @PostMapping("/tree.do")
-    public NexacroEnvelope tree() {
+    // Private helper — kept for internal use; not in spec §2.
+    // TODO Plan8: /dept/tree.do (tree fetch) is not in spec §2 — flag for Opus
+    private NexacroEnvelope treeHelper() {
         return NexacroResponseBuilder.ok(deptService.tree());
     }
 }
