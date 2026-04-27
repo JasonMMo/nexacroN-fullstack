@@ -7,11 +7,9 @@ import com.nexacro.fullstack.business.xapi.NexacroDataset;
 import com.nexacro.fullstack.business.xapi.NexacroEnvelope;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/large")
 public class LargeDataController extends NexacroController {
 
     private final LargeDataService largeService;
@@ -20,7 +18,8 @@ public class LargeDataController extends NexacroController {
         this.largeService = largeService;
     }
 
-    @PostMapping("/page")
+    // spec #10: large-data paged select
+    @PostMapping("/uiadapter/sampleLargeData.do")
     public NexacroEnvelope page(@RequestBody(required = false) NexacroEnvelope req) {
         int pageNum  = asInt(parameterById(req, "page"),  1);
         int pageSize = asInt(parameterById(req, "size"),  50);
