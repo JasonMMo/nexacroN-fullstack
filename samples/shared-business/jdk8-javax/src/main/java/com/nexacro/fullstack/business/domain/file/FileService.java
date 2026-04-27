@@ -67,6 +67,50 @@ public class FileService {
         return new DownloadInfo(f, meta);
     }
 
+    /**
+     * One entry of a multi-download bundle: the original filename + the resolved disk file.
+     *
+     * Ported from <boot-jdk17-jakarta-legacy>/<FileService.java>@e49a17791d on 2026-04-24.
+     * Adaptations: javax.servlet imports, JDK 8 syntax (no var/records/text-blocks), Spring Boot 2.7 compatibility.
+     * JDK 8: record replaced with static inner class + constructor + getters.
+     */
+    public static class MultiDownloadEntry {
+        private final String originalName;
+        private final File file;
+
+        public MultiDownloadEntry(String originalName, File file) {
+            this.originalName = originalName;
+            this.file = file;
+        }
+
+        public String getOriginalName() { return originalName; }
+        public File getFile() { return file; }
+    }
+
+    /**
+     * Resolve multiple files by FILE_ID for zip-bundling download.
+     *
+     * Ported from <boot-jdk17-jakarta-legacy>/<FileService.java>@e49a17791d on 2026-04-24.
+     * Adaptations: javax.servlet imports, JDK 8 syntax (no var/records/text-blocks), Spring Boot 2.7 compatibility.
+     * JDK 8: List.of() replaced with Collections.emptyList(); record replaced with static inner class.
+     */
+    public List<MultiDownloadEntry> multiDownload(List<String> fileIds) {
+        if (fileIds == null || fileIds.isEmpty()) {
+            return java.util.Collections.emptyList();
+        }
+        List<Map<String, Object>> metas = dao.findByIds(fileIds);
+        if (metas == null || metas.isEmpty()) {
+            return java.util.Collections.emptyList();
+        }
+        List<MultiDownloadEntry> out = new ArrayList<MultiDownloadEntry>(metas.size());
+        for (Map<String, Object> meta : metas) {
+            String storedPath = String.valueOf(meta.get("STORED_PATH"));
+            String originalName = String.valueOf(meta.get("ORIGINAL_NAME"));
+            out.add(new MultiDownloadEntry(originalName, new File(storedPath)));
+        }
+        return out;
+    }
+
     public NexacroDataset list() {
         NexacroDataset ds = new NexacroDataset();
         ds.setId("files");

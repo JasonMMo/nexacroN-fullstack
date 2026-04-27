@@ -21,4 +21,18 @@
          ORDER BY UPLOADED_AT DESC
     </select>
 
+    <!--
+      Ported from boot-jdk17-jakarta-legacy/src/main/resources/.../FileDao.xml@e49a17791d on 2026-04-24.
+      Adaptations: javax.servlet imports, JDK 8 syntax (no var/records/text-blocks), Spring Boot 2.7 compatibility.
+    -->
+    <select id="findByIds" resultType="map">
+        SELECT FILE_ID, ORIGINAL_NAME, STORED_PATH, CONTENT_TYPE, SIZE_BYTES, UPLOADED_BY, UPLOADED_AT
+          FROM FILE_META
+         WHERE DELETED = FALSE
+           AND FILE_ID IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>
