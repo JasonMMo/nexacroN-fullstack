@@ -1,19 +1,23 @@
 package com.nexacro.fullstack.runner.boot17.controller;
 
 import com.nexacro.fullstack.runner.boot17.service.RelayService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import java.io.IOException;
 
 /**
  * External system relay controller — contract endpoint #14.
  *
  * POST /uiadapter/relay/exim_exchange.do
  * Accepts multipart/form-data, returns application/octet-stream.
- * Delegates all logic to {@link RelayService}.
+ * Delegates all logic to {@link RelayService}, which writes the response
+ * body directly to {@link HttpServletResponse#getOutputStream()} to ensure
+ * raw-byte fidelity regardless of negotiated Content-Type.
  */
 @RestController
 @RequestMapping("/uiadapter")
@@ -34,7 +38,8 @@ public class RelayController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    public ResponseEntity<byte[]> relayEximExchange(MultipartHttpServletRequest request) {
-        return relayService.relay(request);
+    public void relayEximExchange(MultipartHttpServletRequest request,
+                                  HttpServletResponse response) throws IOException {
+        relayService.relay(request, response);
     }
 }
