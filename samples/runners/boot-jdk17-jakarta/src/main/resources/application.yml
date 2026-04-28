@@ -29,6 +29,12 @@ mybatis:
 nexacro:
   file:
     storage-dir: ./uploads
+  relay:
+    exim:
+      url:                  # empty by default — 503 fallback when not configured
+      connect-timeout: 5000
+      read-timeout: 30000
+      forward-headers: {}
 
 logging:
   level:
