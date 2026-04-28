@@ -18,13 +18,22 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Handles the HTTP passthrough relay to an upstream EXIM exchange service.
+ *
+ * <p>Writes the response body directly to {@link HttpServletResponse#getOutputStream()}
+ * to bypass Spring's HttpMessageConverter selection, which on Spring Boot 2.7
+ * would otherwise base64-wrap a {@code byte[]} body whenever the response
+ * Content-Type ends up being {@code application/json} (Jackson's default
+ * byte[] encoding). Direct stream write keeps the body as raw bytes regardless
+ * of declared content type — the only mode nexacro can parse uniformly.
  */
 @Service
 public class RelayService {
@@ -41,15 +50,14 @@ public class RelayService {
     }
 
     /**
-     * Relay an inbound multipart request to the configured upstream URL.
-     *
-     * @param req the inbound multipart servlet request
-     * @return the upstream response (or a 503 nexacro-envelope JSON on failure)
+     * Relay an inbound multipart request to the configured upstream URL,
+     * writing the upstream (or fallback) bytes directly into {@code resp}.
      */
-    public ResponseEntity<byte[]> relay(MultipartHttpServletRequest req) {
+    public void relay(MultipartHttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (props.getUrl() == null || props.getUrl().trim().isEmpty()) {
             LOG.warn("[RelayService] nexacro.relay.exim.url is not configured — returning 503");
-            return buildJsonError(503, -1, "EXIM relay url not configured");
+            writeJsonError(resp, 503, -1, "EXIM relay url not configured");
+            return;
         }
 
         // Build parts map
@@ -82,7 +90,8 @@ public class RelayService {
                 parts.add(mf.getName(), new HttpEntity<>(resource, fileHeaders));
             } catch (IOException e) {
                 LOG.error("[RelayService] Failed to read file part '{}': {}", mf.getName(), e.getMessage());
-                return buildJsonError(503, -2, "EXIM upstream call failed: " + e.getMessage());
+                writeJsonError(resp, 503, -2, "EXIM upstream call failed: " + e.getMessage());
+                return;
             }
         }
 
@@ -105,34 +114,40 @@ public class RelayService {
 
             LOG.info("[RelayService] Upstream responded with status: {}", upstream.getStatusCode());
 
-            // Build downstream response headers
-            HttpHeaders down = new HttpHeaders();
             MediaType upstreamContentType = upstream.getHeaders().getContentType();
-            down.setContentType(upstreamContentType != null
-                    ? upstreamContentType
-                    : MediaType.APPLICATION_OCTET_STREAM);
-            String disposition = upstream.getHeaders().getFirst(HttpHeaders.CONTENT_DISPOSITION);
+            String contentType = (upstreamContentType != null
+                    ? upstreamContentType.toString()
+                    : MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            List<String> disposition = upstream.getHeaders().get(HttpHeaders.CONTENT_DISPOSITION);
+
+            resp.setStatus(upstream.getStatusCodeValue());
+            resp.setContentType(contentType);
             if (disposition != null) {
-                down.add(HttpHeaders.CONTENT_DISPOSITION, disposition);
+                for (String d : disposition) {
+                    resp.addHeader(HttpHeaders.CONTENT_DISPOSITION, d);
+                }
             }
-
-            return ResponseEntity.status(upstream.getStatusCode())
-                    .headers(down)
-                    .body(upstream.getBody());
-
+            byte[] body = upstream.getBody();
+            if (body != null) {
+                resp.setContentLength(body.length);
+                resp.getOutputStream().write(body);
+                resp.getOutputStream().flush();
+            }
         } catch (RestClientException e) {
             LOG.error("[RelayService] Upstream call failed: {}", e.getMessage());
-            return buildJsonError(503, -2, "EXIM upstream call failed: " + e.getMessage());
+            writeJsonError(resp, 503, -2, "EXIM upstream call failed: " + e.getMessage());
         }
     }
 
-    private ResponseEntity<byte[]> buildJsonError(int status, int errorCode, String errorMsg) {
+    private void writeJsonError(HttpServletResponse resp, int status, int errorCode, String errorMsg) throws IOException {
         String json = String.format(
                 "{\"version\":\"1.0\",\"Parameters\":[{\"id\":\"ErrorCode\",\"value\":%d},{\"id\":\"ErrorMsg\",\"value\":\"%s\"}],\"Datasets\":[]}",
                 errorCode, errorMsg.replace("\"", "\\\""));
         byte[] body = json.getBytes(StandardCharsets.UTF_8);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return ResponseEntity.status(status).headers(headers).body(body);
+        resp.setStatus(status);
+        resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        resp.setContentLength(body.length);
+        resp.getOutputStream().write(body);
+        resp.getOutputStream().flush();
     }
 }
