@@ -5,13 +5,7 @@
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.nexacro.fullstack</groupId>
-        <artifactId>nexacroN-fullstack-parent</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
-    </parent>
-
+    <groupId>com.nexacro.fullstack</groupId>
     <artifactId>runner-boot-jdk17-jakarta</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -19,21 +13,58 @@
     <name>runner-boot-jdk17-jakarta</name>
     <description>
         Spring Boot 3.3.x (jakarta lane, JDK 17) runner for nexacroN-fullstack.
-        Thin HTTP adapter over shared-business-jdk17-jakarta.
+        Self-contained: includes inlined business sources (xapi core,
+        uiadapter base controller, domain services/DAOs) and seed-data.
     </description>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+
+        <boot3.version>3.3.5</boot3.version>
+        <mybatis.spring.boot.jakarta.version>3.0.3</mybatis.spring.boot.jakarta.version>
+        <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+        <hsqldb.version>2.7.3</hsqldb.version>
+        <lombok.version>1.18.34</lombok.version>
+        <jackson.version>2.17.2</jackson.version>
+        <commons.io.version>2.16.1</commons.io.version>
+
+        <!-- nexacro first-party (jakarta lane) — bump via versions:update-properties -->
+        <nexacro.xapi.jakarta.version>1.2.4-SNAPSHOT</nexacro.xapi.jakarta.version>
+        <nexacro.xeni.jakarta.version>1.5.21-SNAPSHOT</nexacro.xeni.jakarta.version>
+        <nexacro.uiadapter.jakarta.core.version>1.0.27.1-SNAPSHOT</nexacro.uiadapter.jakarta.core.version>
+        <nexacro.uiadapter.jakarta.dataaccess.version>1.0.14-SNAPSHOT</nexacro.uiadapter.jakarta.dataaccess.version>
+        <nexacro.uiadapter.jakarta.excel.version>1.5.4.3-SNAPSHOT</nexacro.uiadapter.jakarta.excel.version>
+    </properties>
+
     <!--
-      Jakarta-lane runners must import spring-boot-dependencies 3.3.5 here
-      because the parent BOM only imports the javax lane (boot 2.7.18).
-      See parent pom.xml comment: "jakarta-lane runners should import
-      spring-boot-dependencies 3.3.5 explicitly in their own pom".
+        Nexacro first-party modules — anonymous public Nexus.
+        Verified 2026-04-27: HEAD/GET on timestamped jars returns 200 OK
+        without credentials.
     -->
+    <repositories>
+        <repository>
+            <id>tobesoft-snapshots</id>
+            <url>https://mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.3.5</version>
+                <version>${boot3.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -41,60 +72,86 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Business tree: xapi core + uiadapter + domain services + DAOs -->
-        <dependency>
-            <groupId>com.nexacro.fullstack</groupId>
-            <artifactId>shared-business-jdk17-jakarta</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Spring Boot starters (versions managed by spring-boot-dependencies 3.3.5) -->
+        <!-- Spring Boot starters (versions managed by boot BOM) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
-        <!--
-          mybatis-spring-boot-starter: parent manages version 2.3.2 (javax lane).
-          Pin jakarta-lane version 3.0.3 explicitly here.
-        -->
+        <!-- MyBatis (jakarta lane — explicit version, not in boot BOM) -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>3.0.3</version>
+            <version>${mybatis.spring.boot.jakarta.version}</version>
         </dependency>
 
-        <!--
-          Nexacro first-party modules (jakarta lane).
+        <!-- Jakarta servlet API (provided — Tomcat supplies it) -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${jakarta.servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-          Pulled from tobesoft Nexus — see parent pom <repositories> block.
-          Versions are managed by the parent pom dependencyManagement; bump
-          via the 5 <nexacro.*.jakarta.*.version> properties.
-        -->
+        <!-- HSQLDB in-memory DB -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Jackson for JSON envelope serde -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Lombok (annotation processor) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- commons-io for file utilities (used by inlined business code) -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+
+        <!-- Nexacro first-party modules (jakarta lane) -->
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>nexacroN-xapi-jakarta</artifactId>
+            <version>${nexacro.xapi.jakarta.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>nexacroN-xeni-jakarta</artifactId>
+            <version>${nexacro.xeni.jakarta.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>uiadapter-jakarta-core</artifactId>
+            <version>${nexacro.uiadapter.jakarta.core.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>uiadapter-jakarta-dataaccess</artifactId>
+            <version>${nexacro.uiadapter.jakarta.dataaccess.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>uiadapter-jakarta-excel</artifactId>
+            <version>${nexacro.uiadapter.jakarta.excel.version}</version>
         </dependency>
     </dependencies>
 
@@ -106,41 +163,16 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>17</release>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${boot3.version}</version>
                 <configuration>
                     <mainClass>com.nexacro.fullstack.runner.boot17.Application</mainClass>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-seed-data</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.basedir}/../../seed-data</directory>
-                                    <includes>
-                                        <include>schema.sql</include>
-                                        <include>data.sql</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
