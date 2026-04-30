@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nexacro.uiadapter.mapper.TestDataMapper">
+
+    <select id="selectAll" resultType="com.nexacro.uiadapter.domain.TestDataType">
+        SELECT
+            ID,
+            STRING_VALUE,
+            INT_VALUE,
+            BOOLEAN_VALUE,
+            LONG_VALUE,
+            FLOAT_VALUE,
+            DOUBLE_VALUE,
+            BIG_DECIMAL_VALUE,
+            DATE_VALUE,
+            TIME_VALUE,
+            DATETIME_VALUE,
+            BYTES_VALUE
+        FROM TB_TEST_DATA_TYPE
+        ORDER BY ID
+    </select>
+
+</mapper>
