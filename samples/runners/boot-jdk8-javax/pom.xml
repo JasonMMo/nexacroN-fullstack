@@ -5,13 +5,7 @@
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.nexacro.fullstack</groupId>
-        <artifactId>nexacroN-fullstack-parent</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
-    </parent>
-
+    <groupId>com.nexacro.fullstack</groupId>
     <artifactId>runner-boot-jdk8-javax</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -19,73 +13,139 @@
     <name>runner-boot-jdk8-javax</name>
     <description>
         Spring Boot 2.7.x (javax lane, JDK 8) runner for nexacroN-fullstack.
-        Thin HTTP adapter over shared-business-jdk8-javax.
+        Self-contained: includes inlined business sources and seed-data.
     </description>
 
-    <dependencies>
-        <!-- Business tree: xapi core + uiadapter + domain services + DAOs -->
-        <dependency>
-            <groupId>com.nexacro.fullstack</groupId>
-            <artifactId>shared-business-jdk8-javax</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-        </dependency>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
-        <!-- Spring Boot starters (versions managed by parent BOM: boot 2.7.18) -->
+        <boot2.version>2.7.18</boot2.version>
+        <spring5.version>5.3.39</spring5.version>
+        <mybatis.spring.boot.javax.version>2.3.2</mybatis.spring.boot.javax.version>
+        <javax.servlet.version>4.0.1</javax.servlet.version>
+        <hsqldb.version>2.7.3</hsqldb.version>
+        <lombok.version>1.18.34</lombok.version>
+        <jackson.version>2.17.2</jackson.version>
+        <commons.io.version>2.15.1</commons.io.version>
+
+        <!-- nexacro first-party (javax lane) -->
+        <nexacro.xapi.javax.version>1.2.4-SNAPSHOT</nexacro.xapi.javax.version>
+        <nexacro.xeni.javax.version>1.5.21-SNAPSHOT</nexacro.xeni.javax.version>
+        <nexacro.uiadapter.spring.core.version>1.4.19.2-SNAPSHOT</nexacro.uiadapter.spring.core.version>
+        <nexacro.uiadapter.spring.dataaccess.version>1.4.19-SNAPSHOT</nexacro.uiadapter.spring.dataaccess.version>
+        <nexacro.uiadapter.spring.excel.version>1.5.21-SNAPSHOT</nexacro.uiadapter.spring.excel.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>tobesoft-snapshots</id>
+            <url>https://mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${boot2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Spring Boot starters (versions managed by boot 2.7.18 BOM) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.7.18</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>2.7.18</version>
         </dependency>
 
-        <!--
-          mybatis-spring-boot-starter: PIN 2.3.2 — version 3.x pulls jakarta.
-        -->
+        <!-- MyBatis (javax lane — pin 2.3.2; 3.x pulls jakarta) -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.3.2</version>
+            <version>${mybatis.spring.boot.javax.version}</version>
         </dependency>
 
-        <!-- In-memory DB for smoke testing — 2.7.3 requires Java 11+ at runtime; run with JDK 17 -->
+        <!-- Javax servlet API (provided) -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- HSQLDB (2.7.3 needs Java 11+ at runtime; build with JDK 8 source, run with JDK 17 JAVA_HOME) -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.7.3</version>
+            <version>${hsqldb.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
-        <!--
-          Nexacro first-party modules (javax lane).
+        <!-- Jackson for JSON envelope serde -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
 
-          Pulled from tobesoft Nexus — see parent pom <repositories> block.
-          Versions are managed by the parent pom dependencyManagement; bump
-          via the 5 <nexacro.*.javax.version> / <nexacro.uiadapter.spring.*.version>
-          properties.
-        -->
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+
+        <!-- Nexacro first-party modules (javax lane) -->
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>nexacroN-xapi</artifactId>
+            <version>${nexacro.xapi.javax.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>nexacroN-xeni</artifactId>
+            <version>${nexacro.xeni.javax.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>uiadapter-spring-core</artifactId>
+            <version>${nexacro.uiadapter.spring.core.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>uiadapter-spring-dataaccess</artifactId>
+            <version>${nexacro.uiadapter.spring.dataaccess.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nexacro</groupId>
             <artifactId>uiadapter-spring-excel</artifactId>
+            <version>${nexacro.uiadapter.spring.excel.version}</version>
         </dependency>
     </dependencies>
 
@@ -98,13 +158,13 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.7.18</version>
+                <version>${boot2.version}</version>
                 <configuration>
                     <mainClass>com.nexacro.fullstack.runner.boot8.Application</mainClass>
                 </configuration>
@@ -113,33 +173,6 @@
                         <goals>
                             <goal>repackage</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-seed-data</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.basedir}/../../seed-data</directory>
-                                    <includes>
-                                        <include>schema.sql</include>
-                                        <include>data.sql</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
