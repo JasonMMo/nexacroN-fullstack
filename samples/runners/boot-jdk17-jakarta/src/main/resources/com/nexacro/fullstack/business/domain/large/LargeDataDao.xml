@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nexacro.fullstack.business.domain.large.LargeDataDao">
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM LARGE_DATA
+        <where>
+            <if test="category != null and category != ''">CATEGORY = #{category}</if>
+        </where>
+    </select>
+
+    <select id="page" resultType="map">
+        SELECT ROW_ID, CATEGORY, SEQ_NO, VALUE_1, VALUE_2, VALUE_3, CREATED_AT
+        FROM LARGE_DATA
+        <where>
+            <if test="category != null and category != ''">CATEGORY = #{category}</if>
+        </where>
+        ORDER BY ROW_ID
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
+</mapper>
