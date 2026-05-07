@@ -21,20 +21,22 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    /** Single-row read; client xfdl declares {@code outData="dsList=output1"}. */
     @RequestMapping("/select_data_single.do")
     public NexacroResult selectDataSingle(
             @ParamVariable(name = "boardId", required = false) Integer boardId) {
         NexacroResult result = new NexacroResult();
         Board board = (boardId == null) ? null : boardService.selectById(boardId);
-        result.addDataSet("ds_board", board == null ? Collections.emptyList() : Collections.singletonList(board));
+        result.addDataSet("output1", board == null ? Collections.emptyList() : Collections.singletonList(board));
         return result;
     }
 
+    /** List read; client xfdl declares {@code outData="dsList=output1"}. */
     @RequestMapping("/select_datalist.do")
     public NexacroResult selectDataList(
             @ParamDataSet(name = "ds_search", required = false) Board search) {
         NexacroResult result = new NexacroResult();
-        result.addDataSet("ds_board", boardService.selectList(search));
+        result.addDataSet("output1", boardService.selectList(search));
         return result;
     }
 
