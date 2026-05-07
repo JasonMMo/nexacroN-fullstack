@@ -26,6 +26,7 @@
         <spring5.version>5.3.39</spring5.version>
         <mybatis.spring.boot.javax.version>2.3.2</mybatis.spring.boot.javax.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
+        <javax.servlet.jsp.version>2.3.3</javax.servlet.jsp.version>
         <hsqldb.version>2.7.3</hsqldb.version>
         <lombok.version>1.18.34</lombok.version>
         <jackson.version>2.17.2</jackson.version>
@@ -89,6 +90,18 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!--
+            Javax JSP API — required at runtime by xapi-javax
+            HttpPlatformResponse.sendData(), which references javax.servlet.jsp.JspWriter.
+            Embedded Tomcat (Boot 2.7.x) does NOT supply a JSP container, so the API
+            jar must be bundled on the runtime classpath (default scope, NOT provided).
+        -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>${javax.servlet.jsp.version}</version>
         </dependency>
 
         <!-- HSQLDB (2.7.3 needs Java 11+ at runtime; build with JDK 8 source, run with JDK 17 JAVA_HOME) -->
