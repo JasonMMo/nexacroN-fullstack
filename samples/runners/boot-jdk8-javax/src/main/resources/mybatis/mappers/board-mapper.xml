@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nexacro.uiadapter.mapper.BoardMapper">
+
+    <select id="selectList" parameterType="com.nexacro.uiadapter.domain.Board"
+            resultType="com.nexacro.uiadapter.domain.Board">
+        SELECT BOARD_ID, TITLE, CONTENT, AUTHOR_ID, VIEW_COUNT, CREATED_AT, UPDATED_AT
+        FROM SAMPLE_BOARD
+        WHERE DELETED = FALSE
+        <if test="authorId != null and authorId != ''">
+            AND AUTHOR_ID = #{authorId}
+        </if>
+        <if test="title != null and title != ''">
+            AND TITLE LIKE '%' || #{title} || '%'
+        </if>
+        ORDER BY BOARD_ID DESC
+    </select>
+
+    <select id="selectById" parameterType="int"
+            resultType="com.nexacro.uiadapter.domain.Board">
+        SELECT BOARD_ID, TITLE, CONTENT, AUTHOR_ID, VIEW_COUNT, CREATED_AT, UPDATED_AT
+        FROM SAMPLE_BOARD
+        WHERE BOARD_ID = #{boardId}
+          AND DELETED = FALSE
+    </select>
+
+    <insert id="insert" parameterType="com.nexacro.uiadapter.domain.Board"
+            useGeneratedKeys="true" keyProperty="boardId" keyColumn="BOARD_ID">
+        INSERT INTO SAMPLE_BOARD (TITLE, CONTENT, AUTHOR_ID, VIEW_COUNT, CREATED_AT)
+        VALUES (
+            #{title},
+            #{content},
+            #{authorId},
+            <choose>
+                <when test="viewCount != null">#{viewCount}</when>
+                <otherwise>0</otherwise>
+            </choose>,
+            CURRENT_TIMESTAMP
+        )
+    </insert>
+
+    <update id="update" parameterType="com.nexacro.uiadapter.domain.Board">
+        UPDATE SAMPLE_BOARD
+        SET TITLE      = #{title},
+            CONTENT    = #{content},
+            UPDATED_AT = CURRENT_TIMESTAMP
+        WHERE BOARD_ID = #{boardId}
+          AND DELETED = FALSE
+    </update>
+
+    <update id="softDelete" parameterType="int">
+        UPDATE SAMPLE_BOARD
+        SET DELETED    = TRUE,
+            UPDATED_AT = CURRENT_TIMESTAMP
+        WHERE BOARD_ID = #{boardId}
+    </update>
+
+</mapper>
