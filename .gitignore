@@ -34,3 +34,8 @@ desktop.ini
 *.local
 .env
 .env.local
+
+# Nexacro N runtime license — never commit to a public repo.
+# Drop your operator-issued NexacroN_server_license.xml at:
+#   samples/runners/<KEY>/src/main/resources/NexacroN_server_license.xml
+NexacroN_server_license.xml
