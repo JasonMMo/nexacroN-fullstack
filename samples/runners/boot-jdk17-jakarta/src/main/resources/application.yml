@@ -23,8 +23,9 @@ spring:
       max-request-size: 10MB
 
 mybatis:
-  config-location: classpath:mybatis-config.xml
-  mapper-locations: classpath*:com/nexacro/fullstack/business/domain/**/*.xml
+  config-location: classpath:mybatis/sql-mapper-config.xml
+  mapper-locations: classpath:mybatis/mappers/*-mapper.xml
+  type-aliases-package: com.nexacro.uiadapter.domain
 
 nexacro:
   file:
@@ -39,6 +40,6 @@ nexacro:
 logging:
   level:
     root: INFO
-    com.nexacro.fullstack: DEBUG
+    com.nexacro.uiadapter: DEBUG
     org.springframework.jdbc: INFO
     org.mybatis: INFO
