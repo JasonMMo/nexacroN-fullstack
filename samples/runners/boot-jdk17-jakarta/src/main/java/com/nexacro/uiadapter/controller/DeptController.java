@@ -22,14 +22,14 @@ public class DeptController {
     @RequestMapping("/update_deptlist_map.do")
     public NexacroResult deptList() {
         NexacroResult result = new NexacroResult();
-        result.addDataSet("ds_dept", deptService.selectList());
+        result.addDataSet("output1", deptService.selectList());
         return result;
     }
 
     @RequestMapping("/dept_tree.do")
     public NexacroResult deptTree() {
         NexacroResult result = new NexacroResult();
-        result.addDataSet("ds_deptTree", deptService.selectTree());
+        result.addDataSet("output1", deptService.selectTree());
         return result;
     }
 }
