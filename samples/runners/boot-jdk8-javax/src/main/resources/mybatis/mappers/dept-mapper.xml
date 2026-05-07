@@ -4,32 +4,18 @@
 
 <mapper namespace="com.nexacro.uiadapter.mapper.DeptMapper">
 
+    <!-- Canonical TB_DEPT is a flat list with lowercase identifiers; quoted to preserve case. -->
     <select id="selectList" resultType="com.nexacro.uiadapter.domain.Dept">
-        SELECT DEPT_ID, DEPT_NAME, PARENT_ID, SORT_ORDER, LEVEL_NO
-        FROM DEPT
-        WHERE ENABLED = TRUE
-        ORDER BY LEVEL_NO, SORT_ORDER
+        SELECT "deptId", "deptName", "memberCount"
+        FROM TB_DEPT
+        ORDER BY "deptId"
     </select>
 
+    <!-- Canonical TB_DEPT has no parent/depth/path columns; tree view delegates to flat list. -->
     <select id="selectTree" resultType="com.nexacro.uiadapter.domain.Dept">
-        WITH RECURSIVE DEPT_TREE (DEPT_ID, DEPT_NAME, PARENT_ID, LEVEL_NO, SORT_ORDER, DEPTH, PATH) AS (
-            SELECT DEPT_ID, DEPT_NAME, PARENT_ID, LEVEL_NO, SORT_ORDER,
-                   0 AS DEPTH,
-                   CAST(DEPT_ID AS VARCHAR(500)) AS PATH
-            FROM DEPT
-            WHERE PARENT_ID IS NULL
-              AND ENABLED = TRUE
-            UNION ALL
-            SELECT d.DEPT_ID, d.DEPT_NAME, d.PARENT_ID, d.LEVEL_NO, d.SORT_ORDER,
-                   t.DEPTH + 1,
-                   t.PATH || '/' || d.DEPT_ID
-            FROM DEPT d
-            JOIN DEPT_TREE t ON d.PARENT_ID = t.DEPT_ID
-            WHERE d.ENABLED = TRUE
-        )
-        SELECT DEPT_ID, DEPT_NAME, PARENT_ID, LEVEL_NO, SORT_ORDER, DEPTH, PATH
-        FROM DEPT_TREE
-        ORDER BY PATH
+        SELECT "deptId", "deptName", "memberCount"
+        FROM TB_DEPT
+        ORDER BY "deptId"
     </select>
 
 </mapper>
