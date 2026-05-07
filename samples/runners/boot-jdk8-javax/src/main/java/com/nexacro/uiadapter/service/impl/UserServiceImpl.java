@@ -23,18 +23,11 @@ public class UserServiceImpl implements UserService {
         if (u == null) {
             return null;
         }
-        String expected = "stub$" + userId;
-        if (!expected.equals(u.getPasswordHash())) {
+        if (!password.equals(u.getPassword())) {
             return null;
         }
         userMapper.updateLastLogin(userId);
-        // Return a sanitized copy (drop the password hash).
-        User out = new User();
-        out.setUserId(u.getUserId());
-        out.setUserName(u.getUserName());
-        out.setEmail(u.getEmail());
-        out.setRole(u.getRole());
-        out.setEnabled(u.getEnabled());
-        return out;
+        u.setPassword(null);
+        return u;
     }
 }
