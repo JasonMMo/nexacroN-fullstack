@@ -27,6 +27,7 @@
         <mybatis.spring.boot.javax.version>2.3.2</mybatis.spring.boot.javax.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.servlet.jsp.version>2.3.3</javax.servlet.jsp.version>
+        <commons.fileupload.version>1.5</commons.fileupload.version>
         <hsqldb.version>2.7.3</hsqldb.version>
         <lombok.version>1.18.34</lombok.version>
         <jackson.version>2.17.2</jackson.version>
@@ -102,6 +103,19 @@
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>
             <version>${javax.servlet.jsp.version}</version>
+        </dependency>
+
+        <!--
+            Apache Commons FileUpload (classic, javax lane) — required at runtime by
+            xeni-javax GridExportImportServlet, which references
+            org.apache.commons.fileupload.servlet.ServletFileUpload.
+            xeni-javax's pom declares no transitive dependencies, so this
+            must be wired explicitly.
+        -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
         </dependency>
 
         <!-- HSQLDB (2.7.3 needs Java 11+ at runtime; build with JDK 8 source, run with JDK 17 JAVA_HOME) -->
