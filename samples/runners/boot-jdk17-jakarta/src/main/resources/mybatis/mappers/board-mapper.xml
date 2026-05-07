@@ -6,55 +6,67 @@
 
     <select id="selectList" parameterType="com.nexacro.uiadapter.domain.Board"
             resultType="com.nexacro.uiadapter.domain.Board">
-        SELECT BOARD_ID, TITLE, CONTENT, AUTHOR_ID, VIEW_COUNT, CREATED_AT, UPDATED_AT
-        FROM SAMPLE_BOARD
-        WHERE DELETED = FALSE
-        <if test="authorId != null and authorId != ''">
-            AND AUTHOR_ID = #{authorId}
-        </if>
-        <if test="title != null and title != ''">
-            AND TITLE LIKE '%' || #{title} || '%'
-        </if>
-        ORDER BY BOARD_ID DESC
+        SELECT POST_ID, TITLE, CONTENTS, REG_ID, REG_DATE, COMMUNITY_ID, HIDDEN_INFO, HIT_COUNT, IS_NOTICE
+        FROM TB_BOARD
+        <where>
+            <if test="regId != null and regId != ''">
+                AND REG_ID = #{regId}
+            </if>
+            <if test="title != null and title != ''">
+                AND TITLE LIKE '%' || #{title} || '%'
+            </if>
+            <if test="communityId != null and communityId != ''">
+                AND COMMUNITY_ID = #{communityId}
+            </if>
+        </where>
+        ORDER BY POST_ID DESC
     </select>
 
     <select id="selectById" parameterType="int"
             resultType="com.nexacro.uiadapter.domain.Board">
-        SELECT BOARD_ID, TITLE, CONTENT, AUTHOR_ID, VIEW_COUNT, CREATED_AT, UPDATED_AT
-        FROM SAMPLE_BOARD
-        WHERE BOARD_ID = #{boardId}
-          AND DELETED = FALSE
+        SELECT POST_ID, TITLE, CONTENTS, REG_ID, REG_DATE, COMMUNITY_ID, HIDDEN_INFO, HIT_COUNT, IS_NOTICE
+        FROM TB_BOARD
+        WHERE POST_ID = #{postId}
     </select>
 
     <insert id="insert" parameterType="com.nexacro.uiadapter.domain.Board"
-            useGeneratedKeys="true" keyProperty="boardId" keyColumn="BOARD_ID">
-        INSERT INTO SAMPLE_BOARD (TITLE, CONTENT, AUTHOR_ID, VIEW_COUNT, CREATED_AT)
+            useGeneratedKeys="true" keyProperty="postId" keyColumn="POST_ID">
+        INSERT INTO TB_BOARD (TITLE, CONTENTS, REG_ID, REG_DATE, COMMUNITY_ID, HIDDEN_INFO, HIT_COUNT, IS_NOTICE)
         VALUES (
             #{title},
-            #{content},
-            #{authorId},
+            #{contents},
+            #{regId},
             <choose>
-                <when test="viewCount != null">#{viewCount}</when>
+                <when test="regDate != null">#{regDate}</when>
+                <otherwise>CURRENT_DATE</otherwise>
+            </choose>,
+            #{communityId},
+            #{hiddenInfo},
+            <choose>
+                <when test="hitCount != null">#{hitCount}</when>
                 <otherwise>0</otherwise>
             </choose>,
-            CURRENT_TIMESTAMP
+            <choose>
+                <when test="isNotice != null">#{isNotice}</when>
+                <otherwise>FALSE</otherwise>
+            </choose>
         )
     </insert>
 
     <update id="update" parameterType="com.nexacro.uiadapter.domain.Board">
-        UPDATE SAMPLE_BOARD
-        SET TITLE      = #{title},
-            CONTENT    = #{content},
-            UPDATED_AT = CURRENT_TIMESTAMP
-        WHERE BOARD_ID = #{boardId}
-          AND DELETED = FALSE
+        UPDATE TB_BOARD
+        SET TITLE        = #{title},
+            CONTENTS     = #{contents},
+            COMMUNITY_ID = #{communityId},
+            HIDDEN_INFO  = #{hiddenInfo},
+            HIT_COUNT    = #{hitCount},
+            IS_NOTICE    = #{isNotice}
+        WHERE POST_ID = #{postId}
     </update>
 
-    <update id="softDelete" parameterType="int">
-        UPDATE SAMPLE_BOARD
-        SET DELETED    = TRUE,
-            UPDATED_AT = CURRENT_TIMESTAMP
-        WHERE BOARD_ID = #{boardId}
-    </update>
+    <delete id="softDelete" parameterType="int">
+        DELETE FROM TB_BOARD
+        WHERE POST_ID = #{postId}
+    </delete>
 
 </mapper>
