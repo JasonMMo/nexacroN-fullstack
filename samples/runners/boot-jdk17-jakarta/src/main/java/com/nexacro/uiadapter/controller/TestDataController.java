@@ -28,12 +28,14 @@ public class TestDataController {
         return result;
     }
 
+    /** Client xfdl ({@code exampleDataType.xfdl}) declares
+     *  {@code outData="dsList=output1"}; echo dataset back as {@code output1}. */
     @RequestMapping("/check_testDataTypeList.do")
     public NexacroResult check(
             @ParamDataSet(name = "ds_list", required = false) DataSet input) {
         NexacroResult result = new NexacroResult();
         if (input != null) {
-            result.addDataSet("ds_testData", input);
+            result.addDataSet("output1", input);
         }
         return result;
     }
