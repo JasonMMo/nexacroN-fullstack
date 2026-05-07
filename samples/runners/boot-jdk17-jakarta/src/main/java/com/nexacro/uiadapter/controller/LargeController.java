@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Large-data paging endpoint.
  *
- * <p>Returns {@code ds_large} populated with the requested page and
- * a {@code totalCount} variable for the client's pager.
+ * <p>Client xfdl ({@code pattern04-largeData.xfdl}) declares
+ * {@code outData="dsList=ds_largeData"}, so the response dataset is named
+ * {@code ds_largeData}. A {@code totalCount} variable backs the client pager.
  */
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class LargeController {
         int p = (page == null) ? 1 : page;
         int ps = (pageSize == null) ? 50 : pageSize;
         NexacroResult result = new NexacroResult();
-        result.addDataSet("ds_large", largeDataService.page(p, ps, category));
+        result.addDataSet("ds_largeData", largeDataService.page(p, ps, category));
         result.addVariable("totalCount", largeDataService.count(category));
         return result;
     }
