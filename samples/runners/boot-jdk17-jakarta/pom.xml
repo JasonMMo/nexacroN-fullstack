@@ -27,6 +27,7 @@
         <boot3.version>3.3.5</boot3.version>
         <mybatis.spring.boot.jakarta.version>3.0.3</mybatis.spring.boot.jakarta.version>
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+        <jakarta.servlet.jsp.version>3.1.1</jakarta.servlet.jsp.version>
         <hsqldb.version>2.7.3</hsqldb.version>
         <lombok.version>1.18.34</lombok.version>
         <jackson.version>2.17.2</jackson.version>
@@ -95,6 +96,18 @@
             <artifactId>jakarta.servlet-api</artifactId>
             <version>${jakarta.servlet.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!--
+            Jakarta JSP API — required at runtime by xapi-jakarta
+            HttpPlatformResponse.sendData(), which references jakarta.servlet.jsp.JspWriter.
+            Embedded Tomcat (Boot 3.3.x) does NOT supply a JSP container, so the API
+            jar must be bundled on the runtime classpath (default scope, NOT provided).
+        -->
+        <dependency>
+            <groupId>jakarta.servlet.jsp</groupId>
+            <artifactId>jakarta.servlet.jsp-api</artifactId>
+            <version>${jakarta.servlet.jsp.version}</version>
         </dependency>
 
         <!-- HSQLDB in-memory DB -->
