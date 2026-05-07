@@ -166,7 +166,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${boot2.version}</version>
                 <configuration>
-                    <mainClass>com.nexacro.fullstack.runner.boot8.Application</mainClass>
+                    <mainClass>com.nexacro.uiadapter.Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>
