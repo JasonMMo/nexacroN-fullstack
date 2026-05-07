@@ -17,6 +17,10 @@ import java.util.List;
  * {@code _RowType_} flag (see {@link DataSet#ROW_TYPE_INSERTED} et al.):
  * INSERTED → insert, UPDATED → update, DELETED/REMOVED → softDelete.
  * NORMAL rows are skipped — they represent unchanged client state.
+ *
+ * <p>DataSet column names follow the canonical TB_BOARD schema:
+ * POST_ID / TITLE / CONTENTS / REG_ID / COMMUNITY_ID / HIDDEN_INFO /
+ * HIT_COUNT / IS_NOTICE.
  */
 @Service
 @RequiredArgsConstructor
@@ -30,8 +34,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board selectById(Integer boardId) {
-        return boardMapper.selectById(boardId);
+    public Board selectById(Integer postId) {
+        return boardMapper.selectById(postId);
     }
 
     @Override
@@ -52,12 +56,9 @@ public class BoardServiceImpl implements BoardService {
                     affected += boardMapper.update(toBoard(input, i));
                     break;
                 case DataSet.ROW_TYPE_DELETED:
-                    // ROW_TYPE_REMOVED shares the same int value as ROW_TYPE_DELETED in this xapi build,
-                    // so a single case covers both client-side delete states.
-                    affected += boardMapper.softDelete(input.getInt(i, "BOARD_ID"));
+                    affected += boardMapper.softDelete(input.getInt(i, "POST_ID"));
                     break;
                 default:
-                    // ROW_TYPE_NORMAL — unchanged, skip
                     break;
             }
         }
@@ -66,13 +67,19 @@ public class BoardServiceImpl implements BoardService {
 
     private Board toBoard(DataSet ds, int row) {
         Board b = new Board();
-        b.setBoardId(ds.getColumn("BOARD_ID") != null && ds.getInt(row, "BOARD_ID") != 0
-                ? Integer.valueOf(ds.getInt(row, "BOARD_ID")) : null);
+        if (ds.getColumn("POST_ID") != null && ds.getInt(row, "POST_ID") != 0) {
+            b.setPostId(ds.getInt(row, "POST_ID"));
+        }
         b.setTitle(ds.getString(row, "TITLE"));
-        b.setContent(ds.getString(row, "CONTENT"));
-        b.setAuthorId(ds.getString(row, "AUTHOR_ID"));
-        if (ds.getColumn("VIEW_COUNT") != null) {
-            b.setViewCount(ds.getInt(row, "VIEW_COUNT"));
+        b.setContents(ds.getString(row, "CONTENTS"));
+        b.setRegId(ds.getString(row, "REG_ID"));
+        b.setCommunityId(ds.getString(row, "COMMUNITY_ID"));
+        b.setHiddenInfo(ds.getString(row, "HIDDEN_INFO"));
+        if (ds.getColumn("HIT_COUNT") != null) {
+            b.setHitCount(ds.getInt(row, "HIT_COUNT"));
+        }
+        if (ds.getColumn("IS_NOTICE") != null) {
+            b.setIsNotice(Boolean.valueOf(ds.getString(row, "IS_NOTICE")));
         }
         return b;
     }

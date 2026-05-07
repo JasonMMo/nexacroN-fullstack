@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * MyBatis mapper for SAMPLE_BOARD.
+ * MyBatis mapper for TB_BOARD (canonical schema).
  *
  * <p>Statements are defined in
  * {@code resources/mybatis/mappers/board-mapper.xml}; the
@@ -17,11 +17,11 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
 
-    /** All non-deleted boards, ordered newest first. */
+    /** All boards matching optional filters, ordered newest first. */
     List<Board> selectList(Board search);
 
-    /** One board by primary key, or {@code null} if missing/deleted. */
-    Board selectById(Integer boardId);
+    /** One board by primary key, or {@code null} if missing. */
+    Board selectById(Integer postId);
 
     /** Insert a new row; returns affected row count. */
     int insert(Board board);
@@ -29,6 +29,6 @@ public interface BoardMapper {
     /** Update an existing row by primary key; returns affected row count. */
     int update(Board board);
 
-    /** Soft-delete by primary key (sets DELETED=TRUE); returns affected row count. */
-    int softDelete(Integer boardId);
+    /** Delete by primary key (canonical TB_BOARD has no DELETED column); returns affected row count. */
+    int softDelete(Integer postId);
 }

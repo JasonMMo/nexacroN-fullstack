@@ -4,21 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Dept POJO mirroring the DEPT table.
+ * Dept POJO mirroring the TB_DEPT table (canonical schema — flat list).
  *
- * <p>Used both for flat list and recursive tree responses;
- * {@code depth} / {@code path} columns come from the recursive CTE
- * (tree query) and are otherwise null.
+ * <p>Field names match the lowercase column identifiers exactly
+ * (deptId / deptName / memberCount), so MyBatis underscore-camelCase
+ * mapping is a no-op for this entity.
  */
 @Getter
 @Setter
 public class Dept {
-    private String  deptId;
+    private Integer deptId;
     private String  deptName;
-    private String  parentId;
-    private Integer sortOrder;
-    private Integer levelNo;
-    // Tree-only columns populated by the recursive CTE
-    private Integer depth;
-    private String  path;
+    private Integer memberCount;
 }

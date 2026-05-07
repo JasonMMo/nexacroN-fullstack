@@ -6,9 +6,9 @@ import com.nexacro.uiadapter.domain.User;
 public interface UserService {
 
     /**
-     * Stub login: compares stored PASSWORD_HASH against {@code "stub$" + userId}
-     * (matches seed-data convention). Returns the sanitized user (no password
-     * hash) on success, or {@code null} on failure.
+     * Compares the supplied password against TB_USER.PASSWORD (canonical seed
+     * stores plain values such as '1111'). Returns a sanitized {@link User}
+     * with the password cleared on success, or {@code null} on failure.
      */
     User login(String userId, String password);
 }

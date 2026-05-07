@@ -6,13 +6,15 @@
 
     <select id="selectById" parameterType="string"
             resultType="com.nexacro.uiadapter.domain.User">
-        SELECT USER_ID, USER_NAME, PASSWORD_HASH, EMAIL, ROLE, ENABLED, CREATED_AT
-        FROM USERS
-        WHERE USER_ID = #{userId} AND ENABLED = TRUE
+        SELECT USER_ID, USER_NAME, EN_NAME, COMP_PHONE, PHONE, CELL_PHONE, COMPANY,
+               JOB_POSITION, ASSIGNMENT, OFFICER_YN, FAX, ZIP_CODE, ADDRESS,
+               COMP_ZIP_CODE, COMP_ADDRESS, EMAIL, DEPT_ID, PASSWORD
+        FROM TB_USER
+        WHERE USER_ID = #{userId}
     </select>
 
     <update id="updateLastLogin" parameterType="string">
-        UPDATE USERS SET USER_NAME = USER_NAME WHERE USER_ID = #{userId}
+        UPDATE TB_USER SET USER_NAME = USER_NAME WHERE USER_ID = #{userId}
     </update>
 
 </mapper>

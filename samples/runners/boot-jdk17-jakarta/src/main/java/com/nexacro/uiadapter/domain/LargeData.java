@@ -3,18 +3,15 @@ package com.nexacro.uiadapter.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.sql.Date;
 
-/** LargeData POJO mirroring the LARGE_DATA table (paging demo). */
+/** LargeData POJO mirroring the TB_LARGE table (canonical schema, paging demo). */
 @Getter
 @Setter
 public class LargeData {
-    private Long       rowId;
-    private String     category;
-    private Integer    seqNo;
-    private String     value1;
-    private BigDecimal value2;
-    private Integer    value3;
-    private Timestamp  createdAt;
+    private Integer largeId;
+    private String  name;
+    private Date    regDate;
+    private String  story;
+    private Integer status;
 }

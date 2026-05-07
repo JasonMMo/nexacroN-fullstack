@@ -3,28 +3,27 @@ package com.nexacro.uiadapter.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 /**
- * Board POJO mirroring the SAMPLE_BOARD table.
+ * Board POJO mirroring the TB_BOARD table (canonical schema).
  *
  * <p>Field names use camelCase to match MyBatis
  * {@code mapUnderscoreToCamelCase=true}. Database columns map as:
- * BOARD_ID→boardId, TITLE→title, CONTENT→content, AUTHOR_ID→authorId,
- * VIEW_COUNT→viewCount, CREATED_AT→createdAt, UPDATED_AT→updatedAt.
- *
- * <p>Used both as MyBatis result type and as the element type for
- * {@code @ParamDataSet List<Board>} controller arguments — the uiadapter
- * argument resolver maps Nexacro DataSet columns onto these properties.
+ * POST_ID→postId, TITLE→title, CONTENTS→contents, REG_ID→regId,
+ * REG_DATE→regDate, COMMUNITY_ID→communityId, HIDDEN_INFO→hiddenInfo,
+ * HIT_COUNT→hitCount, IS_NOTICE→isNotice.
  */
 @Getter
 @Setter
 public class Board {
-    private Integer boardId;
+    private Integer postId;
     private String  title;
-    private String  content;
-    private String  authorId;
-    private Integer viewCount;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private String  contents;
+    private String  regId;
+    private Date    regDate;
+    private String  communityId;
+    private String  hiddenInfo;
+    private Integer hitCount;
+    private Boolean isNotice;
 }

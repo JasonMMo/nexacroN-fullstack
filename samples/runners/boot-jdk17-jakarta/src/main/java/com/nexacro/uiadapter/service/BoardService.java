@@ -15,11 +15,11 @@ import java.util.List;
  */
 public interface BoardService {
 
-    /** All active boards, optionally filtered by search criteria. */
+    /** All boards, optionally filtered by search criteria. */
     List<Board> selectList(Board search);
 
-    /** Single board by primary key. */
-    Board selectById(Integer boardId);
+    /** Single board by primary key (TB_BOARD.POST_ID). */
+    Board selectById(Integer postId);
 
     /** Process a Nexacro DataSet by per-row RowType; returns affected count. */
     int processRows(DataSet input);
