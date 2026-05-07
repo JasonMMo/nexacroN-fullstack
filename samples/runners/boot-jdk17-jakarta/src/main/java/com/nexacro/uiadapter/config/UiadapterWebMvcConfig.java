@@ -1,6 +1,7 @@
 package com.nexacro.uiadapter.config;
 
 import com.nexacro.uiadapter.jakarta.core.resolve.NexacroMappingExceptionResolver;
+import com.nexacro.uiadapter.jakarta.core.resolve.NexacroMethodArgumentResolver;
 import com.nexacro.uiadapter.jakarta.core.resolve.NexacroRequestMappingHandlerAdapter;
 import com.nexacro.uiadapter.jakarta.dao.DbVendorsProvider;
 import com.nexacro.uiadapter.jakarta.dao.Dbms;
@@ -8,6 +9,7 @@ import com.nexacro.uiadapter.jakarta.dao.dbms.Hsql;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -38,6 +40,23 @@ public class UiadapterWebMvcConfig implements WebMvcConfigurer, WebMvcRegistrati
     @Override
     public RequestMappingHandlerAdapter getRequestMappingHandlerAdapter() {
         return new NexacroRequestMappingHandlerAdapter();
+    }
+
+    /**
+     * Registers {@link NexacroMethodArgumentResolver} so {@code @ParamDataSet} /
+     * {@code @ParamVariable} parameters are bound from the inbound Nexacro
+     * envelope.
+     *
+     * <p>This MUST be wired even though
+     * {@link NexacroRequestMappingHandlerAdapter} is supplied above:
+     * {@code NexacroRequestMappingHandlerAdapter#afterPropertiesSet()} reorders
+     * the resolver to index 0 via {@code list.remove(indexOf(...))}, so if no
+     * {@code NexacroMethodArgumentResolver} is in the list yet the bootstrap
+     * fails with {@code IndexOutOfBoundsException: Index -1 out of bounds}.
+     */
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new NexacroMethodArgumentResolver());
     }
 
     /**
