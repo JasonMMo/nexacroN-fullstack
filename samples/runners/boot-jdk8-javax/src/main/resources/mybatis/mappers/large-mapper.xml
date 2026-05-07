@@ -4,20 +4,20 @@
 
 <mapper namespace="com.nexacro.uiadapter.mapper.LargeDataMapper">
 
+    <!--
+      Canonical TB_LARGE columns: LARGE_ID, NAME, REG_DATE, STORY, STATUS.
+      The category parameter from the controller is preserved at the call-chain
+      level for compatibility but is ignored here (canonical has no CATEGORY column).
+    -->
+
     <select id="count" resultType="int">
-        SELECT COUNT(*) FROM LARGE_DATA
-        <where>
-            <if test="category != null and category != ''">CATEGORY = #{category}</if>
-        </where>
+        SELECT COUNT(*) FROM TB_LARGE
     </select>
 
     <select id="page" resultType="com.nexacro.uiadapter.domain.LargeData">
-        SELECT ROW_ID, CATEGORY, SEQ_NO, VALUE_1, VALUE_2, VALUE_3, CREATED_AT
-        FROM LARGE_DATA
-        <where>
-            <if test="category != null and category != ''">CATEGORY = #{category}</if>
-        </where>
-        ORDER BY ROW_ID
+        SELECT LARGE_ID, NAME, REG_DATE, STORY, STATUS
+        FROM TB_LARGE
+        ORDER BY LARGE_ID
         OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
     </select>
 
