@@ -34,11 +34,11 @@ public class LoginController {
         if (user == null) {
             result.setErrorCode(-1);
             result.setErrorMsg("invalid credentials");
-            result.addDataSet("ds_user", Collections.emptyList());
+            result.addDataSet("dsList", Collections.emptyList());
             return result;
         }
         session.setAttribute("USER_ID", user.getUserId());
-        result.addDataSet("ds_user", Collections.singletonList(user));
+        result.addDataSet("dsList", Collections.singletonList(user));
         return result;
     }
 
