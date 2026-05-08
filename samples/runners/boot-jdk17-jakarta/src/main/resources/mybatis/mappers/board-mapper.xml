@@ -100,34 +100,34 @@
     </delete>
 
     <insert id="insertBoardMap" parameterType="map"
-            useGeneratedKeys="true" keyProperty="POST_ID" keyColumn="POST_ID">
+            useGeneratedKeys="true" keyProperty="postId" keyColumn="POST_ID">
         INSERT INTO TB_BOARD (TITLE, CONTENTS, REG_ID, REG_DATE, COMMUNITY_ID, HIDDEN_INFO, HIT_COUNT, IS_NOTICE)
         VALUES (
-            #{TITLE},
-            #{CONTENTS},
-            #{REG_ID},
-            COALESCE(#{REG_DATE}, CURRENT_DATE),
-            #{COMMUNITY_ID},
-            #{HIDDEN_INFO},
-            COALESCE(#{HIT_COUNT}, 0),
-            COALESCE(#{IS_NOTICE}, FALSE)
+            #{title},
+            #{contents},
+            #{regId},
+            COALESCE(#{regDate}, CURRENT_DATE),
+            #{communityId},
+            #{hiddenInfo},
+            COALESCE(#{hitCount}, 0),
+            COALESCE(#{isNotice}, FALSE)
         )
     </insert>
 
     <update id="updateBoardMap" parameterType="map">
         UPDATE TB_BOARD
-        SET TITLE        = #{TITLE},
-            CONTENTS     = #{CONTENTS},
-            COMMUNITY_ID = #{COMMUNITY_ID},
-            HIDDEN_INFO  = #{HIDDEN_INFO},
-            HIT_COUNT    = COALESCE(#{HIT_COUNT}, 0),
-            IS_NOTICE    = COALESCE(#{IS_NOTICE}, FALSE)
-        WHERE POST_ID = #{POST_ID}
+        SET TITLE        = #{title},
+            CONTENTS     = #{contents},
+            COMMUNITY_ID = #{communityId},
+            HIDDEN_INFO  = #{hiddenInfo},
+            HIT_COUNT    = COALESCE(#{hitCount}, 0),
+            IS_NOTICE    = COALESCE(#{isNotice}, FALSE)
+        WHERE POST_ID = #{postId}
     </update>
 
     <delete id="deleteBoardMap" parameterType="map">
         DELETE FROM TB_BOARD
-        WHERE POST_ID = #{POST_ID}
+        WHERE POST_ID = #{postId}
     </delete>
 
 </mapper>
