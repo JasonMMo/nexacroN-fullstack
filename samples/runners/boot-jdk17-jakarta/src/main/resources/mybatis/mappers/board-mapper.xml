@@ -29,44 +29,105 @@
         WHERE POST_ID = #{postId}
     </select>
 
-    <insert id="insert" parameterType="com.nexacro.uiadapter.domain.Board"
+    <select id="selectDataSingle" parameterType="map" resultType="map">
+        SELECT POST_ID, TITLE, CONTENTS, REG_ID, REG_DATE, COMMUNITY_ID, HIDDEN_INFO, HIT_COUNT, IS_NOTICE
+        FROM TB_BOARD
+        <where>
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <if test="searchCondition == 'TITLE'">
+                    AND TITLE LIKE '%' || #{searchKeyword} || '%'
+                </if>
+                <if test="searchCondition == 'CONTENTS'">
+                    AND CONTENTS LIKE '%' || #{searchKeyword} || '%'
+                </if>
+                <if test="searchCondition == 'REG_ID'">
+                    AND REG_ID LIKE '%' || #{searchKeyword} || '%'
+                </if>
+            </if>
+        </where>
+        ORDER BY POST_ID DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectDatalistMap" parameterType="map" resultType="map">
+        SELECT POST_ID, TITLE, CONTENTS, REG_ID, REG_DATE, COMMUNITY_ID, HIDDEN_INFO, HIT_COUNT, IS_NOTICE
+        FROM TB_BOARD
+        <where>
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <if test="searchCondition == 'TITLE'">
+                    AND TITLE LIKE '%' || #{searchKeyword} || '%'
+                </if>
+                <if test="searchCondition == 'CONTENTS'">
+                    AND CONTENTS LIKE '%' || #{searchKeyword} || '%'
+                </if>
+                <if test="searchCondition == 'REG_ID'">
+                    AND REG_ID LIKE '%' || #{searchKeyword} || '%'
+                </if>
+            </if>
+        </where>
+        ORDER BY POST_ID DESC
+    </select>
+
+    <insert id="insertBoard" parameterType="com.nexacro.uiadapter.domain.Board"
             useGeneratedKeys="true" keyProperty="postId" keyColumn="POST_ID">
         INSERT INTO TB_BOARD (TITLE, CONTENTS, REG_ID, REG_DATE, COMMUNITY_ID, HIDDEN_INFO, HIT_COUNT, IS_NOTICE)
         VALUES (
             #{title},
             #{contents},
             #{regId},
-            <choose>
-                <when test="regDate != null">#{regDate}</when>
-                <otherwise>CURRENT_DATE</otherwise>
-            </choose>,
+            COALESCE(#{regDate}, CURRENT_DATE),
             #{communityId},
             #{hiddenInfo},
-            <choose>
-                <when test="hitCount != null">#{hitCount}</when>
-                <otherwise>0</otherwise>
-            </choose>,
-            <choose>
-                <when test="isNotice != null">#{isNotice}</when>
-                <otherwise>FALSE</otherwise>
-            </choose>
+            COALESCE(#{hitCount}, 0),
+            COALESCE(#{isNotice}, FALSE)
         )
     </insert>
 
-    <update id="update" parameterType="com.nexacro.uiadapter.domain.Board">
+    <update id="updateBoard" parameterType="com.nexacro.uiadapter.domain.Board">
         UPDATE TB_BOARD
         SET TITLE        = #{title},
             CONTENTS     = #{contents},
             COMMUNITY_ID = #{communityId},
             HIDDEN_INFO  = #{hiddenInfo},
-            HIT_COUNT    = #{hitCount},
-            IS_NOTICE    = #{isNotice}
+            HIT_COUNT    = COALESCE(#{hitCount}, 0),
+            IS_NOTICE    = COALESCE(#{isNotice}, FALSE)
         WHERE POST_ID = #{postId}
     </update>
 
-    <delete id="softDelete" parameterType="int">
+    <delete id="deleteBoard" parameterType="int">
         DELETE FROM TB_BOARD
         WHERE POST_ID = #{postId}
+    </delete>
+
+    <insert id="insertBoardMap" parameterType="map"
+            useGeneratedKeys="true" keyProperty="POST_ID" keyColumn="POST_ID">
+        INSERT INTO TB_BOARD (TITLE, CONTENTS, REG_ID, REG_DATE, COMMUNITY_ID, HIDDEN_INFO, HIT_COUNT, IS_NOTICE)
+        VALUES (
+            #{TITLE},
+            #{CONTENTS},
+            #{REG_ID},
+            COALESCE(#{REG_DATE}, CURRENT_DATE),
+            #{COMMUNITY_ID},
+            #{HIDDEN_INFO},
+            COALESCE(#{HIT_COUNT}, 0),
+            COALESCE(#{IS_NOTICE}, FALSE)
+        )
+    </insert>
+
+    <update id="updateBoardMap" parameterType="map">
+        UPDATE TB_BOARD
+        SET TITLE        = #{TITLE},
+            CONTENTS     = #{CONTENTS},
+            COMMUNITY_ID = #{COMMUNITY_ID},
+            HIDDEN_INFO  = #{HIDDEN_INFO},
+            HIT_COUNT    = COALESCE(#{HIT_COUNT}, 0),
+            IS_NOTICE    = COALESCE(#{IS_NOTICE}, FALSE)
+        WHERE POST_ID = #{POST_ID}
+    </update>
+
+    <delete id="deleteBoardMap" parameterType="map">
+        DELETE FROM TB_BOARD
+        WHERE POST_ID = #{POST_ID}
     </delete>
 
 </mapper>
