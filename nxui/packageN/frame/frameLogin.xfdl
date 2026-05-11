@@ -299,17 +299,6 @@ this.fnCallback = function(svcID, errorCode, errorMsg)
             <Col id="useYn">Y</Col>
             <Col id="auth">YNNNNY</Col>
           </Row>
-          <Row>
-            <Col id="level">1</Col>
-            <Col id="groupId">SA00000005</Col>
-            <Col id="menuId">SA00000550</Col>
-            <Col id="menuNm">대량 컬럼 데이터 조회</Col>
-            <Col id="menuUrl">sample::sampleBulkColumns.xfdl</Col>
-            <Col id="sortNo">1</Col>
-            <Col id="upMenuId">SA00000005</Col>
-            <Col id="useYn">Y</Col>
-            <Col id="auth">YYYYNY</Col>
-          </Row>
         </Rows>
       </Dataset>
     </Objects>
