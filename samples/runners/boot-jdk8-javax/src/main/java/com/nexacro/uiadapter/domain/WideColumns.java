@@ -8,9 +8,15 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * WideColumns POJO mirroring WIDE_COLUMNS — 50-column demo.
+ * WideColumns POJO mirroring WIDE_COLUMNS — 50-column wide-table demo
+ * (javax lane).
  *
- * <p>Field grouping by type matches the schema:
+ * <p>No direct canonical pojo analog. Scope follows our project
+ * convention: {@code private} fields with Lombok
+ * {@link Getter}/{@link Setter}.
+ *
+ * <p>Extends {@link NexacroBase} so {@code _RowType_} is preserved for
+ * any future bulk DataSet exchange. Field grouping mirrors the schema:
  * <ul>
  *   <li>COL_01..COL_10 — VARCHAR</li>
  *   <li>COL_11..COL_20 — INTEGER</li>
@@ -23,7 +29,7 @@ import java.sql.Timestamp;
  */
 @Getter
 @Setter
-public class WideColumns {
+public class WideColumns extends NexacroBase {
     private String keyId;
     // VARCHAR
     private String col01; private String col02; private String col03; private String col04; private String col05;

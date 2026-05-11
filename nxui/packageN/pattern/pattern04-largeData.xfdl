@@ -25,11 +25,11 @@
                 <Cell col="4" text="STATUS"/>
               </Band>
               <Band id="body">
-                <Cell text="bind:LARGE_ID"/>
-                <Cell col="1" text="bind:NAME"/>
-                <Cell col="2" text="bind:REG_DATE"/>
-                <Cell col="3" text="bind:STORY"/>
-                <Cell col="4" text="bind:STATUS"/>
+                <Cell text="bind:largeId"/>
+                <Cell col="1" text="bind:name"/>
+                <Cell col="2" text="bind:regDate"/>
+                <Cell col="3" text="bind:story"/>
+                <Cell col="4" text="bind:status"/>
               </Band>
             </Format>
           </Formats>
@@ -46,11 +46,11 @@
     <Objects>
       <Dataset id="dsList" progressload="true">
         <ColumnInfo>
-          <Column id="LARGE_ID" type="STRING" size="256"/>
-          <Column id="NAME" type="STRING" size="256"/>
-          <Column id="REG_DATE" type="DATETIME" size="256"/>
-          <Column id="STORY" type="STRING" size="256"/>
-          <Column id="STATUS" type="STRING" size="256"/>
+          <Column id="largeId" type="STRING" size="256"/>
+          <Column id="name" type="STRING" size="256"/>
+          <Column id="regDate" type="DATETIME" size="256"/>
+          <Column id="story" type="STRING" size="256"/>
+          <Column id="status" type="STRING" size="256"/>
         </ColumnInfo>
       </Dataset>
     </Objects>
