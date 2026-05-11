@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -38,8 +37,8 @@ public class TestDataType extends NexacroBase {
     public BigDecimal  bigDecimalValue;
 
     public Date        dateValue;
-    public Timestamp   timeValue;
-    public Timestamp   datetimeValue;
+    public Date        timeValue;
+    public Date        datetimeValue;
 
     public byte[]      bytesValue;
 }
