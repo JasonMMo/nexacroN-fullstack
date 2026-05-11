@@ -2,6 +2,7 @@ package com.nexacro.uiadapter.mapper;
 
 import com.nexacro.uiadapter.domain.Board;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.ResultHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,14 @@ public interface BoardMapper {
 
     /** All boards matching optional filters, ordered newest first. */
     List<Board> selectList(Board search);
+
+    /**
+     * Streaming variant of {@link #selectList(Board)} — MyBatis pushes each
+     * row to {@code handler} instead of accumulating a {@code List<Board>}.
+     * Used by {@code /select_datalist_firstrow.do} to chunk-flush results
+     * via {@code MybatisRowHandler} → {@code NexacroFirstRowHandler}.
+     */
+    void selectListFirstRow(Board search, ResultHandler<Board> handler);
 
     /** One board by primary key, or {@code null} if missing. */
     Board selectById(Integer postId);
