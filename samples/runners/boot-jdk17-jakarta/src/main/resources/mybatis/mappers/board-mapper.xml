@@ -4,8 +4,7 @@
 
 <mapper namespace="com.nexacro.uiadapter.mapper.BoardMapper">
 
-    <select id="selectList" parameterType="com.nexacro.uiadapter.domain.Board"
-            resultType="com.nexacro.uiadapter.domain.Board">
+    <sql id="selectListBody">
         SELECT POST_ID, TITLE, CONTENTS, REG_ID, REG_DATE, COMMUNITY_ID, HIDDEN_INFO, HIT_COUNT, IS_NOTICE
         FROM TB_BOARD
         <where>
@@ -20,6 +19,20 @@
             </if>
         </where>
         ORDER BY POST_ID DESC
+    </sql>
+
+    <select id="selectList" parameterType="com.nexacro.uiadapter.domain.Board"
+            resultType="com.nexacro.uiadapter.domain.Board">
+        <include refid="selectListBody"/>
+    </select>
+
+    <!-- Streaming flavor: invoked with a MyBatis ResultHandler so the
+         uiadapter MybatisRowHandler can flush chunks to the client via
+         NexacroFirstRowHandler.sendDataSet() instead of materialising the
+         full list in memory. SQL body is identical to selectList. -->
+    <select id="selectListFirstRow" parameterType="com.nexacro.uiadapter.domain.Board"
+            resultType="com.nexacro.uiadapter.domain.Board">
+        <include refid="selectListBody"/>
     </select>
 
     <select id="selectById" parameterType="int"

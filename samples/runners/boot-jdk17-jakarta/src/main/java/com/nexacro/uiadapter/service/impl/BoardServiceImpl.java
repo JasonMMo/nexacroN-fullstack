@@ -3,6 +3,8 @@ package com.nexacro.uiadapter.service.impl;
 import com.nexacro.java.xapi.data.DataSet;
 import com.nexacro.java.xapi.data.DataSetRowTypeAccessor;
 import com.nexacro.uiadapter.domain.Board;
+import com.nexacro.uiadapter.jakarta.core.data.NexacroFirstRowHandler;
+import com.nexacro.uiadapter.jakarta.dao.mybatis.MybatisRowHandler;
 import com.nexacro.uiadapter.mapper.BoardMapper;
 import com.nexacro.uiadapter.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,20 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<Board> selectList(Board search) {
         return boardMapper.selectList(search);
+    }
+
+    @Override
+    public void selectListFirstRow(Board search,
+                                   NexacroFirstRowHandler firstRowHandler,
+                                   int chunkSize,
+                                   String dataSetName) {
+        // MybatisRowHandler buffers up to chunkSize rows then flushes a
+        // DataSet via firstRowHandler.sendDataSet(); sendRemainData() emits
+        // the final (partial) chunk.
+        MybatisRowHandler rowHandler =
+                new MybatisRowHandler(firstRowHandler, dataSetName, chunkSize);
+        boardMapper.selectListFirstRow(search, rowHandler);
+        rowHandler.sendRemainData();
     }
 
     @Override

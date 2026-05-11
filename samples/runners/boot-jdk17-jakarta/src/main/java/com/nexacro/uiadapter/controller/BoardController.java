@@ -3,8 +3,13 @@ package com.nexacro.uiadapter.controller;
 import com.nexacro.uiadapter.domain.Board;
 import com.nexacro.uiadapter.jakarta.core.annotation.ParamDataSet;
 import com.nexacro.uiadapter.jakarta.core.annotation.ParamVariable;
+import com.nexacro.uiadapter.jakarta.core.context.NexacroContext;
+import com.nexacro.uiadapter.jakarta.core.context.NexacroContextHolder;
+import com.nexacro.uiadapter.jakarta.core.data.NexacroFirstRowHandler;
 import com.nexacro.uiadapter.jakarta.core.data.NexacroResult;
 import com.nexacro.uiadapter.service.BoardService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,6 +82,28 @@ public class BoardController {
         NexacroResult result = new NexacroResult();
         result.addVariable("affectedRows", affected);
         return result;
+    }
+
+    /**
+     * Canonical streaming list read. Rows are chunked via uiadapter's
+     * {@code MybatisRowHandler} and pushed through
+     * {@link NexacroFirstRowHandler#sendDataSet} as soon as each chunk
+     * fills — the response body is committed before the full result set
+     * is materialised, matching the GitLab canonical
+     * {@code /select_datalist_firstrow.do} endpoint.
+     */
+    @RequestMapping("/select_datalist_firstrow.do")
+    public void selectDataListFirstRow(
+            @ParamDataSet(name = "ds_search", required = false) Board search,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        NexacroContext ctx = NexacroContextHolder.getNexacroContext(request, response);
+        NexacroFirstRowHandler firstRowHandler = ctx.getFirstRowHandler();
+        boardService.selectListFirstRow(
+                search == null ? new Board() : search,
+                firstRowHandler,
+                100,
+                "output1");
     }
 
     @RequestMapping("/test.do")
