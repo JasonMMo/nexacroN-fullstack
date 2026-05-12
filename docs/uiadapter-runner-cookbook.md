@@ -2,7 +2,9 @@
 
 > **목적:** boot-jdk17-jakarta / boot-jdk8-javax 두 런너에 대해 검증 완료된 canonical 패턴을 한곳에 정리. 다음 작업(eGov/MVC/WebFlux 런너 또는 신규 엔드포인트 추가)에서 재탐색 없이 이 문서만 보고 빠르게 진행하기 위한 작업 노트.
 >
-> **검증 상태 (2026-05-11):** jdk17 + jdk8 두 boot 런너 전 엔드포인트 빌드 + smoke 통과. PR #1 ~ #17 머지.
+> **검증 상태 (2026-05-12):**
+> - boot lane: jdk17 + jdk8 두 런너 전 엔드포인트 빌드 + smoke 통과 (PR #1 ~ #18).
+> - mvc lane: jdk17-jakarta + jdk8-javax XML-driven WAR 런너 Tomcat 10/9 배포 검증 (PR #19 ~ #23). 서비스 엔드포인트가 xapi 라이선스 게이트까지 도달 — boot 런너와 동일 동작 (license-less 환경 기준).
 
 ---
 
@@ -398,6 +400,190 @@ JAVA_HOME=/path/to/jdk-8 mvn -o clean package
 
 ---
 
+## 9-MVC. XML-driven MVC WAR 런너 (jdk17-jakarta / jdk8-javax)
+
+`mvc-jdk17-jakarta` / `mvc-jdk8-javax` 는 boot 런너의 `Application.java` + `@Configuration` 클래스들을 **전통적인 Spring MVC XML** 으로 1:1 매핑한 WAR 런너다. 엔드포인트 시그니처와 도메인은 boot 런너와 동일 — 차이는 wiring 방식뿐.
+
+> 참조 캐노니컬: <https://gitlab.com/nexacron/spring-framework/jakarta/nexacro-jakarta-example>
+
+### 9-MVC.1 파일 레이아웃
+
+```
+samples/runners/mvc-{jdk17-jakarta,jdk8-javax}/
+├── pom.xml                          packaging=war, parent 없음, self-contained
+├── src/main/
+│   ├── java/com/nexacro/uiadapter/  (boot 런너와 동일한 controller/service/mapper/domain)
+│   ├── resources/
+│   │   ├── spring/
+│   │   │   ├── context-common.xml        property-placeholder + component-scan(@Controller 제외) + AntPathMatcher
+│   │   │   ├── context-datasource.xml    (jakarta) HikariDataSource  /  (javax) DriverManagerDataSource
+│   │   │   ├── context-transaction.xml   DataSourceTransactionManager + tx:advice + AOP pointcut
+│   │   │   ├── context-mapper.xml        SqlSessionFactoryBean + MapperScannerConfigurer
+│   │   │   ├── context-nexacro.xml       ApplicationContextProvider + Dbms map + DbVendorsProvider
+│   │   │   ├── context-initialize.xml    ResourceDatabasePopulator (schema/data.sql, separator="^^")
+│   │   │   └── context-relay.xml         RestTemplate (EXIM relay)
+│   │   ├── schema.sql / data.sql         boot 런너와 동일 (^^ separator)
+│   │   ├── etc.properties                (optional, jakarta 의 EtcProperty 빈이 읽음)
+│   │   └── mybatis/                      boot 런너와 동일
+│   └── webapp/WEB-INF/
+│       ├── web.xml                       DispatcherServlet + ContextLoaderListener, multipart-config, *.do
+│       └── config/springmvc/
+│           └── dispatcher-servlet.xml    controllers, nexacro views, XENI bridge, util:properties EtcProperty
+└── (배포 산출물) target/uiadapter.war
+```
+
+### 9-MVC.2 lane 별 좌표 차이
+
+| 항목 | mvc-jdk17-jakarta | mvc-jdk8-javax |
+|---|---|---|
+| Servlet API | `jakarta.servlet:jakarta.servlet-api:6.0.0` | `javax.servlet:javax.servlet-api:4.0.1` |
+| Spring | `6.1.14` (spring-webmvc/jdbc/context/tx/aop) | `5.3.39` |
+| Container | Tomcat 10 / Jetty 11+ | Tomcat 9 / Jetty 9 |
+| DataSource | `HikariDataSource` | `DriverManagerDataSource` (canonical 패턴 그대로) |
+| Nexacro views | view + fileView + **streamView** | view + fileView (streamView 없음 — canonical 일치) |
+| Dbms map | Hsql / Oracle / Mssql / Mysql / Tibero (5종) | Hsql only (canonical 일치) |
+| **uiadapter-core** | `uiadapter-jakarta-core:1.0.27.1-SNAPSHOT` | `uiadapter-spring-core:1.4.19.2-SNAPSHOT` |
+| AspectJ | `aspectjweaver` 필수 (`<aop:config>` pointcut) | 동일 |
+
+### 9-MVC.3 dispatcher-servlet.xml 핵심 빈
+
+```xml
+<context:component-scan base-package="com.nexacro.uiadapter.controller">
+    <context:include-filter type="annotation"
+            expression="org.springframework.stereotype.Controller"/>
+    <context:exclude-filter type="annotation"
+            expression="org.springframework.stereotype.Service"/>
+    <context:exclude-filter type="annotation"
+            expression="org.springframework.stereotype.Repository"/>
+</context:component-scan>
+
+<!-- ★ jakarta lane 전용: NexacroMethodArgumentResolver 의 @Value SpEL 이 참조하는 빈 -->
+<util:properties id="EtcProperty"
+                 location="classpath:etc.properties"
+                 ignore-resource-not-found="true"/>
+
+<bean id="nexacroView"  class="...NexacroView">
+    <property name="defaultContentType" value="PlatformXml"/>
+    <property name="defaultCharset"     value="UTF-8"/>
+</bean>
+<bean id="nexacroFileView"   class="...NexacroFileView"/>
+<bean id="nexacroStreamView" class="...NexacroStreamView"/>   <!-- jakarta only -->
+
+<bean class="...NexacroRequestMappingHandlerAdapter" p:order="0">
+    <property name="customArgumentResolvers">
+        <list>
+            <bean class="...NexacroMethodArgumentResolver"/>
+        </list>
+    </property>
+    <property name="customReturnValueHandlers">
+        <list>
+            <bean class="...NexacroHandlerMethodReturnValueHandler">
+                <property name="view"       ref="nexacroView"/>
+                <property name="fileView"   ref="nexacroFileView"/>
+                <property name="streamView" ref="nexacroStreamView"/>  <!-- jakarta only -->
+            </bean>
+        </list>
+    </property>
+</bean>
+
+<bean id="exceptionResolver" class="...NexacroMappingExceptionResolver" p:order="1">
+    <property name="view" ref="nexacroView"/>
+    <property name="shouldLogStackTrace"  value="true"/>
+    <property name="shouldSendStackTrace" value="true"/>
+    <property name="defaultErrorMsg"      value="fail.common.msg"/>
+</bean>
+
+<!-- XENI servlet 브리지: /XExportImport.do -->
+<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+<bean id="xeniUrlMapping"
+      class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" p:order="0">
+    <property name="mappings">
+        <props>
+            <prop key="/XExportImport.do">xeniWrappingController</prop>
+        </props>
+    </property>
+</bean>
+<bean id="xeniWrappingController"
+      class="org.springframework.web.servlet.mvc.ServletWrappingController">
+    <property name="servletClass">
+        <value>com.nexacro.java.xeni.services.GridExportImportServlet</value>
+    </property>
+    <property name="servletName" value="XExportImport"/>
+    <property name="initParameters">
+        <props>
+            <prop key="export-path">/excel</prop>
+            <prop key="import-path">/excel</prop>
+            <prop key="monitor-enabled">true</prop>
+            <prop key="monitor-cycle-time">30</prop>
+            <prop key="file-storage-time">10</prop>
+        </props>
+    </property>
+</bean>
+
+<bean id="multipartResolver"
+      class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
+
+<mvc:annotation-driven/>
+```
+
+### 9-MVC.4 ★ XML 변환에서 가장 자주 밟는 함정 (PR #23 회귀)
+
+| # | 증상 | 원인 | 대응 |
+|---|---|---|---|
+| 1 | 기동 시 `SQLSyntaxErrorException: unknown token ... DROP TABLE IF EXISTS FILE_META^^` | `ResourceDatabasePopulator` 가 default `;` separator 로 schema.sql 을 한 statement 로 파싱 | `context-initialize.xml` (또는 `context-datasource.xml`) 의 `dbInit` 빈에 `<property name="separator" value="^^"/>` |
+| 2 | 컴포넌트 스캔 시 `EL1008E: Property or field 'EtcProperty' cannot be found on null` (**jakarta lane only**) | `uiadapter-jakarta-core` 의 `NexacroMethodArgumentResolver` 필드가 `@Value("#{EtcProperty['key'] ?:null}")` — SpEL bean indexer 가 `EtcProperty` 라는 빈을 요구. javax core 는 `${key:}` 플레이스홀더 사용이라 무관 | `dispatcher-servlet.xml` 에 `<util:properties id="EtcProperty" location="classpath:etc.properties" ignore-resource-not-found="true"/>` 추가. 파일이 없으면 모든 키가 null 로 resolve 되고 SpEL `?:null` fallback 으로 안전한 default. |
+| 3 | `failOnMissingWebXml` true 인데 web.xml 없음 | maven-war-plugin 기본값 | jdk17 lane: `<failOnMissingWebXml>false</failOnMissingWebXml>` 또는 web.xml 작성. jdk8 lane: web.xml 작성 |
+| 4 | `mvn` 빌드 중 `<aop:config>` 파싱 실패 | `aspectjweaver` 미선언 | pom 에 `org.aspectj:aspectjweaver` 추가 |
+| 5 | 배포 후 controller 매핑이 잡히지 않음 | root context 에서 component-scan 이 `@Controller` 까지 포함, dispatcher context 에서 또 스캔 → 양쪽 등록 / 한쪽 빠짐 | root context 는 `@Controller` exclude, dispatcher context 만 `@Controller` include |
+| 6 | 트랜잭션 미작동 | `<tx:advice>` 만 있고 `<aop:config>` pointcut 누락 | `context-transaction.xml` 에 `<aop:config>` + `<aop:pointcut>` + `<aop:advisor>` 셋 다 있어야 함 |
+
+**boot vs XML 의 본질적 차이**: boot 런너는 `UiadapterWebMvcConfig.addArgumentResolvers()` 에서 `new NexacroMethodArgumentResolver()` 를 **프로그래매틱하게** 생성해서 등록한다. Spring autowiring 을 거치지 않으므로 `@Value` SpEL 이 평가되지 않아 EtcProperty 빈이 없어도 동작. XML config 에서는 `<bean class="...NexacroMethodArgumentResolver"/>` 가 Spring 컨테이너의 정상 생명주기를 따르므로 `@Value` 가 실제로 평가됨 — 그래서 EtcProperty 빈이 **반드시** 필요.
+
+### 9-MVC.5 빌드 + 배포 + smoke
+
+```powershell
+# 1) WAR 빌드 (Windows, PowerShell)
+$env:JAVA_HOME = 'C:\AppStudio\jdk\jdk-17'
+$env:M2_HOME   = 'C:\AppStudio\maven\apache-maven-3.8.6'
+$env:PATH      = "$env:JAVA_HOME\bin;$env:M2_HOME\bin;$env:PATH"
+cd D:\path\to\nexacroN-fullstack\samples\runners\mvc-jdk17-jakarta
+mvn -o clean package -DskipTests
+# -> target\uiadapter.war
+
+# 2) Isolated CATALINA_BASE (충돌 회피)
+$BASE = 'D:\AI\testspace\tomcat10-instance'
+New-Item -ItemType Directory -Path $BASE -Force | Out-Null
+Copy-Item -Recurse -Path 'C:\AppStudio\server\apache-tomcat-10.1.15\conf' -Destination $BASE
+New-Item -ItemType Directory -Path "$BASE\webapps","$BASE\logs","$BASE\temp","$BASE\work" -Force | Out-Null
+Copy-Item -Path '.\target\uiadapter.war' -Destination "$BASE\webapps\"
+
+# 3) 기동
+$env:CATALINA_BASE = $BASE
+$env:CATALINA_HOME = 'C:\AppStudio\server\apache-tomcat-10.1.15'
+& "$env:CATALINA_HOME\bin\catalina.bat" start
+
+# 4) Smoke
+Start-Sleep -Seconds 15
+curl -I  http://localhost:8080/uiadapter/packageN/index.html              # nxui 가 없으면 404 (예상)
+curl -sv -X POST http://localhost:8080/uiadapter/select_datalist.do       # 500 + InvalidLicenseException (boot 런너와 동일 — parity OK)
+```
+
+**parity 판정 기준**: `D:\AI\testspace\tomcat10-instance\logs\localhost.*.log` 에서 root cause 가 `com.nexacro.java.xapi.license.InvalidLicenseException: License not found` 이면 MVC wiring 은 정확. 컨트롤러 → dispatcher → nexacroView → xapi.license 까지 도달했음을 의미. 라이선스를 드롭하면 boot 런너와 동일하게 정상 envelope 응답.
+
+jdk8-javax lane 도 동일 절차, JDK 17 로 Tomcat 9 기동 (Tomcat 9 는 런타임 JDK 8+ 모두 호환, HSQLDB 2.7.3 가 class file 55.0 이라 JDK 11+ 필요).
+
+### 9-MVC.6 PR 머지 이력 (MVC lane)
+
+| PR | 제목 | 핵심 |
+|---|---|---|
+| #19 | feat(mvc-jdk17-jakarta): canonical Spring MVC war runner (jakarta lane) | 패키지 + WAR 골격 |
+| #20 | feat(mvc-jdk8-javax): canonical Spring MVC war runner (javax lane) | 패키지 + WAR 골격 (Spring 5.3.39) |
+| #21 | refactor(mvc-jdk17-jakarta): convert to XML-driven Spring MVC config | `@Configuration` 6개 → web.xml + context-*.xml |
+| #22 | refactor(mvc-jdk8-javax): convert to XML-driven Spring MVC config | 동일 (javax lane) |
+| #23 | fix(mvc-jdk17-jakarta): schema separator + EtcProperty bean (Tomcat 10 unblock) | XML 변환 누락 2건 — 위 9-MVC.4 #1, #2 |
+
+---
+
 ## 10. 다음 작업 시 빠른 체크리스트
 
 신규 엔드포인트 추가:
@@ -418,4 +604,4 @@ JAVA_HOME=/path/to/jdk-8 mvn -o clean package
 
 ---
 
-_Last updated: 2026-05-11 (jdk17 + jdk8 boot 엔드포인트 테스트 완료 시점)_
+_Last updated: 2026-05-12 (mvc-jdk17-jakarta / mvc-jdk8-javax XML config WAR 검증 완료 — Tomcat 10/9 parity)_
