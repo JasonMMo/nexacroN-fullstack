@@ -77,10 +77,15 @@
         </property>
     </bean>
 
+    <!-- defaultErrorMsg is a message-bundle key, resolved against messageSource
+         (root context, classpath:/message/message-common). MessageSourceAware
+         contract on SimpleMappingExceptionResolver auto-injects messageSource;
+         explicit ref kept for clarity and parity with canonical jakarta-example. -->
     <bean id="exceptionResolver"
           class="com.nexacro.uiadapter.jakarta.core.resolve.NexacroMappingExceptionResolver"
           p:order="1">
         <property name="view"                 ref="nexacroView"/>
+        <property name="messageSource"        ref="messageSource"/>
         <property name="shouldLogStackTrace"  value="true"/>
         <property name="shouldSendStackTrace" value="true"/>
         <property name="defaultErrorMsg"      value="fail.common.msg"/>
