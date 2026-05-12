@@ -61,10 +61,15 @@
         </property>
     </bean>
 
+    <!-- defaultErrorMsg is a message-bundle key, resolved against messageSource
+         (root context, classpath:/message/message-common). MessageSourceAware
+         contract on SimpleMappingExceptionResolver auto-injects messageSource;
+         explicit ref kept for clarity and parity with canonical jakarta-example. -->
     <bean id="exceptionResolver"
           class="com.nexacro.uiadapter.spring.core.resolve.NexacroMappingExceptionResolver"
           p:order="1">
         <property name="view"                 ref="nexacroView"/>
+        <property name="messageSource"        ref="messageSource"/>
         <property name="shouldLogStackTrace"  value="true"/>
         <property name="shouldSendStackTrace" value="true"/>
         <property name="defaultErrorMsg"      value="fail.common.msg"/>
@@ -81,21 +86,14 @@
             </props>
         </property>
     </bean>
+    <!-- XENI servlet params are sourced from web.xml <context-param> (canonical pattern).
+         Keep servletClass-only here so a single source of truth (web.xml) governs
+         export-path / import-path / monitor-* / file-storage-time. -->
     <bean id="xeniWrappingController"
           class="org.springframework.web.servlet.mvc.ServletWrappingController">
         <property name="servletClass">
             <value>com.nexacro.java.xeni.services.GridExportImportServlet</value>
         </property>
-        <property name="initParameters">
-            <props>
-                <prop key="export-path">/excel</prop>
-                <prop key="import-path">/excel</prop>
-                <prop key="monitor-enabled">true</prop>
-                <prop key="monitor-cycle-time">30</prop>
-                <prop key="file-storage-time">10</prop>
-            </props>
-        </property>
-        <property name="servletName" value="XExportImport"/>
     </bean>
 
     <!-- Multipart resolver compatible with Servlet 3.1+ multipart-config (Tomcat 9 / Jetty 9) -->
