@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- nexacro 1st-party DBMS adapters + vendor map -->
+    <bean id="applicationContextProvider"
+          class="com.nexacro.uiadapter.jakarta.core.context.ApplicationContextProvider"
+          lazy-init="false"/>
+
+    <bean id="hsqlDbms"   class="com.nexacro.uiadapter.jakarta.dao.dbms.Hsql"/>
+    <bean id="oracleDbms" class="com.nexacro.uiadapter.jakarta.dao.dbms.Oracle"/>
+    <bean id="mssqlDbms"  class="com.nexacro.uiadapter.jakarta.dao.dbms.Mssql"/>
+    <bean id="mysqlDbms"  class="com.nexacro.uiadapter.jakarta.dao.dbms.Mysql"/>
+    <bean id="tiberoDbms" class="com.nexacro.uiadapter.jakarta.dao.dbms.Tibero"/>
+
+    <bean id="dbmsProvider" class="com.nexacro.uiadapter.jakarta.dao.DbVendorsProvider">
+        <property name="dbvendors">
+            <map>
+                <entry key="HSQL Database Engine" value-ref="hsqlDbms"/>
+                <entry key="Microsoft SQL Server" value-ref="mssqlDbms"/>
+                <entry key="Oracle"               value-ref="oracleDbms"/>
+                <entry key="MySQL"                value-ref="mysqlDbms"/>
+                <entry key="Tibero"               value-ref="tiberoDbms"/>
+            </map>
+        </property>
+    </bean>
+</beans>
