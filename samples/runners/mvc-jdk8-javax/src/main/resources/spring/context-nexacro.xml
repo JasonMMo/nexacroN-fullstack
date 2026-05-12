@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- nexacro 1st-party adapters (javax / uiadapter-spring-core lane).
+         Base package is com.nexacro.uiadapter.spring.* (NOT *.javax.*). -->
+    <bean id="applicationContextProvider"
+          class="com.nexacro.uiadapter.spring.core.context.ApplicationContextProvider"
+          lazy-init="false"/>
+
+    <bean id="hsqlDbms" class="com.nexacro.uiadapter.spring.dao.dbms.Hsql"/>
+
+    <bean id="dbmsProvider" class="com.nexacro.uiadapter.spring.dao.DbVendorsProvider">
+        <property name="dbvendors">
+            <map>
+                <entry key="HSQL Database Engine" value-ref="hsqlDbms"/>
+            </map>
+        </property>
+    </bean>
+</beans>
