@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- application.properties: HSQLDB datasource params + relay config.
+         Used by RelayProperties @Value placeholders and context-datasource.xml. -->
+    <context:property-placeholder location="classpath:application.properties"
+                                  ignore-resource-not-found="false"
+                                  ignore-unresolvable="true"/>
+
+    <!-- Auto-detect @Service / @Repository / @Component beans.
+         Controllers are scanned only by the dispatcher servlet's child context. -->
+    <context:component-scan base-package="com.nexacro.uiadapter">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <bean id="antPathMatcher" class="org.springframework.util.AntPathMatcher"/>
+</beans>
