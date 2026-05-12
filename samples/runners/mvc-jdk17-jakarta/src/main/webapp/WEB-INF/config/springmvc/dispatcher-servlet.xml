@@ -11,6 +11,18 @@
            http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
            http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
+    <!--
+        Properties bean read by uiadapter-jakarta-core via SpEL
+        (e.g. NexacroMethodArgumentResolver fields with
+              @Value("#{EtcProperty['uiAdapter.trimParamDataSet'] ?:null}")).
+        The file is optional — when absent, every key resolves to null and
+        the SpEL ?:null fallback yields a safe default. This bean MUST be
+        named exactly "EtcProperty" (PascalCase) to match the SpEL indexer.
+    -->
+    <util:properties id="EtcProperty"
+                     location="classpath:etc.properties"
+                     ignore-resource-not-found="true"/>
+
     <!-- Controllers only — services/components live in the root context -->
     <context:component-scan base-package="com.nexacro.uiadapter.controller">
         <context:include-filter type="annotation"
