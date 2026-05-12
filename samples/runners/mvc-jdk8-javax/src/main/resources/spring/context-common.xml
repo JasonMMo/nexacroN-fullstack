@@ -18,4 +18,19 @@
     </context:component-scan>
 
     <bean id="antPathMatcher" class="org.springframework.util.AntPathMatcher"/>
+
+    <!-- i18n message bundle (canonical GitLab jakarta-example pattern).
+         NexacroMappingExceptionResolver.defaultErrorMsg="fail.common.msg" is resolved
+         against this bundle. Locale-aware (message-common_ko.properties / _en.properties). -->
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:/message/message-common</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="cacheSeconds"    value="60"/>
+        <property name="fallbackToSystemLocale" value="false"/>
+    </bean>
 </beans>
