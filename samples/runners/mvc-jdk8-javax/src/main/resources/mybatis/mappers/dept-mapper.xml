@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nexacro.uiadapter.mapper.DeptMapper">
+
+    <!-- Canonical TB_DEPT is a flat list with lowercase identifiers; quoted to preserve case. -->
+    <select id="selectList" resultType="com.nexacro.uiadapter.domain.Dept">
+        SELECT "deptId", "deptName", "memberCount"
+        FROM TB_DEPT
+        ORDER BY "deptId"
+    </select>
+
+    <!-- Canonical TB_DEPT has no parent/depth/path columns; tree view delegates to flat list. -->
+    <select id="selectTree" resultType="com.nexacro.uiadapter.domain.Dept">
+        SELECT "deptId", "deptName", "memberCount"
+        FROM TB_DEPT
+        ORDER BY "deptId"
+    </select>
+
+</mapper>
