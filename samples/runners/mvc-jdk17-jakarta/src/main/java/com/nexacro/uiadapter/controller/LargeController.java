@@ -3,6 +3,7 @@ package com.nexacro.uiadapter.controller;
 import com.nexacro.java.xapi.tx.PlatformType;
 import com.nexacro.uiadapter.jakarta.core.annotation.ParamVariable;
 import com.nexacro.uiadapter.jakarta.core.data.NexacroFirstRowHandler;
+import com.nexacro.uiadapter.jakarta.core.data.NexacroResult;
 import com.nexacro.uiadapter.service.LargeDataService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class LargeController {
     private final LargeDataService largeDataService;
 
     @RequestMapping("/sampleLargeData.do")
-    public void mybatisLargeData(
+    public NexacroResult mybatisLargeData(
             NexacroFirstRowHandler firstRowHandler,
             @ParamVariable(name = "firstRowCount", required = false) Integer firstRowCount,
             @ParamVariable(name = "chunkSize",     required = false) Integer chunkSize) {
@@ -62,5 +63,10 @@ public class LargeController {
             log.error("대량 데이터 조회 중 오류 발생", e);
             throw e;
         }
+
+        // canonical MVC 패턴 — NexacroResult 리턴으로 NexacroHandlerMethodReturnValueHandler
+        // 가 chunked 응답을 완료(0\r\n\r\n terminator) 시키도록 함. void 리턴 시 Spring MVC
+        // 기본 void 핸들러가 우선되어 Content-Type=text/plain 오버라이드 + terminator 누락 발생.
+        return new NexacroResult();
     }
 }
