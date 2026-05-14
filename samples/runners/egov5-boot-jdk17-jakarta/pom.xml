@@ -37,6 +37,16 @@
 
     <repositories>
         <repository>
+            <id>egovframe</id>
+            <url>https://maven.egovframe.go.kr/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>tobesoft-snapshots</id>
             <url>https://mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/</url>
             <releases>
@@ -48,6 +58,18 @@
             </snapshots>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>egovframe-plugin</id>
+            <url>https://maven.egovframe.go.kr/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
         <!-- Spring Boot starters -->
@@ -68,6 +90,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>3.0.3</version>
         </dependency>
 
         <!-- Jakarta servlet APIs -->
@@ -79,6 +102,7 @@
         <dependency>
             <groupId>jakarta.servlet.jsp</groupId>
             <artifactId>jakarta.servlet.jsp-api</artifactId>
+            <version>3.1.1</version>
         </dependency>
 
         <!-- Supporting libs -->
