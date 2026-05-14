@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.nexacro.fullstack</groupId>
+    <artifactId>runner-egov4-boot-jdk8-javax</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>runner-egov4-boot-jdk8-javax</name>
+    <description>
+        eGovFrame 4 / Spring Boot 2.7.x (javax lane, JDK 8) runner for
+        nexacroN-fullstack. Minimal eGov scaffold over canonical uiadapter
+        pattern. No published eGov 4 boot-starter-parent exists, so this pom
+        imports the Spring Boot 2.7 BOM directly and pulls the legacy
+        egovframework.rte 3.10.0 fdl-property module (eGov 4 lineage) with
+        Spring 4.3.25 transitive excluded so SB 2.7's Spring 5.3.x wins.
+    </description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <boot2.version>2.7.18</boot2.version>
+        <spring5.version>5.3.39</spring5.version>
+        <mybatis.spring.boot.javax.version>2.3.2</mybatis.spring.boot.javax.version>
+        <javax.servlet.version>4.0.1</javax.servlet.version>
+        <javax.servlet.jsp.version>2.3.3</javax.servlet.jsp.version>
+        <commons.fileupload.version>1.5</commons.fileupload.version>
+        <hsqldb.version>2.7.3</hsqldb.version>
+        <lombok.version>1.18.34</lombok.version>
+        <jackson.version>2.17.2</jackson.version>
+        <commons.io.version>2.15.1</commons.io.version>
+
+        <!-- nexacro first-party (javax lane) -->
+        <nexacro.xapi.javax.version>1.2.4-SNAPSHOT</nexacro.xapi.javax.version>
+        <nexacro.xeni.javax.version>1.5.21-SNAPSHOT</nexacro.xeni.javax.version>
+        <nexacro.uiadapter.spring.core.version>1.4.19.2-SNAPSHOT</nexacro.uiadapter.spring.core.version>
+        <nexacro.uiadapter.spring.dataaccess.version>1.4.19-SNAPSHOT</nexacro.uiadapter.spring.dataaccess.version>
+        <nexacro.uiadapter.spring.excel.version>1.5.21-SNAPSHOT</nexacro.uiadapter.spring.excel.version>
+
+        <!-- eGov 4 lineage (legacy 3.10.0 RTE — no eGov 4 boot-starter-parent published) -->
+        <egov.rte.version>3.10.0</egov.rte.version>
+        <yasson.version>1.0.11</yasson.version>
+        <json.simple.version>1.1.1</json.simple.version>
+        <log4jdbc.version>1.16</log4jdbc.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>tobesoft-snapshots</id>
+            <url>https://mangosteen.tobesoft.co.kr/nexus/repository/tobesoft-snapshots/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>egovframe</id>
+            <url>https://maven.egovframe.go.kr/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${boot2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Spring Boot starters (versions managed by boot 2.7.18 BOM) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- MyBatis (javax lane — pin 2.3.2; 3.x pulls jakarta) -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis.spring.boot.javax.version}</version>
+        </dependency>
+
+        <!-- Javax servlet API (provided) -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--
+            Javax JSP API — required at runtime by xapi-javax
+            HttpPlatformResponse.sendData(), which references javax.servlet.jsp.JspWriter.
+            Embedded Tomcat (Boot 2.7.x) does NOT supply a JSP container, so the API
+            jar must be bundled on the runtime classpath (default scope, NOT provided).
+        -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>${javax.servlet.jsp.version}</version>
+        </dependency>
+
+        <!--
+            Apache Commons FileUpload (classic, javax lane) — required at runtime by
+            xeni-javax GridExportImportServlet, which references
+            org.apache.commons.fileupload.servlet.ServletFileUpload.
+            xeni-javax's pom declares no transitive dependencies, so this
+            must be wired explicitly.
+        -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
+        </dependency>
+
+        <!-- HSQLDB (2.7.3 needs Java 11+ at runtime; build with JDK 8 source, run with JDK 17 JAVA_HOME) -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Jackson for JSON envelope serde -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+
+        <!-- Nexacro first-party modules (javax lane) -->
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>nexacroN-xapi</artifactId>
+            <version>${nexacro.xapi.javax.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>nexacroN-xeni</artifactId>
+            <version>${nexacro.xeni.javax.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>uiadapter-spring-core</artifactId>
+            <version>${nexacro.uiadapter.spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>uiadapter-spring-dataaccess</artifactId>
+            <version>${nexacro.uiadapter.spring.dataaccess.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nexacro</groupId>
+            <artifactId>uiadapter-spring-excel</artifactId>
+            <version>${nexacro.uiadapter.spring.excel.version}</version>
+        </dependency>
+
+        <!--
+            eGovFrame 4 (legacy 3.10.0 RTE) — fdl-property only (minimal scaffold).
+            All Spring 4.3.25 transitives excluded so Spring Boot 2.7's Spring
+            5.3.x stack wins; commons-logging excluded in favor of jcl-over-slf4j
+            transitively brought by Boot.
+        -->
+        <dependency>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.fdl.property</artifactId>
+            <version>${egov.rte.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-web</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-aop</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-expression</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-tx</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- JSON-B (canonical egov5 pattern) -->
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>${yasson.version}</version>
+        </dependency>
+
+        <!-- json-simple (canonical egov5 pattern) -->
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>${json.simple.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- log4jdbc DriverSpy (datasource wrapper used by EgovConfigAppDatasource) -->
+        <dependency>
+            <groupId>org.bgee.log4jdbc-log4j2</groupId>
+            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+            <version>${log4jdbc.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${boot2.version}</version>
+                <configuration>
+                    <mainClass>com.nexacro.uiadapter.Application</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

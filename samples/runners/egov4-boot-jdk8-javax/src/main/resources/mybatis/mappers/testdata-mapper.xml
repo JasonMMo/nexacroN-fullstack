@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    TB_TEST_DATA_TYPE mapper.
+
+    Mirrors canonical Nexacro N example (gitlab.com/nexacron/spring-boot/
+    jakarta/uiadapter-jakarta) ExampleDataTypeMapper:
+      - selectAll                 (existing aggregate load)
+      - select_datalist           filter via dsSearch.* params (POJO)
+      - select_datalist_map       filter via dsSearch.* params (Map)
+      - insert_data / update_data / delete_data           (POJO CRUD)
+      - insert_data_map / update_data_map / delete_data_map (Map CRUD)
+
+    NOTE: rowType (1=insert,2=update,4=delete) routing happens in the service
+    layer, not in this mapper.
+-->
+<mapper namespace="com.nexacro.uiadapter.mapper.TestDataMapper">
+
+    <resultMap id="rmTestDataType" type="com.nexacro.uiadapter.domain.TestDataType">
+        <id     property="id"              column="ID"/>
+        <result property="stringValue"     column="STRING_VALUE"/>
+        <result property="intValue"        column="INT_VALUE"/>
+        <result property="booleanValue"    column="BOOLEAN_VALUE"/>
+        <result property="longValue"       column="LONG_VALUE"/>
+        <result property="floatValue"      column="FLOAT_VALUE"/>
+        <result property="doubleValue"     column="DOUBLE_VALUE"/>
+        <result property="bigDecimalValue" column="BIG_DECIMAL_VALUE"/>
+        <result property="dateValue"       column="DATE_VALUE"/>
+        <result property="timeValue"       column="TIME_VALUE"/>
+        <result property="datetimeValue"   column="DATETIME_VALUE"/>
+        <result property="bytesValue"      column="BYTES_VALUE"/>
+    </resultMap>
+
+    <sql id="cols">
+        ID,
+        STRING_VALUE,
+        INT_VALUE,
+        BOOLEAN_VALUE,
+        LONG_VALUE,
+        FLOAT_VALUE,
+        DOUBLE_VALUE,
+        BIG_DECIMAL_VALUE,
+        DATE_VALUE,
+        TIME_VALUE,
+        DATETIME_VALUE,
+        BYTES_VALUE
+    </sql>
+
+    <!-- existing -->
+    <select id="selectAll" resultMap="rmTestDataType">
+        SELECT <include refid="cols"/>
+        FROM TB_TEST_DATA_TYPE
+        ORDER BY ID
+    </select>
+
+    <select id="select_datalist" parameterType="map" resultMap="rmTestDataType">
+        SELECT <include refid="cols"/>
+        FROM TB_TEST_DATA_TYPE
+        <where>
+            <if test="search != null and search.stringValue != null and search.stringValue != ''">
+                AND STRING_VALUE LIKE '%' || #{search.stringValue} || '%'
+            </if>
+        </where>
+        ORDER BY ID
+    </select>
+
+    <select id="select_datalist_map" parameterType="map" resultType="map">
+        SELECT <include refid="cols"/>
+        FROM TB_TEST_DATA_TYPE
+        <where>
+            <if test="search != null and search.stringValue != null and search.stringValue != ''">
+                AND STRING_VALUE LIKE '%' || #{search.stringValue} || '%'
+            </if>
+        </where>
+        ORDER BY ID
+    </select>
+
+    <!-- POJO CRUD -->
+    <insert id="insert_data" parameterType="com.nexacro.uiadapter.domain.TestDataType"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO TB_TEST_DATA_TYPE (
+            STRING_VALUE, INT_VALUE, BOOLEAN_VALUE, LONG_VALUE,
+            FLOAT_VALUE, DOUBLE_VALUE, BIG_DECIMAL_VALUE,
+            DATE_VALUE, TIME_VALUE, DATETIME_VALUE, BYTES_VALUE
+        ) VALUES (
+            #{stringValue}, #{intValue}, #{booleanValue}, #{longValue},
+            #{floatValue}, #{doubleValue}, #{bigDecimalValue},
+            #{dateValue}, #{timeValue}, #{datetimeValue}, #{bytesValue}
+        )
+    </insert>
+
+    <update id="update_data" parameterType="com.nexacro.uiadapter.domain.TestDataType">
+        UPDATE TB_TEST_DATA_TYPE SET
+            STRING_VALUE      = #{stringValue},
+            INT_VALUE         = #{intValue},
+            BOOLEAN_VALUE     = #{booleanValue},
+            LONG_VALUE        = #{longValue},
+            FLOAT_VALUE       = #{floatValue},
+            DOUBLE_VALUE      = #{doubleValue},
+            BIG_DECIMAL_VALUE = #{bigDecimalValue},
+            DATE_VALUE        = #{dateValue},
+            TIME_VALUE        = #{timeValue},
+            DATETIME_VALUE    = #{datetimeValue},
+            BYTES_VALUE       = #{bytesValue}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="delete_data" parameterType="int">
+        DELETE FROM TB_TEST_DATA_TYPE WHERE ID = #{id}
+    </delete>
+
+    <!-- Map CRUD (camelCase keys, mirrors BoardMapper Map-mode) -->
+    <insert id="insert_data_map" parameterType="map"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+        INSERT INTO TB_TEST_DATA_TYPE (
+            STRING_VALUE, INT_VALUE, BOOLEAN_VALUE, LONG_VALUE,
+            FLOAT_VALUE, DOUBLE_VALUE, BIG_DECIMAL_VALUE,
+            DATE_VALUE, TIME_VALUE, DATETIME_VALUE, BYTES_VALUE
+        ) VALUES (
+            #{stringValue}, #{intValue}, #{booleanValue}, #{longValue},
+            #{floatValue}, #{doubleValue}, #{bigDecimalValue},
+            #{dateValue}, #{timeValue}, #{datetimeValue}, #{bytesValue}
+        )
+    </insert>
+
+    <update id="update_data_map" parameterType="map">
+        UPDATE TB_TEST_DATA_TYPE SET
+            STRING_VALUE      = #{stringValue},
+            INT_VALUE         = #{intValue},
+            BOOLEAN_VALUE     = #{booleanValue},
+            LONG_VALUE        = #{longValue},
+            FLOAT_VALUE       = #{floatValue},
+            DOUBLE_VALUE      = #{doubleValue},
+            BIG_DECIMAL_VALUE = #{bigDecimalValue},
+            DATE_VALUE        = #{dateValue},
+            TIME_VALUE        = #{timeValue},
+            DATETIME_VALUE    = #{datetimeValue},
+            BYTES_VALUE       = #{bytesValue}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="delete_data_map" parameterType="int">
+        DELETE FROM TB_TEST_DATA_TYPE WHERE ID = #{id}
+    </delete>
+
+</mapper>
