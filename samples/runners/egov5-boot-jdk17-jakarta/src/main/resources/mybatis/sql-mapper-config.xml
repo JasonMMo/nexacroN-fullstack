@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="defaultStatementTimeout" value="30"/>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <setting name="logImpl" value="SLF4J"/>
+    </settings>
+
+    <!--
+        Nexacro uiadapter MyBatis interceptors.
+
+        - NexacroMybatisMetaDataProvider: captures column metadata at statement
+          prepare time so the result-set handler can populate Nexacro DataSet
+          column types even when the query returns zero rows.
+        - NexacroMybatisResultSetHandler: streams ResultSet into Nexacro
+          DataSet rows / handles type coercion via the registered DBMS provider
+          (DbVendorsProvider bean in UiadapterWebMvcConfig).
+    -->
+    <plugins>
+        <plugin interceptor="com.nexacro.uiadapter.jakarta.dao.mybatis.NexacroMybatisMetaDataProvider"/>
+        <plugin interceptor="com.nexacro.uiadapter.jakarta.dao.mybatis.NexacroMybatisResultSetHandler"/>
+    </plugins>
+</configuration>
