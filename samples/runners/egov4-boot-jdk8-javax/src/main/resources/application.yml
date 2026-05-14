@@ -1,0 +1,60 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /uiadapter
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    hikari:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:hsqldb:mem:nexacro;sql.syntax_mys=true
+      username: sa
+      password: ""
+      minimum-idle: 3
+      maximum-pool-size: 10
+  sql:
+    init:
+      mode: always
+      platform: hsqldb
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      separator: "^^"
+      continue-on-error: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+      file-size-threshold: 0
+
+mybatis:
+  config-location: classpath:mybatis/sql-mapper-config.xml
+  mapper-locations: classpath:mybatis/mappers/*-mapper.xml
+  type-aliases-package: com.nexacro.uiadapter.domain
+
+nexacro:
+  file:
+    storage-dir: ./uploads
+  relay:
+    exim:
+      url:                  # empty by default — 503 fallback when not configured
+      connect-timeout: 5000
+      read-timeout: 30000
+      forward-headers: {}
+  stream:
+    type: classic
+    buffer-size: 65536
+    max-file-size: 500MB
+    adaptive-buffer: true
+    use-nio: true
+    memory-mapping: false
+    max-concurrent-streams: 10
+
+logging:
+  level:
+    root: INFO
+    com.nexacro.uiadapter: DEBUG
+    org.springframework.jdbc: INFO
+    org.mybatis: INFO
