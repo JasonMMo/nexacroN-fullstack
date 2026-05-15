@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- RestTemplate used by RelayController/RelayService for the EXIM relay endpoint.
+         Timeouts come from RelayProperties (component-scanned, @Value-injected). -->
+    <bean id="relayClientHttpRequestFactory"
+          class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+        <property name="connectTimeout" value="${nexacro.relay.exim.connect-timeout:5000}"/>
+        <property name="readTimeout"    value="${nexacro.relay.exim.read-timeout:30000}"/>
+    </bean>
+
+    <bean id="relayRestTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg ref="relayClientHttpRequestFactory"/>
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+</beans>
