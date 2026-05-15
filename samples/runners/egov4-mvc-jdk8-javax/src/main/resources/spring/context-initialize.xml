@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- HSQLDB in-memory schema + seed data loader.
+         Separator '^^' matches the canonical DataSourceConfig.java behaviour. -->
+    <bean id="dbInit" class="org.springframework.jdbc.datasource.init.ResourceDatabasePopulator">
+        <property name="separator" value="^^"/>
+        <property name="continueOnError" value="false"/>
+        <property name="scripts">
+            <list>
+                <value>classpath:schema.sql</value>
+                <value>classpath:data.sql</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="dbCleanup" class="org.springframework.jdbc.datasource.init.ResourceDatabasePopulator"/>
+
+    <bean id="startupScripts"
+          class="org.springframework.jdbc.datasource.init.DataSourceInitializer"
+          depends-on="dataSource">
+        <property name="dataSource"        ref="dataSource"/>
+        <property name="databasePopulator" ref="dbInit"/>
+        <property name="databaseCleaner"   ref="dbCleanup"/>
+        <property name="enabled"           value="true"/>
+    </bean>
+</beans>

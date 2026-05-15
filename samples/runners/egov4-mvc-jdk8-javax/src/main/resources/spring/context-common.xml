@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Resolves @Value("${...}") placeholders for RelayProperties and datasource.* -->
+    <context:property-placeholder location="classpath:application.properties"
+                                  ignore-resource-not-found="false"
+                                  ignore-unresolvable="true"/>
+
+    <!-- Services / repositories / @Component beans. @Controller lives in the dispatcher context. -->
+    <context:component-scan base-package="com.nexacro.uiadapter">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- eGov 4 environment: picks up egovframework.com.config.EgovConfigAppProperties
+         (@Configuration that loads classpath:globals.properties via @PropertySource).
+         Excludes @Controller so the dispatcher context owns web layer. -->
+    <context:component-scan base-package="egovframework">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <bean id="antPathMatcher" class="org.springframework.util.AntPathMatcher"/>
+
+    <!-- i18n message bundle (eGov 4 canonical path: egovframework/message/com/).
+         NexacroMappingExceptionResolver.defaultErrorMsg="fail.common.msg" is resolved
+         against this bundle. Locale-aware (message-common_ko.properties / _en.properties). -->
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:/egovframework/message/com/message-common</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="cacheSeconds"    value="60"/>
+        <property name="fallbackToSystemLocale" value="false"/>
+    </bean>
+</beans>

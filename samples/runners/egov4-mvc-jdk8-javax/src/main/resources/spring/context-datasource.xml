@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- DriverManagerDataSource matches the canonical jakarta-example for HSQLDB in-memory
+         (no pooling needed for an embedded smoke runner). Properties are resolved from
+         application.properties via context-common.xml's <context:property-placeholder>. -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${datasource.driver-class-name:org.hsqldb.jdbc.JDBCDriver}"/>
+        <property name="url"             value="${datasource.url:jdbc:hsqldb:mem:nexacro;sql.syntax_mys=true}"/>
+        <property name="username"        value="${datasource.username:sa}"/>
+        <property name="password"        value="${datasource.password:}"/>
+    </bean>
+</beans>
