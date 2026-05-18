@@ -1,0 +1,15 @@
+# boot-jdk8-javax.exclude
+# Plain JAR runner, javax lane, Boot 2 / JDK 8.
+# Common rules (pom.xml, application.*, xeni.properties, license, logback*, log4j2*)
+# are encoded in sync-from-canonical.sh preamble.
+
+# Library capability gaps: uiadapter-spring-core 1.4.x does not have:
+#   - NexacroStreamResult / NexacroStreamView  (StreamController, UiadapterWebMvcConfig)
+#   - @ExcludeField                            (domain/Board)
+# Protect pre-existing javax-compatible versions of these files.
+- src/main/java/com/nexacro/uiadapter/config/UiadapterWebMvcConfig.java
+P src/main/java/com/nexacro/uiadapter/config/UiadapterWebMvcConfig.java
+- src/main/java/com/nexacro/uiadapter/controller/StreamController.java
+P src/main/java/com/nexacro/uiadapter/controller/StreamController.java
+- src/main/java/com/nexacro/uiadapter/domain/Board.java
+P src/main/java/com/nexacro/uiadapter/domain/Board.java

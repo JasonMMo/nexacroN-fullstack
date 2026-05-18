@@ -1,0 +1,7 @@
+# mvc-jdk17-jakarta.exclude
+# WAR runner, jakarta lane, no Boot. Excludes Boot-only artifacts; protects WAR layout.
+- Application.java
+- src/main/java/com/nexacro/uiadapter/config/
+P src/main/webapp/
+P src/main/resources/spring/
+P src/main/resources/message/
