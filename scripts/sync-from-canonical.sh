@@ -92,7 +92,9 @@ cp_sync() {
     if [[ -z "$DRY_RUN" ]]; then
       if ! diff -q "$f" "$df" >/dev/null 2>&1; then cp "$f" "$df"; changed=$((changed+1)); fi
     else
-      echo "[dry-run] copy: $rr"; changed=$((changed+1))
+      # Dry-run plan goes to stderr — stdout is reserved for the final count
+      # captured by the caller via $(do_sync ...).
+      echo "[dry-run] copy: $rr" >&2; changed=$((changed+1))
     fi
   done < <(find "$src" -type f -print0)
   while IFS= read -r -d '' df; do
@@ -101,7 +103,7 @@ cp_sync() {
     [[ -f "$src/$rel" ]] && continue
     is_protected_rr "$rr" && continue
     is_excluded_rr  "$rr" && continue
-    if [[ -z "$DRY_RUN" ]]; then rm -f "$df"; else echo "[dry-run] delete: $rr"; fi
+    if [[ -z "$DRY_RUN" ]]; then rm -f "$df"; else echo "[dry-run] delete: $rr" >&2; fi
     changed=$((changed+1))
   done < <(find "$dst" -type f -print0)
   echo "$changed"
@@ -136,9 +138,13 @@ for ITEM in data.sql schema.sql mybatis static; do
       IC=$(do_sync "$SRC_ITEM" "$DEST_RES/$ITEM" "src/main/resources/$ITEM")
     else
       IC=0
-      if ! is_excluded_rr "src/main/resources/$ITEM" && [[ -z "$DRY_RUN" ]]; then
+      if ! is_excluded_rr "src/main/resources/$ITEM"; then
         if ! diff -q "$SRC_ITEM" "$DEST_RES/$ITEM" >/dev/null 2>&1; then
-          cp "$SRC_ITEM" "$DEST_RES/$ITEM"; IC=1
+          if [[ -z "$DRY_RUN" ]]; then
+            cp "$SRC_ITEM" "$DEST_RES/$ITEM"; IC=1
+          else
+            echo "[dry-run] copy: src/main/resources/$ITEM" >&2; IC=1
+          fi
         fi
       fi
     fi
