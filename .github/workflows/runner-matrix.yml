@@ -1,0 +1,52 @@
+name: runner-matrix
+on:
+  pull_request:
+    paths:
+      - 'samples/runners/**'
+      - 'scripts/**'
+      - '.github/workflows/runner-matrix.yml'
+  schedule:
+    - cron: '0 18 * * *'   # nightly 03:00 KST
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: boot-jdk17-jakarta,       jdk: 17, smoke: jar }
+          - { runner: boot-jdk8-javax,          jdk: 8,  smoke: jar }
+          - { runner: mvc-jdk17-jakarta,        jdk: 17, smoke: war }
+          - { runner: mvc-jdk8-javax,           jdk: 8,  smoke: war }
+          - { runner: egov5-boot-jdk17-jakarta, jdk: 17, smoke: jar }
+          - { runner: egov4-boot-jdk8-javax,    jdk: 8,  smoke: jar }
+          - { runner: egov4-mvc-jdk8-javax,     jdk: 8,  smoke: war }
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.jdk }}
+          cache: maven
+      - name: build
+        run: mvn -B -ntp clean package
+        working-directory: samples/runners/${{ matrix.runner }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.runner }}-target
+          path: samples/runners/${{ matrix.runner }}/target/*.${{ matrix.smoke }}
+          retention-days: 7
+      - name: smoke - /select_datalist.do
+        if: matrix.smoke == 'jar'
+        run: |
+          jar=$(ls target/*.jar | head -1)
+          nohup java -jar "$jar" > app.log 2>&1 &
+          for i in $(seq 1 30); do sleep 2; curl -sf http://localhost:8080/uiadapter/ && break; done
+          curl -sfX POST http://localhost:8080/uiadapter/select_datalist.do \
+            -H 'Content-Type: text/xml' \
+            --data '<Root><Parameters/><Dataset id="input1"><ColumnInfo/><Rows/></Dataset></Root>' \
+            | grep -q 'ErrorCode' && echo OK
+        working-directory: samples/runners/${{ matrix.runner }}
+        continue-on-error: true

@@ -1,0 +1,15 @@
+# egov4-boot-jdk8-javax.exclude
+# Boot JAR runner, javax lane, eGov 4 / JDK 8.
+
+# Preserve custom @ComponentScan Application.java and eGov source/resources.
+- Application.java
+P src/main/java/egovframework/
+P src/main/resources/egovframework/
+
+# Library capability gaps: uiadapter-spring-core 1.4.x lacks NexacroStreamResult / @ExcludeField.
+- src/main/java/com/nexacro/uiadapter/config/UiadapterWebMvcConfig.java
+P src/main/java/com/nexacro/uiadapter/config/UiadapterWebMvcConfig.java
+- src/main/java/com/nexacro/uiadapter/controller/StreamController.java
+P src/main/java/com/nexacro/uiadapter/controller/StreamController.java
+- src/main/java/com/nexacro/uiadapter/domain/Board.java
+P src/main/java/com/nexacro/uiadapter/domain/Board.java

@@ -1,0 +1,6 @@
+# egov5-boot-jdk17-jakarta.exclude
+# Boot JAR runner, jakarta lane, eGov 5. Preserves custom @ComponentScan Application.java
+# and all egovframework source/resources.
+- Application.java
+P src/main/java/egovframework/
+P src/main/resources/egovframework/
