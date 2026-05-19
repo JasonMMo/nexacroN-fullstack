@@ -1,20 +1,21 @@
 # nexacroN-fullstack
 
-End-to-end monorepo for Nexacro N v24 + Spring server stacks. Single `packageN` nxui front-end driving a matrix of 8 server runners that share an OpenAPI contract.
+End-to-end monorepo for Nexacro N v24 + Spring server stacks. Single `packageN` nxui front-end driving a matrix of 8 self-contained server runners that share an OpenAPI contract.
 
 ## Structure
 
 | Folder | Purpose |
 |---|---|
-| `api-contract/` | OpenAPI spec + data-format reference (source of truth for 15 endpoints) |
-| `core/` | Nexacro xapi / xeni / uiadapter in `javax` and `jakarta` variants |
-| `nxui/` | `packageN` front-end project (xprj + xadl + xfdl forms) |
+| `api-contract/` | OpenAPI spec + data-format reference (source of truth for the 14 `*.do` endpoints) |
+| `core/` | Nexacro xapi / xeni / uiadapter coordinates (`javax` and `jakarta` variants — pulled from tobesoft Nexus, not vendored) |
+| `nxui/` | `packageN` front-end project (xprj + xadl + xfdl forms, plus `nexacrolib/` UI assets) |
 | `samples/seed-data/` | HSQL schema + seed data |
-| `samples/shared-business/` | Plain Spring business code (jdk8-javax + jdk17-jakarta) |
-| `samples/shared-business-egov4/` | eGov 4.x business code (jdk8-javax) |
-| `samples/shared-business-egov5/` | eGov 5.x business code (jdk17-jakarta) |
-| `samples/shared-business-reactive/` | WebFlux controller layer (reuses `shared-business/jdk17-jakarta` service/mapper) |
-| `samples/runners/` | 8 thin entry-point modules (POM + Application/web.xml only) |
+| `samples/shared-business*/` | Reference business code by lane (jdk8-javax / jdk17-jakarta / eGov 4 / eGov 5 / reactive) — kept for cookbook reference; runner samples are self-contained and do not import these |
+| `samples/runners/` | 7 self-contained Spring/Boot/eGov/MVC/WebFlux runners with duplicated `controller/service/mapper/domain` trees + 1 reactive sibling outside the sync matrix |
+| `scripts/` | Sync automation — `sync-from-canonical.sh`, `propagate-from-gitlab.sh`, `lane-transform.sh`, and per-runner `.exclude` filter files |
+| `docs/sync-automation.md` | Operator guide for canonical → 6 siblings propagation flow |
+| `docs/uiadapter-runner-cookbook.md` | jakarta/javax lane import cookbook + 7 verified endpoint patterns |
+| `.github/workflows/runner-matrix.yml` | 7-runner build matrix CI (PR + nightly) |
 
 ## Runner matrix
 
