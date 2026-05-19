@@ -2,9 +2,11 @@
 
 > **목적:** boot-jdk17-jakarta / boot-jdk8-javax 두 런너에 대해 검증 완료된 canonical 패턴을 한곳에 정리. 다음 작업(eGov/MVC/WebFlux 런너 또는 신규 엔드포인트 추가)에서 재탐색 없이 이 문서만 보고 빠르게 진행하기 위한 작업 노트.
 >
-> **검증 상태 (2026-05-12):**
+> **검증 상태 (2026-05-19):**
 > - boot lane: jdk17 + jdk8 두 런너 전 엔드포인트 빌드 + smoke 통과 (PR #1 ~ #18).
 > - mvc lane: jdk17-jakarta + jdk8-javax XML-driven WAR 런너 Tomcat 10/9 배포 검증 (PR #19 ~ #23). 서비스 엔드포인트가 xapi 라이선스 게이트까지 도달 — boot 런너와 동일 동작 (license-less 환경 기준).
+> - eGov lane: egov5-boot-jdk17-jakarta / egov4-boot-jdk8-javax / egov4-mvc-jdk8-javax 3개 런너 추가, 7-runner CI 매트릭스 그린 (PR #33 ~ #34).
+> - 동기화 자동화: GitLab → canonical → 6 sibling 전파 파이프라인 작동 (PR #35 ~ #36). 자세한 흐름은 [docs/sync-automation.md](sync-automation.md) 참조.
 
 ---
 
