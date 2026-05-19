@@ -8,6 +8,11 @@ on:
   schedule:
     - cron: '0 18 * * *'   # nightly 03:00 KST
   workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish artifacts to rolling nightly release (one-off manual trigger; default: dry run)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -54,7 +59,7 @@ jobs:
         working-directory: samples/runners/${{ matrix.runner }}
         continue-on-error: true
       - name: rename artifact for release
-        if: github.event_name == 'schedule' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.publish == true))
         run: |
           src=$(find target -maxdepth 1 -name "*.${{ matrix.smoke }}" -not -name "original-*" | head -1)
           if [ -z "$src" ]; then echo "no artifact found"; exit 1; fi
@@ -62,7 +67,7 @@ jobs:
           ls -la "target/${{ matrix.runner }}.${{ matrix.smoke }}"
         working-directory: samples/runners/${{ matrix.runner }}
       - name: publish to nightly release
-        if: github.event_name == 'schedule' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.publish == true))
         uses: softprops/action-gh-release@v2
         with:
           tag_name: nightly
